@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" />
+    <meta charset="utf-8" />
+
+    <title>test</title>
+    <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="css/test.css" />
+    <link rel="stylesheet" href="css/menu.css" />
+
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+            background-color: #E7EDF2;
+        }
+    </style>
+</head>
+
+<nav class="navbar navbar-expand-lg " style="background-color: #FF404A">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">TuRingo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</nav>
+
+<body>
+
+
+
+    <div class="row" style="margin-top: 1%;">
+        <div class="col round-box" style="margin-left: 3%; margin-right: 3%;">
+            <div class="p-3">hola mundo soy una columna</div>
+        </div> 
+        <div class="col-7" style="margin-right: 3%;">
+            <div id="outer" class="outer-scroll round-box">
+                <div id="canvas" class="inner-scroll">
+                    
+                </div>
+                <div id="wrapper"></div>
+            </div>
+
+
+            <div class="row p-3 round-box" style="margin-top: 3%;">world</div>
+        </div>
+    </div>
+
+    <ul id="menu">
+        <li class="menu-item" onclick="generate_circle()">Nuevo nodo</li>
+        <li id="ins_button" class="menu-item">Nueva Instrucción</li>
+    </ul>
+
+
+    <div id="out-click">
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal_instruccion" tabindex="-1" role="dialog" aria-labelledby="intruccionLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="intruccionLabel">Nueva Instrucción</h5>
+
+                </div>
+
+                <div class="modal-body">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Origen</label>
+                            <select class="form-control  col-1" id="origen">
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlSelect1">Destino</label>
+                            <select class="form-control  col-1" id="destino">
+
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="sr-only" for="text">Instruccion</label>
+                            <input type="text" class="form-control" id="instruccion">
+                        </div>
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="generate_line()" data-bs-dismiss="modal">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+<script src="JS/plain-draggable.min.js"></script>
+<script src="JS/leader-line.min.js"></script>
+<script src="JS/menu.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+    integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+    crossorigin="anonymous"></script>
+
+</html>

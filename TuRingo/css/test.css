@@ -1,0 +1,69 @@
+html, body
+{
+    height: 100%;
+    margin: 0;
+    padding: 0px;
+    overflow: hidden;
+}
+
+#canvas
+{
+  background-color: white;
+  animation-fill-mode: forwards;
+
+}
+
+.after_modal_appended
+{  
+  position:relative;
+}
+
+.modal, .modal-backdrop {
+  position: absolute !important;
+}
+
+.modal-backdrop {
+  background-color: #0000001e;
+}
+
+.outer-scroll{
+  max-height: 700px;
+  overflow: scroll;
+  position: relative;
+}
+
+.inner-scroll{
+  width: 5000px;
+  height: 5000px;
+  position: relative;
+}
+
+.round-box
+{
+  border-radius: 5px;
+  border: 1px solid;
+  border-color: #E4E4E4;
+  background-color: white; 
+  border-radius: 25px;
+
+}
+
+.dot {
+  height: 50px;
+  width: 50px;
+  background-color: #ec0404;
+  border: 3px solid;
+  border-color: #080000;
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 30px;
+  color: #fff;
+  text-align: center;
+  position: absolute;
+}
+
+#wrapper {
+  width: 0;
+  height: 0;
+  position: relative; /* Origin of coordinates for lines, and scrolled content (i.e. not `absolute`) */
+}
