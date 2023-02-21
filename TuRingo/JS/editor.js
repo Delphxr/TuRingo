@@ -1,5 +1,6 @@
 const clickable = document.getElementById("canvas");
 const menu = document.getElementById("menu");
+const menu_nodo = document.getElementById("menu-nodo");
 const outClick = document.getElementById("out-click");
 let MOUSE_POSITION = { x: 0, y: 0 };
 let NODES = [];
@@ -10,6 +11,7 @@ let pseudoCodigo = {};
 document.getElementById("canvas").addEventListener("contextmenu", setPosition);
 
 clickable.addEventListener("contextmenu", (e) => {
+  
   e.preventDefault();
 
   menu.style.top = `${e.clientY}px`;
@@ -17,25 +19,26 @@ clickable.addEventListener("contextmenu", (e) => {
   menu.classList.add("show");
 
   outClick.style.display = "block";
+  
 });
 
 outClick.addEventListener("click", () => {
   menu.classList.remove("show");
+  menu_nodo.classList.remove("show");
   outClick.style.display = "none";
 });
 
+
+
+//mostrar un modal solamente dentro de el editor
 $(function () {
   //getting click event to show modal
   $("#ins_button").click(function () {
-    console.log("hgola");
-    $("#modal_instruccion").modal("show");
+    console.log("pipopapo")
+    console.log(NODES)
     $("#modal_instruccion").modal("show");
 
-    //appending modal background inside the bigform-content
-    $(".modal-backdrop").appendTo("#outer");
-    $("#modal_instruccion").appendTo("#outer");
-    //removing body classes to able click events
-    $("body").removeClass();
+
 
     $("#origen").empty();
     $("#destino").empty();
@@ -45,10 +48,6 @@ $(function () {
     }
   });
 
-  //just to prove actions outside modal
-  $("#help-button").click(function () {
-    alert("Action with modal opened or closed");
-  });
   //end just to prove actions outside modal
 });
 
@@ -82,13 +81,27 @@ function generate_circle() {
   colors[4] = ["#FFDA00", "#D49B02"]; //amarillo
   colors[5] = ["#AD40FF", "#882DCE"]; //morado
   colors[6] = ["#FFAA00", "#E89B00"]; //naranja
-  colors[7] = ["#ED2CD5", "#D614C2"]; //rosado
-  colors[8] = ["#00C0EA", "#028FBC"]; //cyan
-  colors[9] = ["#FF4A76", "#cc003d"]; //fuczia
+  colors[7] = ["#00C0EA", "#028FBC"]; //cyan
+  //colors[8] = ["#ED2CD5", "#D614C2"]; //rosado
+  //colors[9] = ["#FF4A76", "#cc003d"]; //fuczia
 
-  let color = colors[getRandomInt(9) + 1]; //elegimos un color al azar
+  let color = colors[getRandomInt(Object.keys(colors).length) + 1]; //elegimos un color al azar
+  console.log(Object.keys(colors).length)
 
   let dot = document.createElement("span");
+
+  dot.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    menu_nodo.style.top = `${e.clientY}px`;
+    menu_nodo.style.left = `${e.clientX}px`;
+    menu_nodo.classList.add("show");
+  
+    outClick.style.display = "block";
+    menu.classList.remove("show");
+
+  });
 
   let ID = NODES.length;
   NODES.push(dot);
@@ -108,7 +121,7 @@ function generate_circle() {
   let draggable = new PlainDraggable(dot); //lo volvemos un draggable
 
   draggable.onDragStart = function (pointerXY) {
-    dot.style.boxShadow = "0 0 0 5px yellow";
+    dot.style.boxShadow = "0 0 10px #373737";
   };
 
   draggable.onDragEnd = function (pointerXY) {
@@ -155,21 +168,24 @@ const checkIfKeyExist = (objectName, keyName) => {
   let keyExist = Object.keys(objectName).some((key) => key === keyName);
   return keyExist;
 };
+
+
+//creamos una linea entre dos nodos y metemos la instrucción
 function generate_line() {
-  var e = document.getElementById("origen");
-  var origen = e.options[e.selectedIndex].text;
-  var e = document.getElementById("destino");
-  var destino = e.options[e.selectedIndex].text;
+  let e = document.getElementById("origen");
+  let origen = e.options[e.selectedIndex].text;
+  e = document.getElementById("destino");
+  let destino = e.options[e.selectedIndex].text;
 
   fixPosition(); // Before adding new lines
-  var line = new LeaderLine(NODES[origen], NODES[destino]);
-  line.setOptions({ path: "arc" });
+  let line = new LeaderLine(NODES[origen], NODES[destino], {color: '#CECDCE'});
+
+  e = document.getElementById("instruccion");
+  
   line.setOptions({
-    startSocketGravity: [192, -172],
-    endSocketGravity: [-192, -172],
+    middleLabel: LeaderLine.captionLabel(e.value, {color: '#646476'})
   });
-  var e = document.getElementById("instruccion");
-  line.middleLabel = e.value;
+
 
   LINES.push(line);
   elmWrapper.appendChild(
