@@ -38,11 +38,16 @@
     <div class="row" style="margin-top: 1%;">
         <div class="col round-box" style="margin-left: 3%; margin-right: 3%;">
             <div class="p-3">hola mundo soy una columna</div>
-        </div> 
+        </div>
         <div class="col-7" style="margin-right: 3%;">
             <div id="outer" class="outer-scroll round-box">
+                <div class="zoom-group">
+                    <button class="zoom-button second" onclick="increase_zoom()">+</button><br />
+                    <button class="zoom-button" onclick="decrease_zoom()">-</button><br />
+                </div>
+                
                 <div id="canvas" class="inner-scroll canvas">
-                    
+                    <!--canvas de dibujo-->
                 </div>
                 <div id="wrapper"></div>
             </div>
@@ -62,7 +67,7 @@
         <li class="menu-item" onclick="rename_node()">Renombrar nodo</li>
     </ul>
 
-
+    <!--relacionado al click izquierdo-->
     <div id="out-click">
     </div>
 
@@ -103,7 +108,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="generate_line()" data-bs-dismiss="modal">Aplicar</button>
+                    <button type="button" class="btn btn-primary" onclick="generate_line()"
+                        data-bs-dismiss="modal">Aplicar</button>
                 </div>
             </div>
         </div>

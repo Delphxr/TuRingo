@@ -11,7 +11,6 @@ let pseudoCodigo = {};
 document.getElementById("canvas").addEventListener("contextmenu", setPosition);
 
 clickable.addEventListener("contextmenu", (e) => {
-  
   e.preventDefault();
 
   menu.style.top = `${e.clientY}px`;
@@ -19,7 +18,6 @@ clickable.addEventListener("contextmenu", (e) => {
   menu.classList.add("show");
 
   outClick.style.display = "block";
-  
 });
 
 outClick.addEventListener("click", () => {
@@ -28,17 +26,13 @@ outClick.addEventListener("click", () => {
   outClick.style.display = "none";
 });
 
-
-
 //mostrar un modal solamente dentro de el editor
 $(function () {
   //getting click event to show modal
   $("#ins_button").click(function () {
-    console.log("pipopapo")
-    console.log(NODES)
+    console.log("pipopapo");
+    console.log(NODES);
     $("#modal_instruccion").modal("show");
-
-
 
     $("#origen").empty();
     $("#destino").empty();
@@ -72,6 +66,7 @@ function setPosition(e) {
   console.log(position);
 }
 
+//generamos un nodo en el canvas
 function generate_circle() {
   let colors = {};
   //añádimos colores de la forma [fondo, borde]
@@ -86,21 +81,20 @@ function generate_circle() {
   //colors[9] = ["#FF4A76", "#cc003d"]; //fuczia
 
   let color = colors[getRandomInt(Object.keys(colors).length) + 1]; //elegimos un color al azar
-  console.log(Object.keys(colors).length)
+  console.log(Object.keys(colors).length);
 
   let dot = document.createElement("span");
 
   dot.addEventListener("contextmenu", (e) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     menu_nodo.style.top = `${e.clientY}px`;
     menu_nodo.style.left = `${e.clientX}px`;
     menu_nodo.classList.add("show");
-  
+
     outClick.style.display = "block";
     menu.classList.remove("show");
-
   });
 
   let ID = NODES.length;
@@ -129,9 +123,7 @@ function generate_circle() {
   };
 
   draggable.onMove = function (newPosition) {
-    for (var i = 0; i < LINES.length; i++) {
-      fixPosition(LINES[i]);
-    }
+    fixAllLines();
   };
 }
 
@@ -139,6 +131,7 @@ var elmWrapper = document.getElementById("wrapper"),
   curTranslate = { x: 0, y: 0 },
   lines = [];
 
+//se encarga de actualizar las posiciones de las lineas al desplazar la pantalla
 function fixPosition(line) {
   console.log("-------- `fixPosition` was called");
   var rectWrapper = elmWrapper.getBoundingClientRect(),
@@ -164,11 +157,17 @@ function fixPosition(line) {
     line.position();
   }
 }
+
+function fixAllLines() {
+  for (var i = 0; i < LINES.length; i++) {
+    fixPosition(LINES[i]);
+  }
+}
+
 const checkIfKeyExist = (objectName, keyName) => {
   let keyExist = Object.keys(objectName).some((key) => key === keyName);
   return keyExist;
 };
-
 
 //creamos una linea entre dos nodos y metemos la instrucción
 function generate_line() {
@@ -178,14 +177,15 @@ function generate_line() {
   let destino = e.options[e.selectedIndex].text;
 
   fixPosition(); // Before adding new lines
-  let line = new LeaderLine(NODES[origen], NODES[destino], {color: '#CECDCE'});
-
-  e = document.getElementById("instruccion");
-  
-  line.setOptions({
-    middleLabel: LeaderLine.captionLabel(e.value, {color: '#646476'})
+  let line = new LeaderLine(NODES[origen], NODES[destino], {
+    color: "#CECDCE",
   });
 
+  e = document.getElementById("instruccion");
+
+  line.setOptions({
+    middleLabel: LeaderLine.captionLabel(e.value, { color: "#646476" }),
+  });
 
   LINES.push(line);
   elmWrapper.appendChild(
@@ -196,17 +196,46 @@ function generate_line() {
 
   if (checkIfKeyExist(pseudoCodigo, origen)) {
     pseudoCodigo[origen].push({ next: destino, instruction: e.value });
-  } else{
-    pseudoCodigo[origen] =[{ next: destino, instruction: e.value }];
+  } else {
+    pseudoCodigo[origen] = [{ next: destino, instruction: e.value }];
   }
 }
 
 document.getElementById("outer").addEventListener(
   "scroll",
   AnimEvent.add(function () {
-    for (var i = 0; i < LINES.length; i++) {
-      fixPosition(LINES[i]);
-    }
+    fixAllLines();
   }),
   false
 );
+
+//funciones de manejo de zoom
+function increase_zoom() {
+  elem = document.getElementById("canvas");
+  style = getComputedStyle(elem);
+
+  let zoomValue = style.zoom;
+  zoomValue = zoomValue * 100;
+  zoomValue += 10;
+  let StringZoom = zoomValue + "%";
+
+  document.getElementById("canvas").style.zoom = StringZoom;
+  fixAllLines();
+}
+
+function decrease_zoom() {
+  elem = document.getElementById("canvas");
+  style = getComputedStyle(elem);
+
+  let zoomValue = style.zoom;
+  zoomValue = zoomValue * 100;
+  zoomValue -= 10;
+  if (zoomValue < 40){
+    zoomValue = 40;
+  }
+  let StringZoom = zoomValue + "%";
+  
+
+  document.getElementById("canvas").style.zoom = StringZoom;
+  fixAllLines();
+}

@@ -3,18 +3,19 @@ html, body
     height: 100%;
     margin: 0;
     padding: 0px;
-    overflow: hidden;
+
 }
 
 #canvas
 {
-  background-color: white;
+  
   animation-fill-mode: forwards;
 
 }
 
 
 .outer-scroll{
+  
   max-height: 700px;
   overflow: scroll;
   position: relative;
@@ -52,6 +53,34 @@ html, body
   align-items:center;
   justify-content:center;
   line-height: 60px;
+}
+
+.zoom-button {
+  position: fixed;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: 3px solid;
+  border-color: #d4d4d4;
+  background-color: E4E4E4; 
+  z-index: 99;
+  color: #949494;
+  font-size: 28px;
+  text-align: center;
+  align-items:center;
+  justify-content:center;
+  line-height: 40px;
+  font-weight: 900;
+}
+
+.zoom-button.second {
+  margin-top: 90px;
+}
+
+.zoom-group {
+  position:absolute;
+  right: 60px;
+  bottom: 120px;
 }
 
 
