@@ -10,6 +10,10 @@ html, body
 {
   
   animation-fill-mode: forwards;
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, #E4E4E4 1px, transparent 1px),
+    linear-gradient(to bottom, #E4E4E4 1px, transparent 1px);
 
 }
 
