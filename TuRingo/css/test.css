@@ -39,7 +39,7 @@ body {
 }
 
 .inner-scroll{
-  width: 2000px;
+  width: 3000px;
   height: 2000px;
   position: relative;
 }
@@ -59,7 +59,7 @@ body {
   height: 70px;
   width: 70px;
   background-color: #ec0404;
-  border: 3px solid;
+  border: 5px solid;
   border-color: #080000;
   border-radius: 50%;
   display: inline-block;

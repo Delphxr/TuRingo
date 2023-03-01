@@ -128,7 +128,7 @@ function generate_circle() {
   let draggable = new PlainDraggable(dot); //lo volvemos un draggable
 
   draggable.onDragStart = function (pointerXY) {
-    dot.style.boxShadow = "0 0 10px #373737";
+    dot.style.boxShadow = "0 2px 10px #373737";
   };
 
   draggable.onDragEnd = function (pointerXY) {
