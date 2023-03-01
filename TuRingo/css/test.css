@@ -1,9 +1,22 @@
-html, body
+html
 {
     height: 100%;
     margin: 0;
     padding: 0px;
 
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #e7edf2;
+  height: 100%;
+  margin: 0;
+  padding: 0px;
+}
+
+.navbar {
+  background-color: #1c39bb !important;  /* fallback for old browsers */
+  
 }
 
 #canvas
@@ -20,7 +33,7 @@ html, body
 
 .outer-scroll{
   
-  max-height: 700px;
+  max-height: 80%;
   overflow: scroll;
   position: relative;
 }
@@ -66,7 +79,7 @@ html, body
   border-radius: 50%;
   border: 3px solid;
   border-color: #d4d4d4;
-  background-color: E4E4E4; 
+  background-color: #E4E4E4; 
   z-index: 99;
   color: #949494;
   font-size: 28px;
@@ -81,10 +94,86 @@ html, body
   margin-top: 90px;
 }
 
+.zoom-button:hover {
+  background-color: #f7f6f6;
+  color: #7e7d7d;
+}
+
+.zoom-button:active {
+  background-color: #ffffff;
+  color: #7e7d7d;
+  border-color: #7e7d7d;
+}
+
 .zoom-group {
   position:absolute;
   right: 60px;
   bottom: 120px;
+}
+
+
+.action-button {
+  margin: 5px;
+  background-color: #27da54;
+  border: 3px solid;
+  border-color: #1fc56a;
+  box-shadow: 0 8px 0 #0b9c71;
+  color: #d8ffb4;
+}
+
+.action-button:hover {
+  background-color: #58f058;
+  border-color: #1fc56a;
+  color: #d2fcab;
+}
+
+.action-button:active {
+  background-color: #c8ffa3 !important;
+  border-color: #1fc56a !important;
+  color: #62d692 !important;
+}
+
+
+.stop-button {
+  margin: 5px;
+  background-color: #da274e;
+  border: 3px solid;
+  border-color: #b11e3e;
+  box-shadow: 0 8px 0 #8d1136;
+  color: #ffc0b1;
+}
+
+.stop-button:hover {
+  background-color: #f03b59;
+  border-color: #b11e3e;
+  color: #ffaf9b;
+}
+
+.stop-button:active {
+  background-color: #fd6969 !important;
+  border-color: #b11e3e !important;
+  color: #c54747 !important;
+}
+
+.skip-button {
+  margin: 5px;
+  background-color: #ffbf36;
+  border: 3px solid;
+  border-color: #eea02b;
+  box-shadow: 0 8px 0 #c96a1d;
+  color: #f8f687;
+}
+
+.skip-button:hover {
+  background-color: #face3d;
+  border-color: #eea02b;
+  color: #fffda5;
+}
+
+.skip-button:active {
+  background-color: #ffef60 !important;
+  border-color: #eea02b !important;
+  color: #eca74b !important;
 }
 
 
