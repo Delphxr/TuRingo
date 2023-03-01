@@ -16,12 +16,12 @@
     <style>
         body {
             font-family: "Roboto", sans-serif;
-            background-color: #E7EDF2;
+            background-color: #e7edf2;
         }
     </style>
 </head>
 
-<nav class="navbar navbar-expand-lg " style="background-color: #FF404A">
+<nav class="navbar navbar-expand-lg" style="background-color: #ff404a">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">TuRingo</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -32,46 +32,42 @@
 </nav>
 
 <body>
-
-
-
-    <div class="row" style="margin-top: 1%;">
-        <div class="col round-box" style="margin-left: 3%; margin-right: 3%;">
+    <div class="row" style="margin-top: 1%">
+        <div class="col round-box" style="margin-left: 3%; margin-right: 3%">
             <div class="p-3">hola mundo soy una columna</div>
         </div>
-        <div class="col-7" style="margin-right: 3%;">
+        <div class="col-7" style="margin-right: 3%">
             <div id="outer" class="outer-scroll round-box">
                 <div class="zoom-group">
-                    <button class="zoom-button second" onclick="increase_zoom()">+</button><br />
+                    <button class="zoom-button second" onclick="increase_zoom()">
+                        +</button><br />
                     <button class="zoom-button" onclick="decrease_zoom()">-</button><br />
                 </div>
-                
+
                 <div id="canvas" class="inner-scroll canvas">
                     <!--canvas de dibujo-->
                 </div>
+                <!--aqui colocamos las lineas-->
                 <div id="wrapper"></div>
             </div>
 
-
-            <div class="row p-3 round-box" style="margin-top: 3%;">world</div>
+            <div class="row p-3 round-box" style="margin-top: 3%">world</div>
         </div>
     </div>
 
     <ul id="menu" class="menu">
         <li class="menu-item" onclick="generate_circle()">Nuevo nodo</li>
-        <li id="ins_button" class="menu-item">Nueva Instrucción</li>
     </ul>
 
     <ul id="menu-nodo" class="menu">
-        <li class="menu-item" onclick="remove_circle()">Eliminar nodo</li>
+        <li class="menu-item text-success font-weight-bold" onclick="set_start_node()">Definir Inicial</li>
+        <li id="ins_button" class="menu-item">Instrucción</li>
         <li class="menu-item" onclick="rename_node()">Renombrar nodo</li>
+        <li class="menu-item text-danger font-weight-bold" onclick="remove_circle()">Eliminar nodo</li>
     </ul>
 
     <!--relacionado al click izquierdo-->
-    <div id="out-click">
-    </div>
-
-
+    <div id="out-click"></div>
 
     <!-- Modal -->
     <div class="modal fade" id="modal_instruccion" tabindex="-1" role="dialog" aria-labelledby="intruccionLabel"
@@ -80,36 +76,75 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="intruccionLabel">Nueva Instrucción</h5>
-
                 </div>
 
                 <div class="modal-body">
                     <form class="form-inline">
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Origen</label>
-                            <select class="form-control  col-1" id="origen">
 
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Destino</label>
-                            <select class="form-control  col-1" id="destino">
 
-                            </select>
+                        <div class="row g-3 align-items-center m-2 mt-0">
+                            <div class="col-auto">
+                                <label>Nodo Destino:</label>
+                            </div>
+                            <div class="col">
+                                <select class="form-select" id="destino"></select>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label class="sr-only" for="text">Instruccion</label>
-                            <input type="text" class="form-control" id="instruccion">
+
+                        <div class="row g-3 align-items-center m-2">
+                            <div class="col-auto">
+                                <label>Movimiento de Cinta</label>
+                            </div>
+                            <div class="col">
+                                <select class="form-select col-lg-4" id="cinta">
+                                    <option value="r">Derecha</option>
+                                    <option value="l">Izquierda</option>
+                                </select>
+                            </div>
                         </div>
+
+                        <hr />
+
+                        <ul class="list-group" id="lista-instrucciones" style="max-height: 50%;">
+                            <li class="list-group-item">
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label>Si leo:</label>
+                                    </div>
+                                    <div class="col-2">
+                                        <input class="form-control mx-0" type="text" id="read" maxlength="1"></input>
+                                    </div>
+                                    <div class="col-auto">
+                                        <label>, Escribo:</label>
+                                    </div>
+                                    <div class="col-2">
+                                        <input class="form-control" type="text" id="write" maxlength="1"></input>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+
+                        <button type="button" class="btn btn-outline-success" style="border-radius: 50px; overflow: scroll;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-plus" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z">
+                                </path>
+                            </svg>
+                        </button>
+
 
                     </form>
-
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="generate_line()"
-                        data-bs-dismiss="modal">Aplicar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="new_instruction()" data-bs-dismiss="modal">
+                        Aplicar
+                    </button>
                 </div>
             </div>
         </div>
@@ -122,7 +157,6 @@
 <script src="JS/plain-draggable.min.js"></script>
 <script src="JS/leader-line.min.js"></script>
 <script src="JS/editor.js"></script>
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"

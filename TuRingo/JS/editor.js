@@ -8,6 +8,8 @@ let LINES = [];
 
 let pseudoCodigo = {};
 
+let CURRENT_CLICKED_NODE; //nodo al que le hicimos click izquierdo actualmente
+
 document.getElementById("canvas").addEventListener("contextmenu", setPosition);
 
 clickable.addEventListener("contextmenu", (e) => {
@@ -26,12 +28,10 @@ outClick.addEventListener("click", () => {
   outClick.style.display = "none";
 });
 
-//mostrar un modal solamente dentro de el editor
+//manejor del modal de nueva instruccion
 $(function () {
   //getting click event to show modal
   $("#ins_button").click(function () {
-    console.log("pipopapo");
-    console.log(NODES);
     $("#modal_instruccion").modal("show");
 
     $("#origen").empty();
@@ -85,9 +85,12 @@ function generate_circle() {
 
   let dot = document.createElement("span");
 
+  //manejo de click
   dot.addEventListener("contextmenu", (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    CURRENT_CLICKED_NODE = e.target;
 
     menu_nodo.style.top = `${e.clientY}px`;
     menu_nodo.style.left = `${e.clientX}px`;
@@ -133,7 +136,6 @@ var elmWrapper = document.getElementById("wrapper"),
 
 //se encarga de actualizar las posiciones de las lineas al desplazar la pantalla
 function fixPosition(line) {
-  console.log("-------- `fixPosition` was called");
   var rectWrapper = elmWrapper.getBoundingClientRect(),
     translate = {
       x: (rectWrapper.left + pageXOffset) * -1,
@@ -141,26 +143,29 @@ function fixPosition(line) {
     };
   if (translate.x !== 0 || translate.y !== 0) {
     // Update position of wrapper
-    console.log("Fix wrapper");
+
     curTranslate.x += translate.x;
     curTranslate.y += translate.y;
     elmWrapper.style.transform =
       "translate(" + curTranslate.x + "px, " + curTranslate.y + "px)";
     // Update position of all lines
-    console.log("Fix all lines");
-    lines.forEach(function (line) {
-      line.position();
+
+    LINES.forEach(function (line) {
+      line[0].position();
     });
   } else if (line) {
     // Update position of target line
-    console.log("Fix target line");
     line.position();
   }
 }
 
 function fixAllLines() {
-  for (var i = 0; i < LINES.length; i++) {
-    fixPosition(LINES[i]);
+  for (const element of LINES) {
+    try {
+      fixPosition(element[0]);
+    } catch (error) {
+      console.log(element);
+    }
   }
 }
 
@@ -169,28 +174,39 @@ const checkIfKeyExist = (objectName, keyName) => {
   return keyExist;
 };
 
+//generamos una nueva instrucción
+function new_instruction(){
+  let mover = document.getElementById("cinta").value;
+  let placeholder = "{1 -> write: 0}"
+
+  let instruction = placeholder + " " + mover 
+  generate_line(instruction)
+}
+
 //creamos una linea entre dos nodos y metemos la instrucción
-function generate_line() {
-  let e = document.getElementById("origen");
-  let origen = e.options[e.selectedIndex].text;
+function generate_line(instruction) {
+  let origen = CURRENT_CLICKED_NODE;
   e = document.getElementById("destino");
   let destino = e.options[e.selectedIndex].text;
 
   fixPosition(); // Before adding new lines
-  let line = new LeaderLine(NODES[origen], NODES[destino], {
+
+  let line = new LeaderLine(origen, NODES[destino], {
     color: "#CECDCE",
+    path: "magnet",
   });
 
   e = document.getElementById("instruccion");
 
   line.setOptions({
-    middleLabel: LeaderLine.captionLabel(e.value, { color: "#646476" }),
+    middleLabel: LeaderLine.captionLabel(instruction, { color: "#646476" }),
   });
 
-  LINES.push(line);
-  elmWrapper.appendChild(
-    document.querySelector("body>.leader-line:last-of-type")
-  );
+  let line_element = document.querySelector("body>.leader-line:last-of-type");
+
+  elmWrapper.appendChild(line_element);
+
+  LINES.push([line, line_element]);
 
   fixPosition(); // Before adding new lines
 
@@ -201,18 +217,30 @@ function generate_line() {
   }
 }
 
-document.getElementById("outer").addEventListener(
-  "scroll",
-  AnimEvent.add(function () {
-    fixAllLines();
-  }),
-  false
-);
+
+
+function remove_circle() {
+  let tempLines = [];
+  for (const element of LINES) {
+    //tenemos que encontrar las lineas y eliminarlas
+    if (
+      element[0].end.isEqualNode(CURRENT_CLICKED_NODE) ||
+      element[0].start.isEqualNode(CURRENT_CLICKED_NODE)
+    ) {
+      document.body.appendChild(element[1]);
+      element[1].remove();
+    } else {
+      tempLines.push(element); //vamos guardando para una nueva lista sin los eliminados
+    }
+  }
+  CURRENT_CLICKED_NODE.remove();
+  LINES = tempLines;
+}
 
 //funciones de manejo de zoom
 function increase_zoom() {
-  elem = document.getElementById("canvas");
-  style = getComputedStyle(elem);
+  let elem = document.getElementById("canvas");
+  let style = getComputedStyle(elem);
 
   let zoomValue = style.zoom;
   zoomValue = zoomValue * 100;
@@ -220,22 +248,21 @@ function increase_zoom() {
   let StringZoom = zoomValue + "%";
 
   document.getElementById("canvas").style.zoom = StringZoom;
-  fixAllLines();
+  document.getElementById("wrapper").style.zoom = StringZoom;
 }
 
 function decrease_zoom() {
-  elem = document.getElementById("canvas");
-  style = getComputedStyle(elem);
+  let elem = document.getElementById("canvas");
+  let style = getComputedStyle(elem);
 
   let zoomValue = style.zoom;
   zoomValue = zoomValue * 100;
   zoomValue -= 10;
-  if (zoomValue < 40){
+  if (zoomValue < 40) {
     zoomValue = 40;
   }
   let StringZoom = zoomValue + "%";
-  
 
   document.getElementById("canvas").style.zoom = StringZoom;
-  fixAllLines();
+  document.getElementById("wrapper").style.zoom = StringZoom;
 }
