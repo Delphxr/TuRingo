@@ -28,6 +28,16 @@ outClick.addEventListener("click", () => {
   outClick.style.display = "none";
 });
 
+menu.addEventListener("click", () => {
+  menu.classList.remove("show");
+  outClick.style.display = "none";
+});
+
+menu_nodo.addEventListener("click", () => {
+  menu_nodo.classList.remove("show");
+  outClick.style.display = "none";
+});
+
 //manejor del modal de nueva instruccion
 $(function () {
   //getting click event to show modal
@@ -177,7 +187,7 @@ const checkIfKeyExist = (objectName, keyName) => {
 //generamos una nueva instrucción
 function new_instruction(){
   let mover = document.getElementById("cinta").value;
-  let placeholder = "{1 -> write: 0}"
+  let placeholder = "{1 -> write: 0}" //sacar de aqui luego todas las instrucciones de forma dinamica
 
   let instruction = placeholder + " " + mover 
   generate_line(instruction)
@@ -233,6 +243,11 @@ function remove_circle() {
       tempLines.push(element); //vamos guardando para una nueva lista sin los eliminados
     }
   }
+  const index = NODES.indexOf(CURRENT_CLICKED_NODE);
+  console.log(index)
+  NODES.splice(index, 1);
+
+
   CURRENT_CLICKED_NODE.remove();
   LINES = tempLines;
 }
