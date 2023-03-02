@@ -5,10 +5,9 @@ class PseudoCodigo {
     this.id = 0;
   }
 
-
   generateId() {
     let newID = "q" + this.id;
-    this.id = this.id +1;
+    this.id = this.id + 1;
     return newID;
   }
 
@@ -16,7 +15,7 @@ class PseudoCodigo {
     this.apodos[Id] = apodo;
   }
 
-//retorna el apodo si existe, o si no el ID
+  //retorna el apodo si existe, o si no el ID
   obtenerApodo(Id) {
     return this.apodos.hasOwnProperty(Id) ? this.apodos[Id] : Id;
   }
@@ -47,7 +46,7 @@ class PseudoCodigo {
 
     for (let origen in this.codigo) {
       const instrucciones = this.codigo[origen];
-      const apodo = this.apodos[origen] || '';
+      const apodo = this.apodos[origen] || "";
 
       codigo[origen] = {
         apodo: apodo,
@@ -59,6 +58,16 @@ class PseudoCodigo {
   }
 
   eliminarNodo(Id) {
+    for (let i in this.codigo) {
+      const instrucciones = this.codigo[i];
+      for (let j in instrucciones) {
+        if (instrucciones[j]["estado_siguiente"] == Id) {
+            delete instrucciones[j];
+            instrucciones.splice(j,1);
+        }
+      }
+    }
+
     delete this.codigo[Id];
     delete this.apodos[Id];
   }
