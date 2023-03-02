@@ -6,11 +6,12 @@ const inputValue = document.querySelector("#inputValue");
 const updateValueBtn = document.querySelector("#updateValueBtn");
 
 let activeIndex = 2; // Índice del elemento activo
-let cellWidth = tape.querySelector(".tape-cell").offsetWidth; // Ancho de la celda
-let tapeWidth = tapeContainer.offsetWidth; // Ancho de la cinta
 
 // Actualizar la posición de la cinta
 function updateTapePosition() {
+  let cellWidth = tape.querySelector(".tape-cell").offsetWidth; // Ancho de la celda
+  let tapeWidth = tapeContainer.offsetWidth; // Ancho de la cinta
+
   tape.style.transform = `translateX(calc(-${activeIndex * cellWidth}px + ${
     tapeWidth / 2 - cellWidth / 2
   }px))`;
