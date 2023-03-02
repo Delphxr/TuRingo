@@ -172,8 +172,11 @@ function remove_circle() {
     }
   }
 
+  let i = NODES.indexOf(NODES.find(element => element[0] === CURRENT_CLICKED_NODE[0]))
+  NODES.splice(i,1)
+
   CURRENT_CLICKED_NODE[1].remove(); //eliminamos el nodo seleccionado
-  pseudoCodigo.eliminarNodo(CURRENT_CLICKED_NODE[1])
+  pseudoCodigo.eliminarNodo(CURRENT_CLICKED_NODE[0])
   LINES = tempLines; //actualizamos la lista de lineas
 
   debugCode()
