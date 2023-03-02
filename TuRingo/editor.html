@@ -38,22 +38,22 @@
     <div class="row" style="margin: 0%;margin-top: 1%; margin-bottom: 1%; width:100%; height: calc(97% - 60px);">
         <div class="col" style="margin-left: 1%; margin-right: 1%; height: 100%; width: 100%;">
             <div class="row round-box" style="height: 10%;">
-                <div class="p-3" >
+                <div class="p-3">
                     <button id="moveLeftBtn">Mover a la izquierda</button>
                     <button id="moveRightBtn">Mover a la derecha</button>
                     <input id="inputValue" type="text" value="3" />
                     <button id="updateValueBtn">Actualizar valor</button>
                 </div>
             </div>
-            <div  class="row round-box p-3" style="height: 85%; margin-top: 3%; overflow: scroll;">
+            <div class="row round-box p-3" style="height: 85%; margin-top: 3%; overflow: scroll;">
                 <pre id="debug">
 
                 </pre>
             </div>
-            
+
         </div>
 
-        
+
         <div class="col-7" style="margin-right: 1%; height: 100%;;">
             <div>
                 <div class="modal-footer" style="justify-content: flex-start; margin-bottom: 1%;">
@@ -147,7 +147,7 @@
     <ul id="menu-nodo" class="menu">
         <li class="menu-item text-success font-weight-bold" onclick="set_start_node()">Definir Inicial</li>
         <li id="ins_button" class="menu-item">Instrucción</li>
-        <li class="menu-item" onclick="rename_node()">Renombrar nodo</li>
+        <li class="menu-item" data-bs-toggle="modal" data-bs-target="#modalRenombrar">Renombrar nodo</li>
         <li class="menu-item text-danger font-weight-bold" onclick="remove_circle()">Eliminar nodo</li>
     </ul>
 
@@ -157,7 +157,7 @@
     <!--relacionado al click izquierdo-->
     <div id="out-click"></div>
 
-    <!-- Modal -->
+    <!-- Modal instruccion-->
     <div class="modal fade" id="modal_instruccion" tabindex="-1" role="dialog" aria-labelledby="intruccionLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -167,60 +167,95 @@
                 </div>
 
                 <div class="modal-body">
-                    <form class="form-inline">
 
 
-                        <div class="row g-3 align-items-center m-2 mt-0">
-                            <div class="col-auto">
-                                <label>Nodo Destino:</label>
-                            </div>
-                            <div class="col">
-                                <select class="form-select" id="destino"></select>
-                            </div>
+
+                    <div class="row g-3 align-items-center m-2 mt-0">
+                        <div class="col-auto">
+                            <label>Nodo Destino:</label>
                         </div>
-
-
-                        <div class="row g-3 align-items-center m-2">
-                            <div class="col-auto">
-                                <label>Movimiento de Cinta</label>
-                            </div>
-                            <div class="col">
-                                <select class="form-select col-lg-4" id="cinta">
-                                    <option value="R">Derecha</option>
-                                    <option value="L">Izquierda</option>
-                                </select>
-                            </div>
+                        <div class="col">
+                            <select class="form-select" id="destino"></select>
                         </div>
+                    </div>
 
-                        <hr />
 
-                        <ul class="list-group" id="listainstrucciones" style="max-height: 50%;">
-                            <li class="list-group-item instruccioninfo">
-                                <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
-                                        <label>Si leo:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <input class="form-control mx-0" type="text" id="read" maxlength="1"></input>
-                                    </div>
-                                    <div class="col-auto">
-                                        <label>, Escribo:</label>
-                                    </div>
-                                    <div class="col-2">
-                                        <input class="form-control" type="text" id="write" maxlength="1"></input>
-                                    </div>
+                    <div class="row g-3 align-items-center m-2">
+                        <div class="col-auto">
+                            <label>Movimiento de Cinta</label>
+                        </div>
+                        <div class="col">
+                            <select class="form-select col-lg-4" id="cinta">
+                                <option value="R">Derecha</option>
+                                <option value="L">Izquierda</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <ul class="list-group" id="listainstrucciones" style="max-height: 50%;">
+                        <li class="list-group-item instruccioninfo">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label>Si leo:</label>
                                 </div>
-                            </li>
-                        </ul>
+                                <div class="col-2">
+                                    <input class="form-control mx-0" type="text" id="read" maxlength="1"></input>
+                                </div>
+                                <div class="col-auto">
+                                    <label>, Escribo:</label>
+                                </div>
+                                <div class="col-2">
+                                    <input class="form-control" type="text" id="write" maxlength="1"></input>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
 
 
-                    </form>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn stop-button" data-bs-dismiss="modal">
                         Cancelar
                     </button>
                     <button type="button" class="btn action-button" onclick="new_instruction()" data-bs-dismiss="modal">
+                        Aplicar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal renombrat-->
+    <div class="modal fade" id="modalRenombrar" tabindex="-1" role="dialog" aria-labelledby="renameLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="renameLabel">Renombrar Nodo</h5>
+                </div>
+
+                <div class="modal-body">
+
+
+
+                    <div class="row g-3 align-items-center m-2 mt-0">
+                        <div class="col-auto">
+                            <label>Nuevo Nombre:</label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" id="renombrar"></input>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn stop-button" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn action-button" onclick="rename_circle()" data-bs-dismiss="modal">
                         Aplicar
                     </button>
                 </div>

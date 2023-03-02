@@ -99,7 +99,6 @@ function generate_circle() {
 
   // Elige un color al azar para el círculo
   let color = colors[getRandomInt(Object.keys(colors).length) + 1];
-  console.log(Object.keys(colors).length);
 
   // Crea un nuevo elemento span que será el círculo
   let dot = document.createElement("span");
@@ -110,8 +109,8 @@ function generate_circle() {
     e.stopPropagation();
 
     // Establece el nodo actualmente clickeado como el nodo seleccionado
-    let currentId = NODES.find(element => element[1] === e.target)[0];
-    CURRENT_CLICKED_NODE = [currentId, e.target];
+    let currentId = NODES.find((element) => element[1] === e.currentTarget)[0];
+    CURRENT_CLICKED_NODE = [currentId, e.currentTarget];
 
     // Muestra el menú de opciones
     menu_nodo.style.top = `${e.clientY}px`;
@@ -125,15 +124,18 @@ function generate_circle() {
 
   // Establece el ID del círculo como el largo actual de la matriz NODES
   let ID = pseudoCodigo.generateId();
-  NODES.push([ID, dot]);
 
   // Crea un nodo de texto que muestra el ID del círculo
-  const text_id = document.createTextNode(ID);
-  dot.appendChild(text_id);
+  let text_id = document.createElement("div");
+  text_id.textContent = ID;
+  text_id.classList.add("dot-text");
+  text_id.style.setProperty('--shadow', color[0]);
 
+  dot.appendChild(text_id);
   // Establece la clase del elemento como "dot" para que tenga la forma de un círculo
   dot.classList.add("dot");
 
+  NODES.push([ID, dot]);
   // Establece el color de fondo y el borde del círculo
   dot.style.backgroundColor = color[0];
   dot.style.borderColor = color[1];
@@ -172,14 +174,24 @@ function remove_circle() {
     }
   }
 
-  let i = NODES.indexOf(NODES.find(element => element[0] === CURRENT_CLICKED_NODE[0]))
-  NODES.splice(i,1)
+  let i = NODES.indexOf(
+    NODES.find((element) => element[0] === CURRENT_CLICKED_NODE[0])
+  );
+  NODES.splice(i, 1);
 
   CURRENT_CLICKED_NODE[1].remove(); //eliminamos el nodo seleccionado
-  pseudoCodigo.eliminarNodo(CURRENT_CLICKED_NODE[0])
+  pseudoCodigo.eliminarNodo(CURRENT_CLICKED_NODE[0]);
   LINES = tempLines; //actualizamos la lista de lineas
 
-  debugCode()
+  debugCode();
+}
+
+function rename_circle() {
+  let newNombre = document.getElementById("renombrar").value;
+
+  CURRENT_CLICKED_NODE[1].firstElementChild.textContent = newNombre;
+  pseudoCodigo.definirApodo(CURRENT_CLICKED_NODE[0], newNombre);
+  debugCode();
 }
 
 //aqui metemos las lineas
@@ -187,10 +199,10 @@ var elmWrapper = document.getElementById("wrapper"),
   curTranslate = { x: 0, y: 0 },
   lines = [];
 
-
-  function debugCode() {
-    document.getElementById("debug").textContent = pseudoCodigo.obtenerCodigoJson();
-  }
+function debugCode() {
+  document.getElementById("debug").textContent =
+    pseudoCodigo.obtenerCodigoJson();
+}
 
 //generamos una nueva instrucción
 function new_instruction() {
@@ -201,21 +213,33 @@ function new_instruction() {
   e = document.getElementById("destino");
   let destino = e.options[e.selectedIndex].value; // Obtenemos el nodo de destino seleccionado en el menú desplegable
   let instructionContainer = document.getElementById("listainstrucciones");
-  let listaInstrucciones = instructionContainer.getElementsByClassName("instruccioninfo")
-  
+  let listaInstrucciones =
+    instructionContainer.getElementsByClassName("instruccioninfo");
+
   let instruction = "";
   for (var i = 0; i < listaInstrucciones.length; i++) {
-    console.log(listaInstrucciones[i])
+    console.log(listaInstrucciones[i]);
     let read = listaInstrucciones[i].querySelector("#read").value;
-    console.log(read)
+    console.log(read);
     let write = listaInstrucciones[i].querySelector("#write").value;
-    pseudoCodigo.agregarLinea(origenId, read, write, mover, destino)
+    pseudoCodigo.agregarLinea(origenId, read, write, mover, destino);
     //(q1, 1) -> (q2, 0, L)
-    let newInstruction = "(" + origenId + "," + read + ") -> (" + destino + "," + write + "," + mover + ")\n";
-    instruction += newInstruction
+    let newInstruction =
+      "(" +
+      origenId +
+      "," +
+      read +
+      ") -> (" +
+      destino +
+      "," +
+      write +
+      "," +
+      mover +
+      ")\n";
+    instruction += newInstruction;
   }
   generate_line(instruction);
-  debugCode()
+  debugCode();
 }
 
 // Creamos una nueva línea de conexión entre dos nodos y añadimos la instrucción correspondiente
@@ -224,9 +248,7 @@ function generate_line(instruction) {
   e = document.getElementById("destino");
   let destino = e.options[e.selectedIndex].value; // Obtenemos el nodo de destino seleccionado en el menú desplegable
 
-  destino = NODES.find(element => element[0] === destino)[1]; //obmos el elemento html usando el id
-
-
+  destino = NODES.find((element) => element[0] === destino)[1]; //obmos el elemento html usando el id
 
   fixPosition();
 
