@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" />
+    <meta charset="utf-8" />
+
+    <title>test</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/test.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/menu.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/cinta.css') }}" />
+
+
+</head>
+<!--ff404a   4043ff   -->
+<nav class="navbar navbar-expand-lg" style="background-color: #4043ff">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">TuRingo</a>
+    </div>
+</nav>
+
+<body>
+    <div class="row" style="margin: 0%;margin-top: 1%; margin-bottom: 1%; width:100%; height: calc(97% - 60px);">
+        <div class="col" style="margin-left: 1%; margin-right: 1%; height: 100%; width: 100%;">
+            <div class="row round-box" style="height: 10%;">
+                <div class="p-3">
+                    <button id="moveLeftBtn">Mover a la izquierda</button>
+                    <button id="moveRightBtn">Mover a la derecha</button>
+                    <input id="inputValue" type="text" value="3" />
+                    <button id="updateValueBtn">Actualizar valor</button>
+                </div>
+            </div>
+            <div class="row round-box p-3" style="height: 85%; margin-top: 3%; overflow: scroll;">
+                <pre id="debug">
+
+                </pre>
+            </div>
+
+        </div>
+
+
+        <div class="col-7" style="margin-right: 1%; height: 100%;;">
+            <div>
+                <div class="modal-footer" style="justify-content: flex-start; margin-bottom: 1%;">
+                    <button type="button" class="btn action-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-play-fill" viewBox="0 0 16 16">
+                            <path
+                                d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+                        </svg>
+                    </button>
+
+                    <button type="button" class="btn stop-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-stop-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5A1.5 1.5 0 0 1 5 3.5z" />
+                        </svg>
+                    </button>
+
+                    <button type="button" class="btn skip-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-skip-backward-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5z" />
+                        </svg>
+                    </button>
+
+                    <button type="button" class="btn skip-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-skip-forward-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.753l-6.267 3.636c-.54.313-1.233-.066-1.233-.697v-2.94l-6.267 3.636C.693 12.703 0 12.324 0 11.693V4.308c0-.63.693-1.01 1.233-.696L7.5 7.248v-2.94c0-.63.693-1.01 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5z" />
+                        </svg>
+                    </button>
+
+                </div>
+            </div>
+            <div id="outer" class="outer-scroll round-box">
+                <div class="zoom-group">
+                    <button class="zoom-button second" onclick="increase_zoom()">
+                        +</button><br />
+                    <button class="zoom-button" onclick="decrease_zoom()">-</button><br />
+                </div>
+
+                <div id="canvas" class="inner-scroll canvas">
+                    <!--canvas de dibujo-->
+                </div>
+                <!--aqui colocamos las lineas-->
+                <div id="wrapper"></div>
+            </div>
+
+            <div class="row p-3 tape-container round-box" style="margin-top: 3%">
+
+                <div class="tape">
+                    <div class="tape-cell">1</div>
+                    <div class="tape-cell">2</div>
+                    <div class="tape-cell">3</div>
+                    <div class="tape-cell">4</div>
+                    <div class="tape-cell">5</div>
+                    <div class="tape-cell">1</div>
+                    <div class="tape-cell">2</div>
+                    <div class="tape-cell">3</div>
+                    <div class="tape-cell">4</div>
+                    <div class="tape-cell">5</div>
+                    <div class="tape-cell">1</div>
+                    <div class="tape-cell">2</div>
+                    <div class="tape-cell">3</div>
+                    <div class="tape-cell">4</div>
+                    <div class="tape-cell">5</div>
+                    <div class="tape-cell">1</div>
+                    <div class="tape-cell">2</div>
+                    <div class="tape-cell">3</div>
+                    <div class="tape-cell"></div>
+                    <div class="tape-cell"></div>
+                </div>
+
+                <div class="tape-shadow"></div>
+            </div>
+            <div class="arrow-holder">
+                <i class="fa fa-caret-down arrow-down"></i>
+            </div>
+
+
+        </div>
+    </div>
+
+    <ul id="menu" class="menu">
+        <li class="menu-item" onclick="generate_circle()">Nuevo nodo</li>
+    </ul>
+
+    <ul id="menu-nodo" class="menu">
+        <li class="menu-item text-success font-weight-bold" onclick="set_start_node()">Definir Inicial</li>
+        <li id="ins_button" class="menu-item">Instrucción</li>
+        <li class="menu-item" data-bs-toggle="modal" data-bs-target="#modalRenombrar">Renombrar nodo</li>
+        <li class="menu-item text-danger font-weight-bold" onclick="remove_circle()">Eliminar nodo</li>
+    </ul>
+
+
+
+
+    <!--relacionado al click izquierdo-->
+    <div id="out-click"></div>
+
+    <!-- Modal instruccion-->
+    <div class="modal fade" id="modal_instruccion" tabindex="-1" role="dialog" aria-labelledby="intruccionLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="intruccionLabel">Nueva Instrucción</h5>
+                </div>
+
+                <div class="modal-body">
+
+
+
+                    <div class="row g-3 align-items-center m-2 mt-0">
+                        <div class="col-auto">
+                            <label>Nodo Destino:</label>
+                        </div>
+                        <div class="col">
+                            <select class="form-select" id="destino"></select>
+                        </div>
+                    </div>
+
+
+                    <div class="row g-3 align-items-center m-2">
+                        <div class="col-auto">
+                            <label>Movimiento de Cinta</label>
+                        </div>
+                        <div class="col">
+                            <select class="form-select col-lg-4" id="cinta">
+                                <option value="R">Derecha</option>
+                                <option value="L">Izquierda</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <ul class="list-group" id="listainstrucciones" style="max-height: 50%;">
+                        <li class="list-group-item instruccioninfo">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label>Si leo:</label>
+                                </div>
+                                <div class="col-2">
+                                    <input class="form-control mx-0" type="text" id="read" maxlength="1"></input>
+                                </div>
+                                <div class="col-auto">
+                                    <label>, Escribo:</label>
+                                </div>
+                                <div class="col-2">
+                                    <input class="form-control" type="text" id="write" maxlength="1"></input>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn stop-button" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn action-button" onclick="new_instruction()" data-bs-dismiss="modal">
+                        Aplicar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal renombrat-->
+    <div class="modal fade" id="modalRenombrar" tabindex="-1" role="dialog" aria-labelledby="renameLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="renameLabel">Renombrar Nodo</h5>
+                </div>
+
+                <div class="modal-body">
+
+
+
+                    <div class="row g-3 align-items-center m-2 mt-0">
+                        <div class="col-auto">
+                            <label>Nuevo Nombre:</label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" id="renombrar"></input>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn stop-button" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn action-button" onclick="rename_circle()" data-bs-dismiss="modal">
+                        Aplicar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+<script src="JS/pan-canvas.js"></script>
+<script src="JS/plain-draggable.min.js"></script>
+<script src="JS/leader-line.min.js"></script>
+<script src="JS/cinta.js"></script>
+<script src="JS/code-manager.js"></script>
+<script src="JS/editor.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
+    integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
+    crossorigin="anonymous"></script>
+
+</html>
