@@ -36,13 +36,13 @@
   align-items: center;
   width: 50px;
   height: 50px;
-  border-right: 1px solid #E4E4E4;
-  border-left: 1px solid #E4E4E4;
+  border-right: 1px solid #f4dc9f;
+  border-left: 1px solid #f4dc9f;
 }
 
 .tape-cell.active {
 
-    box-shadow: 0px 0px 38px 0px rgba(92, 92, 92, 0.425);
+    box-shadow: 0px 0px 38px 0px #f1c87c;
     font-weight:400;
 }
 
@@ -50,9 +50,9 @@
 
   .arrow-down {
     font-size: 50px !important;
-    -webkit-text-stroke: 3px  #eea02b;
-    color:  #ffbf36;;  
-    filter: drop-shadow(0 5px 0 #c96a1d);
+    -webkit-text-stroke: 3px  #f2b459;
+    color:  #f6d178;;  
+    filter: drop-shadow(0 5px 0 #d48a5f);
     position: relative;
     top: -85px;
     left: calc(50% + 3px);
