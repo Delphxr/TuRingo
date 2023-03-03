@@ -9,6 +9,7 @@ let LINES = [];
 const pseudoCodigo = new PseudoCodigo(); //IMPORTANTE con esto vamos generando el codigo
 
 let CURRENT_CLICKED_NODE; //nodo al que le hicimos click izquierdo actualmente
+let CURRENT_START_NODE; //nodo inicio
 
 document.getElementById("canvas").addEventListener("contextmenu", setPosition);
 
@@ -87,15 +88,15 @@ function generate_circle() {
   let colors = {};
 
   // Añade colores para los círculos en formato [fondo, borde]
-  colors[1] = ["#448EFF", "#3C78DA"]; // Azul
-  colors[2] = ["#FF404A", "#CF383F"]; // Rojo
-  colors[3] = ["#00C958", "#00A542"]; // Verde
-  colors[4] = ["#FFDA00", "#D49B02"]; // Amarillo
-  colors[5] = ["#AD40FF", "#882DCE"]; // Morado
-  colors[6] = ["#FFAA00", "#E89B00"]; // Naranja
-  colors[7] = ["#00C0EA", "#028FBC"]; // Cyan
-  //colors[8] = ["#ED2CD5", "#D614C2"]; // Rosado
-  //colors[9] = ["#FF4A76", "#cc003d"]; // Fucsia
+  colors[1] = ["#94d6ba", "#60ac8f"]; // mentA
+  colors[2] = ["#c6b0c8", "#ae8eb0"]; // Rojo
+  colors[3] = ["#66b3b3", "#008081"]; // Verde
+  colors[4] = ["#fec0c8", "#fb9aa8"]; // rosado
+  colors[5] = ["#8993e2", "#6269bd"]; // Morado
+  colors[6] = ["#80bcd1", "#4d899e"]; // Cyan
+  colors[7] = ["#d6dc8c", "#88b47e"]; // VERDE CLARO
+  //colors[8] = ["#ED2CD5", "#D614C2"]; // Morado
+  //colors[9] = ["#FF4A76", "#cc003d"]; // morado
 
   // Elige un color al azar para el círculo
   let color = colors[getRandomInt(Object.keys(colors).length) + 1];
@@ -155,6 +156,16 @@ function generate_circle() {
   draggable.onMove = function (newPosition) {
     fixAllLines();
   };
+}
+
+function set_start_node(){
+  try {
+    CURRENT_START_NODE.classList.remove("inicial")
+  } catch (e) {
+    console.log("aun no hay nodo inicial")
+  }
+  CURRENT_CLICKED_NODE[1].classList.add("inicial");
+  CURRENT_START_NODE = CURRENT_CLICKED_NODE[1];
 }
 
 //eliminamos un nodo
@@ -252,7 +263,7 @@ function addSelfLine(instruction) {
   let origen = CURRENT_CLICKED_NODE[1]; //obtenemos el nodo irgen al que le dimos click
 
   origen.innerHTML +=
-    '<svg class="arrow" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><g stroke-width="16" stroke="#cecdce" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.8746197071393959,-0.4848096202463369,0.4848096202463369,0.8746197071393959,-450.77173095429305,61.07596524277645)"><path d="M177.3860626220703 327.4269676208496Q954.3860626220703 159.4269676208496 375.3860626220703 525.4269676208496 " marker-end="url(#SvgjsMarker3954)"></path></g><defs><marker markerWidth="4.5" markerHeight="4.5" refX="2.25" refY="2.25" viewBox="0 0 4.5 4.5" orient="auto" id="SvgjsMarker3954"><polygon points="0,4.5 0,0 4.5,2.25" fill="#cecdce"></polygon></marker></defs><text style="stroke-linejoin: round; paint-order: stroke; stroke-width: 2.11118px; stroke: rgb(255, 255, 255); fill: rgb(100, 100, 118);" x="200px" y="100px">' + 
+    '<svg class="arrow" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><g stroke-width="16" stroke="#f4dc9f" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.8746197071393959,-0.4848096202463369,0.4848096202463369,0.8746197071393959,-450.77173095429305,61.07596524277645)"><path d="M177.3860626220703 327.4269676208496Q954.3860626220703 159.4269676208496 375.3860626220703 525.4269676208496 " marker-end="url(#SvgjsMarker3954)"></path></g><defs><marker markerWidth="4.5" markerHeight="4.5" refX="2.25" refY="2.25" viewBox="0 0 4.5 4.5" orient="auto" id="SvgjsMarker3954"><polygon points="0,4.5 0,0 4.5,2.25" fill="#f4dc9f"></polygon></marker></defs><text style="stroke-linejoin: round; paint-order: stroke; stroke-width: 2.11118px; stroke: #fef8e6; fill: rgb(100, 100, 118);" x="200px" y="100px">' + 
     instruction +
     '</text></svg>';
 }
@@ -269,13 +280,13 @@ function generate_line(instruction) {
 
   let line = new LeaderLine(origen, destino, {
     // Creamos una nueva línea utilizando la librería LeaderLine
-    color: "#CECDCE", // Establecemos el color de la línea
+    color: "#f4dc9f", // Establecemos el color de la línea
     path: "magnet", // Establecemos el tipo de camino que seguirá la línea para conectar los nodos
   });
 
   line.setOptions({
     // Establecemos las opciones de la línea, en este caso, añadimos una etiqueta en el centro de la línea con la instrucción
-    middleLabel: LeaderLine.captionLabel(instruction, { color: "#646476" }),
+    middleLabel: LeaderLine.captionLabel(instruction, { color: "#646476", outlineColor: "#fef8e6" }),
   });
 
   let line_element = document.querySelector("body>.leader-line:last-of-type"); // Obtenemos el elemento HTML de la línea creada por LeaderLine
