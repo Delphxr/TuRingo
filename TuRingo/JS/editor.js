@@ -352,7 +352,7 @@ function increase_zoom() {
 
   let zoomValue = style.zoom;
   zoomValue = zoomValue * 100;
-  zoomValue += 10;
+  zoomValue += 1;
   let StringZoom = zoomValue + "%";
 
   document.getElementById("canvas").style.zoom = StringZoom;
@@ -365,7 +365,7 @@ function decrease_zoom() {
 
   let zoomValue = style.zoom;
   zoomValue = zoomValue * 100;
-  zoomValue -= 10;
+  zoomValue -= 1;
   if (zoomValue < 40) {
     zoomValue = 40;
   }
