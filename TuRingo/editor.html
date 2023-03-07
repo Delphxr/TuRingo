@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-dark">
 
 <head>
     <meta name="viewport" />
@@ -20,7 +20,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-
+    <link rel="stylesheet" href="css/theme-definer.css" type="text/css" />
     <link rel="stylesheet" href="css/test.css" />
     <link rel="stylesheet" href="css/menu.css" />
     <link rel="stylesheet" href="css/cinta.css" />
@@ -30,9 +30,51 @@
 <!--ff404a   4043ff   -->
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">TuRingo</a>
+        <a class="navbar-brand" href="#" style="padding: 0; padding-left: 1%;">
+            <img src="assets/images/logo-white.svg" height="40" alt="">
+        </a>
+
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex justify-content-end">
+
+
+            <li class="nav-item dropdown d-flex">
+                <div class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
+                    data-bs-target="#navbar-settings" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="bi bi-gear-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                    </svg>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
+                    <li><a class="dropdown-item" onclick="setTheme('theme-light')">Light</a></li>
+                    <li><a class="dropdown-item" onclick="setTheme('theme-dark')">Dark</a></li>
+                    <li><a class="dropdown-item" onclick="setTheme('theme-pastel')">Pastel</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown d-flex">
+                <div class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
+                    data-bs-target="#navbar-settings" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                      </svg>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
+                    <li><a class="dropdown-item" href="#">Perfil</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                </ul>
+            </li>
+        </ul>
+
     </div>
 </nav>
+
+
 
 <body>
     <div class="row" style="margin: 0%;margin-top: 1%; margin-bottom: 1%; width:100%; height: calc(97% - 60px);">
@@ -105,7 +147,7 @@
                 <div id="wrapper"></div>
             </div>
 
-            <div class="row p-3 tape-container round-box" style="margin-top: 3%">
+            <div class="row p-3 tape-container round-box" style="margin: 0;margin-top: 3%">
 
                 <div class="tape">
                     <div class="tape-cell">1</div>
@@ -276,12 +318,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-    crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-    integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
-    crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"
-    integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
     crossorigin="anonymous"></script>
 
 </html>

@@ -13,6 +13,15 @@ let CURRENT_START_NODE; //nodo inicio
 
 document.getElementById("canvas").addEventListener("contextmenu", setPosition);
 
+
+let dropdowns = document.querySelectorAll('.dropdown-toggle')
+dropdowns.forEach((dd)=>{
+    dd.addEventListener('click', function (e) {
+        var el = this.nextElementSibling
+        el.style.display = el.style.display==='block'?'none':'block'
+    })
+})
+
 //para sacar el menu de nuevo nodo
 clickable.addEventListener("contextmenu", (e) => {
   e.preventDefault();
@@ -44,18 +53,17 @@ menu_nodo.addEventListener("click", () => {
 
 //manejor del modal de nueva instruccion
 document.addEventListener("DOMContentLoaded", function () {
-  var insButton = document.getElementById("ins_button");
-
-  var destinoSelect = document.getElementById("destino");
+  let insButton = document.getElementById("ins_button");
+  let destinoSelect = document.getElementById("destino");
 
   insButton.addEventListener("click", function () {
     $("#modal_instruccion").modal("show");
 
     destinoSelect.innerHTML = "";
-    for (var i = 0; i < NODES.length; i++) {
-      option = document.createElement("option");
-      option.value = NODES[i][0];
-      option.text = pseudoCodigo.obtenerApodo(NODES[i][0]);
+    for (const element of NODES) {
+      let option = document.createElement("option");
+      option.value = element[0];
+      option.text = pseudoCodigo.obtenerApodo(element[0]);
       destinoSelect.add(option);
     }
   });
@@ -88,15 +96,13 @@ function generate_circle() {
   let colors = {};
 
   // Añade colores para los círculos en formato [fondo, borde]
-  colors[1] = ["#94d6ba", "#60ac8f"]; // mentA
-  colors[2] = ["#c6b0c8", "#ae8eb0"]; // Rojo
-  colors[3] = ["#66b3b3", "#008081"]; // Verde
-  colors[4] = ["#fec0c8", "#fb9aa8"]; // rosado
-  colors[5] = ["#8993e2", "#6269bd"]; // Morado
-  colors[6] = ["#80bcd1", "#4d899e"]; // Cyan
-  colors[7] = ["#d6dc8c", "#88b47e"]; // VERDE CLARO
-  //colors[8] = ["#ED2CD5", "#D614C2"]; // Morado
-  //colors[9] = ["#FF4A76", "#cc003d"]; // morado
+  colors[1] = ["var(--mint)", "var(--mint-shadow)"]; // mentA
+  colors[2] = ["var(--red)", "var(--red-shadow)"]; // Rojo
+  colors[3] = ["var(--green)", "var(--green-shadow)"]; // Verde
+  colors[4] = ["var(--pink)", "var(--pink-shadow)"]; // rosado
+  colors[5] = ["var(--purple)", "var(--purple-shadow)"]; // Morado
+  colors[6] = ["var(--cyan)", "var(--cyan-shadow)"]; // Cyan
+  colors[7] = ["var(--light-green)", "var(--light-green-shadow)"]; // VERDE CLARO
 
   // Elige un color al azar para el círculo
   let color = colors[getRandomInt(Object.keys(colors).length) + 1];
@@ -158,6 +164,7 @@ function generate_circle() {
   };
 }
 
+//definimos cual es el nodo inicial del codigo
 function set_start_node(){
   try {
     CURRENT_START_NODE.classList.remove("inicial")
@@ -214,6 +221,7 @@ var elmWrapper = document.getElementById("wrapper"),
   curTranslate = { x: 0, y: 0 },
   lines = [];
 
+//funcion de debug para imprimir el pseudocodigo
 function debugCode() {
   document.getElementById("debug").textContent =
     pseudoCodigo.obtenerCodigoJson();
@@ -221,7 +229,6 @@ function debugCode() {
 
 //generamos una nueva instrucción
 function new_instruction() {
-  let origen = CURRENT_CLICKED_NODE[1]; // Obtenemos el nodo de origen (al que le hicimos click derecho0)
   let origenId = CURRENT_CLICKED_NODE[0];
   e = document.getElementById("destino");
   let mover = document.getElementById("cinta").value; //L o R
@@ -232,11 +239,11 @@ function new_instruction() {
     instructionContainer.getElementsByClassName("instruccioninfo");
 
   let instruction = "";
-  for (var i = 0; i < listaInstrucciones.length; i++) {
-    console.log(listaInstrucciones[i]);
-    let read = listaInstrucciones[i].querySelector("#read").value;
+  for (const element of listaInstrucciones) {
+    console.log(element);
+    let read = element.querySelector("#read").value;
     console.log(read);
-    let write = listaInstrucciones[i].querySelector("#write").value;
+    let write = element.querySelector("#write").value;
     pseudoCodigo.agregarLinea(origenId, read, write, mover, destino);
     //(q1, 1) -> (q2, 0, L)
     let newInstruction =
@@ -377,4 +384,11 @@ function decrease_zoom() {
 
   document.getElementById("canvas").style.zoom = StringZoom;
   document.getElementById("wrapper").style.zoom = StringZoom;
+}
+
+
+// function to set a given theme/color-scheme
+function setTheme(themeName) {
+  localStorage.setItem('theme', themeName);
+  document.documentElement.className = themeName;
 }
