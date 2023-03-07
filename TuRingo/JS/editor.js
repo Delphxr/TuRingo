@@ -166,6 +166,10 @@ function set_start_node(){
   }
   CURRENT_CLICKED_NODE[1].classList.add("inicial");
   CURRENT_START_NODE = CURRENT_CLICKED_NODE[1];
+
+  pseudoCodigo.setInicial(CURRENT_CLICKED_NODE[0])
+
+  debugCode()
 }
 
 //eliminamos un nodo
