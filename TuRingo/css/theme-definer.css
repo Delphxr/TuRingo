@@ -65,22 +65,27 @@
     --color-light: #fdfdfc;
     --color-accent: #0d6efd;
     --color-grid: #f3f3f3;
+
     --text-color: #292929;
-    --mint: #94d6ba;
-    --mint-shadow: #60ac8f;
-    --red: #c6b0c8;
-    --red-shadow: #ae8eb0;
-    --green: #66b3b3;
-    --green-shadow: #008081;
-    --pink: #fec0c8;
-    --pink-shadow: #fb9aa8;
-    --purple: #8993e2;
-    --purple-shadow: #6269bd;
-    --cyan: #80bcd1;
-    --cyan-shadow: #4d899e;
-    --light-green: #d6dc8c;
-    --light-green-shadow: #88b47e;
+
+    --mint: #82ffca;
+    --mint-shadow: #39be8b ;
+    --red: #ff5252;
+    --red-shadow: #c8295f ;
+    --green: #58ed5d;
+    --green-shadow: #29c158 ;
+    --pink: #ff75a4;
+    --pink-shadow: #E91E63 ;
+    --purple: #a36fff;
+    --purple-shadow: #5a63cf ;
+    --cyan: #03A9F4;
+    --cyan-shadow: #2581ca ;
+    --light-green: #b1ff56;
+    --light-green-shadow: #98da61 ;
+   
+
     --line-color: #f4dc9f;
+
     --action-color: #0d6efd;
     --action-color-border: #0e4dc2;
     --action-color-shadow: #1e37b7;
@@ -170,3 +175,117 @@
     --skip-color-border-active: #e57838;
     --skip-color-text-active: #f8b94e;
  }
+
+ .theme-matrix {
+   --color-primary: #000000;
+   --color-secondary: #0d0d0d;
+   --color-secondary-border: #1cff00;
+   --color-terciary: #14ff7436;
+   --color-light: #000000;
+   --color-accent: #000000;
+   --color-grid: #07ff004d;
+
+   --text-color: #34ff0c;
+
+   --mint: #000000;
+   --mint-shadow: #34ff0c ;
+   --red: #000000;
+   --red-shadow: #34ff0c ;
+   --green: #000000;
+   --green-shadow: #34ff0c ;
+   --pink: #000000;
+   --pink-shadow: #34ff0c ;
+   --purple: #000000;
+   --purple-shadow: #34ff0c ;
+   --cyan: #000000;
+   --cyan-shadow: #34ff0c ;
+   --light-green: #000000;
+   --light-green-shadow: #34ff0c ;
+
+   --line-color: #f4dc9f;
+
+   --action-color: #34ff0c;
+   --action-color-border: #007e05;
+   --action-color-shadow: #000000;
+   --action-color-text: #000000;
+   --action-color-hover: #21c500;
+   --action-color-border-hover: #007e05;
+   --action-color-active: #000000;
+   --action-color-border-active: #007e05;
+   --action-color-text-active: #34ff0c;
+
+   --stop-color: #34ff0c;
+   --stop-color-border: #007e05;
+   --stop-color-shadow: #000000;
+   --stop-color-text: #000000;
+   --stop-color-hover: #21c500;
+   --stop-color-border-hover: #007e05;
+   --stop-color-active: #000000;
+   --stop-color-border-active: #007e05;
+   --stop-color-text-active: #21c500;
+
+   --skip-color: #34ff0c;
+   --skip-color-border: #007e05;
+   --skip-color-shadow: #000000;
+   --skip-color-text: #000000;
+   --skip-color-hover: #21c500;
+   --skip-color-border-hover: #007e05;
+   --skip-color-active: #000000;
+   --skip-color-border-active: #007e05;
+   --skip-color-text-active: #21c500;
+}
+
+
+
+.theme-blueberry {
+   --color-primary: #1f1d26;
+   --color-secondary: #262835;
+   --color-secondary-border: #353743;
+   --color-terciary: #333348;
+   --color-light: #31313f;
+   --color-accent: #1f1d26;
+   --color-grid: #353543;
+   --text-color: #d9e2ff;
+   --mint: #262835;
+   --mint-shadow: #67d872 ;
+   --red: #262835;
+   --red-shadow: #e94545 ;
+   --green: #262835;
+   --green-shadow: #19876d ;
+   --pink: #262835;
+   --pink-shadow: #fb9aa8 ;
+   --purple: #262835;
+   --purple-shadow: #4f45e9 ;
+   --cyan: #262835;
+   --cyan-shadow: #0dcaf0 ;
+   --light-green: #262835;
+   --light-green-shadow: #bde25c ;
+   --line-color: #f4dc9f;
+   --action-color: #4f45e9;
+   --action-color-border: #4531ad;
+   --action-color-shadow: #331776;
+   --action-color-text: #91a9ff;
+   --action-color-hover: #5a4ffa;
+   --action-color-border-hover: #4531ad;
+   --action-color-active: #6e65fc;
+   --action-color-border-active: #4531ad;
+   --action-color-text-active: #4f45e9;
+   --stop-color: #E94545;
+   --stop-color-border: #b73358;
+   --stop-color-shadow: #802252;
+   --stop-color-text: #ffb3b3;
+   --stop-color-hover: #fc5353;
+   --stop-color-border-hover: #b73358;
+   --stop-color-active: #f97575;
+   --stop-color-border-active: #b73358;
+   --stop-color-text-active: #E94545;
+   --skip-color: #4f45e9;
+   --skip-color-border: #4531ad;
+   --skip-color-shadow: #331776;
+   --skip-color-text: #91a9ff;
+   --skip-color-hover: #5a4ffa;
+   --skip-color-border-hover: #4531ad;
+   --skip-color-active: #6e65fc;
+   --skip-color-border-active: #4531ad;
+   --skip-color-text-active: #4f45e9;
+}

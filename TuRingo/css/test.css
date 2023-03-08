@@ -4,6 +4,7 @@ html
     margin: 0;
     padding: 0px;
     overflow: hidden;
+    transition: background-color 1000ms linear, color 1000ms linear, border 1000ms linear, ;
 
 }
 
