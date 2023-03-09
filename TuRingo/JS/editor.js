@@ -250,18 +250,16 @@ function new_instruction() {
     let write = element.querySelector("#write").value;
     pseudoCodigo.agregarLinea(origenId, read, write, mover, destino);
     //(q1, 1) -> (q2, 0, L)
-    let newInstruction =
-      "(" +
-      origenId +
-      "," +
-      read +
-      ") -> (" +
-      destino +
-      "," +
-      write +
-      "," +
-      mover +
-      ")\n";
+    let newInstruction = ""
+    if (read != write) {
+      newInstruction =+ read +
+      " → " +
+      write;
+    }
+    else {
+      newInstruction =+ read;
+    }
+    newInstruction += ", " + mover + "\n";
     instruction += newInstruction;
   }
   //si el nodo destino y el nodo origen son diferentes, hacemos una linea que los conecte
