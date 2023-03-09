@@ -15,11 +15,11 @@ document.getElementById("canvas").addEventListener("contextmenu", setPosition);
 
 
 let dropdowns = document.querySelectorAll('.dropdown-toggle')
-dropdowns.forEach((dd)=>{
-    dd.addEventListener('click', function (e) {
-        var el = this.nextElementSibling
-        el.style.display = el.style.display==='block'?'none':'block'
-    })
+dropdowns.forEach((dd) => {
+  dd.addEventListener('click', function (e) {
+    var el = this.nextElementSibling
+    el.style.display = el.style.display === 'block' ? 'none' : 'block'
+  })
 })
 
 //para sacar el menu de nuevo nodo
@@ -162,10 +162,13 @@ function generate_circle() {
   draggable.onMove = function (newPosition) {
     fixAllLines();
   };
+
+  playSound("assets/audio/pop2.ogg")
+
 }
 
 //definimos cual es el nodo inicial del codigo
-function set_start_node(){
+function set_start_node() {
   try {
     CURRENT_START_NODE.classList.remove("inicial")
   } catch (e) {
@@ -205,6 +208,7 @@ function remove_circle() {
   pseudoCodigo.eliminarNodo(CURRENT_CLICKED_NODE[0]);
   LINES = tempLines; //actualizamos la lista de lineas
 
+  playSound("assets/audio/pop3.ogg")
   debugCode();
 }
 
@@ -266,7 +270,7 @@ function new_instruction() {
   } else {
     addSelfLine(instruction);
   }
-
+  playSound("assets/audio/pop1.ogg")
   debugCode();
 }
 
@@ -274,7 +278,7 @@ function addSelfLine(instruction) {
   let origen = CURRENT_CLICKED_NODE[1]; //obtenemos el nodo irgen al que le dimos click
 
   origen.innerHTML +=
-    '<svg class="arrow" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><g stroke-width="16" stroke="#f4dc9f" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.8746197071393959,-0.4848096202463369,0.4848096202463369,0.8746197071393959,-450.77173095429305,61.07596524277645)"><path d="M177.3860626220703 327.4269676208496Q954.3860626220703 159.4269676208496 375.3860626220703 525.4269676208496 " marker-end="url(#SvgjsMarker3954)"></path></g><defs><marker markerWidth="4.5" markerHeight="4.5" refX="2.25" refY="2.25" viewBox="0 0 4.5 4.5" orient="auto" id="SvgjsMarker3954"><polygon points="0,4.5 0,0 4.5,2.25" fill="#f4dc9f"></polygon></marker></defs><text style="stroke-linejoin: round; paint-order: stroke; stroke-width: 2.11118px; stroke: #fef8e6; fill: rgb(100, 100, 118);" x="200px" y="100px">' + 
+    '<svg class="arrow" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><g stroke-width="16" stroke="#f4dc9f" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.8746197071393959,-0.4848096202463369,0.4848096202463369,0.8746197071393959,-450.77173095429305,61.07596524277645)"><path d="M177.3860626220703 327.4269676208496Q954.3860626220703 159.4269676208496 375.3860626220703 525.4269676208496 " marker-end="url(#SvgjsMarker3954)"></path></g><defs><marker markerWidth="4.5" markerHeight="4.5" refX="2.25" refY="2.25" viewBox="0 0 4.5 4.5" orient="auto" id="SvgjsMarker3954"><polygon points="0,4.5 0,0 4.5,2.25" fill="#f4dc9f"></polygon></marker></defs><text style="stroke-linejoin: round; paint-order: stroke; stroke-width: 2.11118px; stroke: #fef8e6; fill: rgb(100, 100, 118);" x="200px" y="100px">' +
     instruction +
     '</text></svg>';
 }
@@ -289,15 +293,16 @@ function generate_line(instruction) {
 
   fixPosition();
 
-  let line = new LeaderLine(origen, destino, {
-    // Creamos una nueva línea utilizando la librería LeaderLine
-    color: "#f4dc9f", // Establecemos el color de la línea
-    path: "magnet", // Establecemos el tipo de camino que seguirá la línea para conectar los nodos
-  });
+  let line = new LeaderLine(origen, destino,
+    {
+      // Creamos una nueva línea utilizando la librería LeaderLine
+      color: "var(--line-color)", // Establecemos el color de la línea
+      path: "magnet", // Establecemos el tipo de camino que seguirá la línea para conectar los nodos
+    });
 
   line.setOptions({
     // Establecemos las opciones de la línea, en este caso, añadimos una etiqueta en el centro de la línea con la instrucción
-    middleLabel: LeaderLine.captionLabel(instruction, { color: "#646476", outlineColor: "#fef8e6" }),
+    middleLabel: LeaderLine.captionLabel(instruction, { color: "var(--text-color)", outlineColor: "var(--color-secondary)" }),
   });
 
   let line_element = document.querySelector("body>.leader-line:last-of-type"); // Obtenemos el elemento HTML de la línea creada por LeaderLine
@@ -384,6 +389,12 @@ function decrease_zoom() {
 
   document.getElementById("canvas").style.zoom = StringZoom;
   document.getElementById("wrapper").style.zoom = StringZoom;
+}
+
+
+function playSound(audioName) {
+  let audio = new Audio(audioName);
+  audio.play();
 }
 
 
