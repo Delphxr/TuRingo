@@ -13,6 +13,15 @@ let CURRENT_START_NODE; //nodo inicio
 
 document.getElementById("canvas").addEventListener("contextmenu", setPosition);
 
+
+let dropdowns = document.querySelectorAll('.dropdown-toggle')
+dropdowns.forEach((dd) => {
+  dd.addEventListener('click', function (e) {
+    var el = this.nextElementSibling
+    el.style.display = el.style.display === 'block' ? 'none' : 'block'
+  })
+})
+
 //para sacar el menu de nuevo nodo
 clickable.addEventListener("contextmenu", (e) => {
   e.preventDefault();
@@ -44,18 +53,17 @@ menu_nodo.addEventListener("click", () => {
 
 //manejor del modal de nueva instruccion
 document.addEventListener("DOMContentLoaded", function () {
-  var insButton = document.getElementById("ins_button");
-
-  var destinoSelect = document.getElementById("destino");
+  let insButton = document.getElementById("ins_button");
+  let destinoSelect = document.getElementById("destino");
 
   insButton.addEventListener("click", function () {
     $("#modal_instruccion").modal("show");
 
     destinoSelect.innerHTML = "";
-    for (var i = 0; i < NODES.length; i++) {
-      option = document.createElement("option");
-      option.value = NODES[i][0];
-      option.text = pseudoCodigo.obtenerApodo(NODES[i][0]);
+    for (const element of NODES) {
+      let option = document.createElement("option");
+      option.value = element[0];
+      option.text = pseudoCodigo.obtenerApodo(element[0]);
       destinoSelect.add(option);
     }
   });
@@ -88,15 +96,13 @@ function generate_circle() {
   let colors = {};
 
   // Añade colores para los círculos en formato [fondo, borde]
-  colors[1] = ["#94d6ba", "#60ac8f"]; // mentA
-  colors[2] = ["#c6b0c8", "#ae8eb0"]; // Rojo
-  colors[3] = ["#66b3b3", "#008081"]; // Verde
-  colors[4] = ["#fec0c8", "#fb9aa8"]; // rosado
-  colors[5] = ["#8993e2", "#6269bd"]; // Morado
-  colors[6] = ["#80bcd1", "#4d899e"]; // Cyan
-  colors[7] = ["#d6dc8c", "#88b47e"]; // VERDE CLARO
-  //colors[8] = ["#ED2CD5", "#D614C2"]; // Morado
-  //colors[9] = ["#FF4A76", "#cc003d"]; // morado
+  colors[1] = ["var(--mint)", "var(--mint-shadow)"]; // mentA
+  colors[2] = ["var(--red)", "var(--red-shadow)"]; // Rojo
+  colors[3] = ["var(--green)", "var(--green-shadow)"]; // Verde
+  colors[4] = ["var(--pink)", "var(--pink-shadow)"]; // rosado
+  colors[5] = ["var(--purple)", "var(--purple-shadow)"]; // Morado
+  colors[6] = ["var(--cyan)", "var(--cyan-shadow)"]; // Cyan
+  colors[7] = ["var(--light-green)", "var(--light-green-shadow)"]; // VERDE CLARO
 
   // Elige un color al azar para el círculo
   let color = colors[getRandomInt(Object.keys(colors).length) + 1];
@@ -156,9 +162,13 @@ function generate_circle() {
   draggable.onMove = function (newPosition) {
     fixAllLines();
   };
+
+  playSound("assets/audio/pop2.ogg")
+
 }
 
-function set_start_node(){
+//definimos cual es el nodo inicial del codigo
+function set_start_node() {
   try {
     CURRENT_START_NODE.classList.remove("inicial")
   } catch (e) {
@@ -166,6 +176,10 @@ function set_start_node(){
   }
   CURRENT_CLICKED_NODE[1].classList.add("inicial");
   CURRENT_START_NODE = CURRENT_CLICKED_NODE[1];
+
+  pseudoCodigo.setInicial(CURRENT_CLICKED_NODE[0])
+
+  debugCode()
 }
 
 //eliminamos un nodo
@@ -194,6 +208,7 @@ function remove_circle() {
   pseudoCodigo.eliminarNodo(CURRENT_CLICKED_NODE[0]);
   LINES = tempLines; //actualizamos la lista de lineas
 
+  playSound("assets/audio/pop3.ogg")
   debugCode();
 }
 
@@ -210,6 +225,7 @@ var elmWrapper = document.getElementById("wrapper"),
   curTranslate = { x: 0, y: 0 },
   lines = [];
 
+//funcion de debug para imprimir el pseudocodigo
 function debugCode() {
   document.getElementById("debug").textContent =
     pseudoCodigo.obtenerCodigoJson();
@@ -217,7 +233,6 @@ function debugCode() {
 
 //generamos una nueva instrucción
 function new_instruction() {
-  let origen = CURRENT_CLICKED_NODE[1]; // Obtenemos el nodo de origen (al que le hicimos click derecho0)
   let origenId = CURRENT_CLICKED_NODE[0];
   e = document.getElementById("destino");
   let mover = document.getElementById("cinta").value; //L o R
@@ -228,25 +243,23 @@ function new_instruction() {
     instructionContainer.getElementsByClassName("instruccioninfo");
 
   let instruction = "";
-  for (var i = 0; i < listaInstrucciones.length; i++) {
-    console.log(listaInstrucciones[i]);
-    let read = listaInstrucciones[i].querySelector("#read").value;
+  for (const element of listaInstrucciones) {
+    console.log(element);
+    let read = element.querySelector("#read").value;
     console.log(read);
-    let write = listaInstrucciones[i].querySelector("#write").value;
+    let write = element.querySelector("#write").value;
     pseudoCodigo.agregarLinea(origenId, read, write, mover, destino);
     //(q1, 1) -> (q2, 0, L)
-    let newInstruction =
-      "(" +
-      origenId +
-      "," +
-      read +
-      ") -> (" +
-      destino +
-      "," +
-      write +
-      "," +
-      mover +
-      ")\n";
+    let newInstruction = ""
+    if (read != write) {
+      newInstruction =+ read +
+      " → " +
+      write;
+    }
+    else {
+      newInstruction =+ read;
+    }
+    newInstruction += ", " + mover + "\n";
     instruction += newInstruction;
   }
   //si el nodo destino y el nodo origen son diferentes, hacemos una linea que los conecte
@@ -255,7 +268,7 @@ function new_instruction() {
   } else {
     addSelfLine(instruction);
   }
-
+  playSound("assets/audio/pop1.ogg")
   debugCode();
 }
 
@@ -263,7 +276,7 @@ function addSelfLine(instruction) {
   let origen = CURRENT_CLICKED_NODE[1]; //obtenemos el nodo irgen al que le dimos click
 
   origen.innerHTML +=
-    '<svg class="arrow" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><g stroke-width="16" stroke="#f4dc9f" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.8746197071393959,-0.4848096202463369,0.4848096202463369,0.8746197071393959,-450.77173095429305,61.07596524277645)"><path d="M177.3860626220703 327.4269676208496Q954.3860626220703 159.4269676208496 375.3860626220703 525.4269676208496 " marker-end="url(#SvgjsMarker3954)"></path></g><defs><marker markerWidth="4.5" markerHeight="4.5" refX="2.25" refY="2.25" viewBox="0 0 4.5 4.5" orient="auto" id="SvgjsMarker3954"><polygon points="0,4.5 0,0 4.5,2.25" fill="#f4dc9f"></polygon></marker></defs><text style="stroke-linejoin: round; paint-order: stroke; stroke-width: 2.11118px; stroke: #fef8e6; fill: rgb(100, 100, 118);" x="200px" y="100px">' + 
+    '<svg class="arrow" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><g stroke-width="16" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.8746197071393959,-0.4848096202463369,0.4848096202463369,0.8746197071393959,-450.77173095429305,61.07596524277645)" style="stroke:var(--line-color) !important;"><path d="M177.3860626220703 327.4269676208496Q954.3860626220703 159.4269676208496 375.3860626220703 525.4269676208496 " marker-end="url(#SvgjsMarker3954)"></path></g><defs><marker markerWidth="4.5" markerHeight="4.5" refX="2.25" refY="2.25" viewBox="0 0 4.5 4.5" orient="auto" id="SvgjsMarker3954"><polygon points="0,4.5 0,0 4.5,2.25" fill="#ffffff" style="fill: var(--line-color) !important;"></polygon></marker></defs><text style="stroke-linejoin: round; paint-order: stroke; stroke-width: 2.11118px; stroke: var(--color-secondary); fill: var(--text-color)" x="200px" y="100px" >' +
     instruction +
     '</text></svg>';
 }
@@ -278,15 +291,16 @@ function generate_line(instruction) {
 
   fixPosition();
 
-  let line = new LeaderLine(origen, destino, {
-    // Creamos una nueva línea utilizando la librería LeaderLine
-    color: "#f4dc9f", // Establecemos el color de la línea
-    path: "magnet", // Establecemos el tipo de camino que seguirá la línea para conectar los nodos
-  });
+  let line = new LeaderLine(origen, destino,
+    {
+      // Creamos una nueva línea utilizando la librería LeaderLine
+      color: "var(--line-color)", // Establecemos el color de la línea
+      path: "magnet", // Establecemos el tipo de camino que seguirá la línea para conectar los nodos
+    });
 
   line.setOptions({
     // Establecemos las opciones de la línea, en este caso, añadimos una etiqueta en el centro de la línea con la instrucción
-    middleLabel: LeaderLine.captionLabel(instruction, { color: "#646476", outlineColor: "#fef8e6" }),
+    middleLabel: LeaderLine.captionLabel(instruction, { color: "var(--text-color)", outlineColor: "var(--color-secondary)" }),
   });
 
   let line_element = document.querySelector("body>.leader-line:last-of-type"); // Obtenemos el elemento HTML de la línea creada por LeaderLine
@@ -373,4 +387,17 @@ function decrease_zoom() {
 
   document.getElementById("canvas").style.zoom = StringZoom;
   document.getElementById("wrapper").style.zoom = StringZoom;
+}
+
+
+function playSound(audioName) {
+  let audio = new Audio(audioName);
+  audio.play();
+}
+
+
+// function to set a given theme/color-scheme
+function setTheme(themeName) {
+  localStorage.setItem('theme', themeName);
+  document.documentElement.className = themeName;
 }

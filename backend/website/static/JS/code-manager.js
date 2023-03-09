@@ -2,6 +2,7 @@ class PseudoCodigo {
   constructor() {
     this.codigo = {};
     this.apodos = {};
+    this.inicial = -1;
     this.id = 0;
   }
 
@@ -13,6 +14,10 @@ class PseudoCodigo {
 
   definirApodo(Id, apodo) {
     this.apodos[Id] = apodo;
+  }
+
+  setInicial(Id) {
+    this.inicial = Id;
   }
 
   //retorna el apodo si existe, o si no el ID
@@ -44,11 +49,13 @@ class PseudoCodigo {
   obtenerCodigoJson() {
     const codigo = {};
 
-    for (let origen in this.codigo) {
-      const instrucciones = this.codigo[origen];
-      const apodo = this.apodos[origen] || "";
+    for (let id in this.codigo) {
+      const instrucciones = this.codigo[id];
+      const apodo = this.apodos[id] || "";
+      const inicial = ((id == this.inicial) ? 'True' : 'False');
 
-      codigo[origen] = {
+      codigo[id] = {
+        inicial: inicial,
         apodo: apodo,
         instrucciones: instrucciones,
       };
@@ -62,8 +69,8 @@ class PseudoCodigo {
       const instrucciones = this.codigo[i];
       for (let j in instrucciones) {
         if (instrucciones[j]["estado_siguiente"] == Id) {
-            delete instrucciones[j];
-            instrucciones.splice(j,1);
+          delete instrucciones[j];
+          instrucciones.splice(j, 1);
         }
       }
     }
