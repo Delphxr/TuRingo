@@ -163,7 +163,7 @@ function generate_circle() {
     fixAllLines();
   };
 
-  playSound("assets/audio/pop2.ogg")
+  playSound("/static/assets/audio/pop2.ogg")
 
 }
 
@@ -208,7 +208,7 @@ function remove_circle() {
   pseudoCodigo.eliminarNodo(CURRENT_CLICKED_NODE[0]);
   LINES = tempLines; //actualizamos la lista de lineas
 
-  playSound("assets/audio/pop3.ogg")
+  playSound("/static/assets/audio/pop3.ogg")
   debugCode();
 }
 
@@ -268,7 +268,7 @@ function new_instruction() {
   } else {
     addSelfLine(instruction);
   }
-  playSound("assets/audio/pop1.ogg")
+  playSound("/static/assets/audio/pop1.ogg")
   debugCode();
 }
 
