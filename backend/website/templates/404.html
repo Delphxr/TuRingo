@@ -1,0 +1,142 @@
+<style>
+    body {
+        background: black;
+        overflow: hidden;
+    }
+
+    #code {
+        font-family: 'ubuntu mono', monospace;
+        background: black;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    .rain-drop {
+        position: absolute;
+        top: 0;
+        width: 1rem;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        white-space: nowrap;
+        background: linear-gradient(transparent 10%, #008F11 50%, #00FF41 96%, white 3rem);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        filter: drop-shadow(1px 1px 1px #008F11);
+        font-weight: bold;
+        opacity: 1;
+        transition: 1s;
+    }
+
+    .fade-out {
+        opacity: 0;
+    }
+
+    #message {
+        color: rgb(29, 138, 31);
+        font-family: "Lucida Console";
+
+        z-index: 10;
+        margin: auto;
+        width: 50%;
+
+        min-width: 250px;
+        max-width: 50%;
+        padding: 10px;
+        border: 1px solid rgb(13, 82, 14);
+        background-color: rgb(3, 3, 2);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    h1 {
+        font-size: 1.2em;
+        border-bottom: 1px solid #0D520E;
+        padding-bottom: .6em;
+        margin-bottom: .8em;
+    }
+
+    .container {
+        margin: 25px;
+        background-color: rgb(3, 3, 2);
+        z-index: 10;
+    }
+</style>
+
+<div class="container">
+    <div id="message">
+        <h1>A glitch has occured [code: 404]</h1>
+        <p>
+            <b>Boy</b>: Do not try and bend the website. That&#039;s impossible. Instead... only try to realize the
+            truth.
+            <br />
+            <b>Neo</b>: What truth?
+            <br />
+            <b>Boy</b>: There is no page.
+            <br />
+            <b>Neo</b>: There is no page?
+            <br />
+            <b>Boy</b>: Then you&#039;ll see, that it is not the website that bends, it is only yourself.
+        </p>
+    </div>
+
+</div>
+
+
+<div id="code"></div>
+
+
+<script>
+    // Read the last few lines to see how to copy all the javascript to the console to make this run on any page.
+
+
+
+
+    function makeItRain(timeDelayToStart = (10 * 1000), timeDelayReveal = (10 * 1000), message = 'Happy April Fools :)', clearDoc = false) {
+        const characters = `日ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺｿﾁﾄﾉﾌﾔﾖﾙﾚﾛﾝ0123456789Z"'=:.+<>|_ç`;
+        const length = 50;
+        function makeLine() {
+            const snippet = document.createElement('div');
+            snippet.className = 'rain-drop';
+            snippet.style.left = `${Math.round(Math.random() * 99)}%`;
+            document.querySelector('#code').appendChild(snippet);
+            let counter = 0;
+            var i = setInterval(() => {
+                snippet.innerHTML += characters[Math.round(Math.random() * (characters.length - 1))];
+                counter++;
+                if (counter > (length * .90)) { //starts the fade when 1 second is left
+                    snippet.classList.add('fade-out');
+                }
+                if (counter > length) {
+                    clearInterval(i);
+                    snippet.remove();
+                }
+            }, 100);
+        }
+
+        function startRain() {
+            makeLine();
+            makeLine();
+            makeLine();
+            makeLine();
+            makeLine();
+
+            setInterval(() => {
+                makeLine();
+            }, 250);
+
+            setTimeout(() => {
+                document.querySelector('#message').style.display = 'inherit';
+            }, timeDelayReveal);
+        }
+
+        if (clearDoc) setTimeout(() => { clearAndResetDoc(message) }, timeDelayToStart);
+        setTimeout(startRain, timeDelayToStart + 100);
+    }
+
+    makeItRain(0, 10 * 1000); // Delete this line to use all the code in the console
+
+// makeItRain(10 * 1000, 10 * 1000, 'Happy April Fools :)', true); // Uncomment and use this when pasting all the code in the console
+
+</script>
