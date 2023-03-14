@@ -10,6 +10,7 @@ const pseudoCodigo = new PseudoCodigo(); //IMPORTANTE con esto vamos generando e
 
 let CURRENT_CLICKED_NODE; //nodo al que le hicimos click izquierdo actualmente
 let CURRENT_START_NODE; //nodo inicio
+let CURRENT_EXECUTING_NODE; //nodo inicio
 
 document.getElementById("canvas").addEventListener("contextmenu", setPosition);
 
@@ -182,6 +183,22 @@ function set_start_node() {
   debugCode()
 }
 
+function setExecutingNode(id, clear = false) {
+  if (clear) {
+    CURRENT_EXECUTING_NODE.classList.remove("actual")
+    return;
+  }
+
+  let selectedNode = NODES.find((element) => element[0] === id)[1];
+  try {
+    CURRENT_EXECUTING_NODE.classList.remove("actual")
+  } catch (e) {
+    console.log("aun no hay nodo actual")
+  }
+  selectedNode.classList.add("actual");
+  CURRENT_EXECUTING_NODE = selectedNode;
+}
+
 //eliminamos un nodo
 function remove_circle() {
   let tempLines = []; //creamos una lista temporal para guardar las lineas que no se deben eliminar
@@ -252,12 +269,12 @@ function new_instruction() {
     //(q1, 1) -> (q2, 0, L)
     let newInstruction = ""
     if (read != write) {
-      newInstruction =+ read +
-      " → " +
-      write;
+      newInstruction = + read +
+        " → " +
+        write;
     }
     else {
-      newInstruction =+ read;
+      newInstruction = + read;
     }
     newInstruction += ", " + mover + "\n";
     instruction += newInstruction;
@@ -390,9 +407,11 @@ function decrease_zoom() {
 }
 
 
-function playSound(audioName) {
+function playSound(audioName, loop = false) {
   let audio = new Audio(audioName);
+  audio.loop = loop
   audio.play();
+  return audio;
 }
 
 
