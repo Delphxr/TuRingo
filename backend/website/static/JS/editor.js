@@ -180,7 +180,7 @@ function set_start_node() {
 
   pseudoCodigo.setInicial(CURRENT_CLICKED_NODE[0])
 
-  debugCode()
+
 }
 
 function setExecutingNode(id, clear = false) {
@@ -226,7 +226,7 @@ function remove_circle() {
   LINES = tempLines; //actualizamos la lista de lineas
 
   playSound("/static/assets/audio/pop3.ogg")
-  debugCode();
+
 }
 
 function rename_circle() {
@@ -234,7 +234,7 @@ function rename_circle() {
 
   CURRENT_CLICKED_NODE[1].firstElementChild.textContent = newNombre;
   pseudoCodigo.definirApodo(CURRENT_CLICKED_NODE[0], newNombre);
-  debugCode();
+
 }
 
 //aqui metemos las lineas
@@ -242,11 +242,7 @@ var elmWrapper = document.getElementById("wrapper"),
   curTranslate = { x: 0, y: 0 },
   lines = [];
 
-//funcion de debug para imprimir el pseudocodigo
-function debugCode() {
-  document.getElementById("debug").textContent =
-    pseudoCodigo.obtenerCodigoJson();
-}
+
 
 //generamos una nueva instrucción
 function new_instruction() {
@@ -261,9 +257,9 @@ function new_instruction() {
 
   let instruction = "";
   for (const element of listaInstrucciones) {
-    console.log(element);
+    
     let read = element.querySelector("#read").value;
-    console.log(read);
+    
     let write = element.querySelector("#write").value;
     pseudoCodigo.agregarLinea(origenId, read, write, mover, destino);
     //(q1, 1) -> (q2, 0, L)
@@ -286,7 +282,7 @@ function new_instruction() {
     addSelfLine(instruction);
   }
   playSound("/static/assets/audio/pop1.ogg")
-  debugCode();
+
 }
 
 function addSelfLine(instruction) {

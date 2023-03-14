@@ -1,73 +1,78 @@
 const tape = document.querySelector(".tape");
 const tapeContainer = document.querySelector(".tape-container");
-const moveLeftBtn = document.querySelector("#moveLeftBtn");
-const moveRightBtn = document.querySelector("#moveRightBtn");
-const inputValue = document.querySelector("#inputValue");
-const updateValueBtn = document.querySelector("#updateValueBtn");
+const playBtn = document.getElementById("play-button")
+const stopBtn = document.getElementById("stop-button")
+const backBtn = document.getElementById("back-button")
+const nextBtn = document.getElementById("next-button")
+
 
 let activeIndex = 2; // Índice del elemento activo
+let current_instruction = 0;
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+let instrucciones = {
+  "indexInicial": 7,
+  "cintaInicial": "00000010111010000",
+  "instrucciones": [
+    {
+      "movimiento": "R",
+      "valorNuevo": "0",
+      "nodo": "q0"
+    },
+    {
+      "movimiento": "L",
+      "valorNuevo": "1",
+      "nodo": "q0"
+    },
+    {
+      "movimiento": "R",
+      "valorNuevo": "1",
+      "nodo": "q1"
+    },
+    {
+      "movimiento": "L",
+      "valorNuevo": "0",
+      "nodo": "q1"
+    },
+    {
+      "movimiento": "L",
+      "valorNuevo": "1",
+      "nodo": "q2"
+    },
+    {
+      "movimiento": "R",
+      "valorNuevo": "0",
+      "nodo": "q3"
+    },
+    {
+      "movimiento": "R",
+      "valorNuevo": "1",
+      "nodo": "q4"
+    },
+    {
+      "movimiento": "R",
+      "valorNuevo": "0",
+      "nodo": "q3"
+    },
+    {
+      "movimiento": "L",
+      "valorNuevo": "1",
+      "nodo": "q5"
+    },
+    {
+      "movimiento": "L",
+      "valorNuevo": "0",
+      "nodo": "q6"
+    }
+  ]
+}
+
+
+
 async function executeCode() {
-  let instrucciones = {
-    "indexInicial": 7,
-    "cintaInicial": "00000010111010000",
-    "instrucciones": [
-      {
-        "movimiento": "R",
-        "valorNuevo": "0",
-        "nodo": "q0"
-      },
-      {
-        "movimiento": "L",
-        "valorNuevo": "1",
-        "nodo": "q0"
-      },
-      {
-        "movimiento": "R",
-        "valorNuevo": "1",
-        "nodo": "q1"
-      },
-      {
-        "movimiento": "L",
-        "valorNuevo": "0",
-        "nodo": "q1"
-      },
-      {
-        "movimiento": "L",
-        "valorNuevo": "1",
-        "nodo": "q2"
-      },
-      {
-        "movimiento": "R",
-        "valorNuevo": "0",
-        "nodo": "q3"
-      },
-      { 
-        "movimiento": "R",
-        "valorNuevo": "1",
-        "nodo": "q4"
-      },
-      {
-        "movimiento": "R",
-        "valorNuevo": "0",
-        "nodo": "q3"
-      },
-      {
-        "movimiento": "L",
-        "valorNuevo": "1",
-        "nodo": "q5"
-      },
-      {
-        "movimiento": "L",
-        "valorNuevo": "0",
-        "nodo": "q6"
-      }
-    ]
-  }
 
   // Obtenemos la cinta inicial y la convertimos en un array para poder modificarla
   let cinta = instrucciones.cintaInicial.split('')
@@ -107,7 +112,7 @@ async function executeCode() {
 
     }
     await sleep(500);
-    
+
     if (tape.children[activeIndex].textContent != instruccion.valorNuevo) {
       playSound("/static/assets/audio/key.ogg")
     }
@@ -122,6 +127,61 @@ async function executeCode() {
 
 }
 
+async function nextInstruction() {
+  if (current_instruction == instrucciones.instrucciones.length -1) {
+    return;
+  }
+  current_instruction++;
+
+  let insActual = instrucciones.instrucciones[current_instruction]
+
+  setExecutingNode(insActual.nodo)
+
+  if (insActual.movimiento === "L") {
+    moveTapeLeft();
+
+  } else if (insActual.movimiento === "R") {
+    moveTapeRight();
+
+  }
+  await sleep(250);
+
+  if (tape.children[activeIndex].textContent != insActual.valorNuevo) {
+    playSound("/static/assets/audio/key.ogg")
+  }
+  updateActiveValue(insActual.valorNuevo);
+}
+
+async function backInstruction() {
+  if (current_instruction == 0) {
+    return;
+  }
+  current_instruction--;
+
+  let insActual = instrucciones.instrucciones[current_instruction]
+
+  setExecutingNode(insActual.nodo)
+
+  if (insActual.movimiento === "L") {
+    moveTapeLeft();
+
+  } else if (insActual.movimiento === "R") {
+    moveTapeRight();
+
+  }
+  await sleep(250);
+
+  if (tape.children[activeIndex].textContent != insActual.valorNuevo) {
+    playSound("/static/assets/audio/key.ogg")
+  }
+  updateActiveValue(insActual.valorNuevo);
+}
+
+
+function stopExecution(){
+  setExecutingNode(null, true)
+  current_instruction = 0;
+}
 
 
 // Actualizar la posición de la cinta
@@ -162,7 +222,10 @@ function updateActiveValue(value) {
 
 
 // Eventos de botón
-moveLeftBtn.addEventListener("click", executeCode);
+playBtn.addEventListener("click", executeCode);
+nextBtn.addEventListener("click", nextInstruction);
+backBtn.addEventListener("click", backInstruction);
+stopBtn.addEventListener("click", stopExecution);
 
 // Actualizar la posición de la cinta en la carga inicial de la página
 updateTapePosition();
