@@ -90,7 +90,6 @@ html {
     background-color: var(--color-terciary) !important;
     color: var(--text-color) !important;
     border: 3px solid var(--color-secondary-border) !important;
-    border-radius: 25px !important;
 }
 
 
