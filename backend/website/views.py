@@ -9,3 +9,11 @@ def home():
 @views.route('/editor', methods=['GET','POST'])
 def editor():
     return render_template("editor.html")
+
+@views.route('/estudiante', methods=['GET','POST'])
+def estudiantes():
+    return render_template("estudiante.html")
+
+@views.route('/administrador', methods=['GET','POST'])
+def administrador():
+    return render_template("administrador.html")
