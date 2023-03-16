@@ -1,10 +1,9 @@
-html
-{
-    height: 100%;
-    margin: 0;
-    padding: 0px;
-    overflow: hidden;
-    transition: background-color 1000ms linear, color 1000ms linear, border 1000ms linear, ;
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0px;
+  overflow: hidden;
+  transition: background-color 1000ms linear, color 1000ms linear, border 1000ms linear;
 
 }
 
@@ -18,7 +17,7 @@ body {
 
 .navbar {
   background-color: var(--color-accent) !important;
-  
+
 }
 
 .modal-content {
@@ -49,24 +48,23 @@ body {
 }
 
 .dropdown-item {
-  color: var(--text-color) !important; 
+  color: var(--text-color) !important;
   background-color: var(--color-light) !important;
 }
 
-.dropdown-item:hover{
+.dropdown-item:hover {
   background-color: var(--color-grid) !important;
 }
 
 .nav-link {
-  color: var(--text-color) !important; 
+  color: var(--text-color) !important;
 }
 
 .nav-link:hover {
-  color:  var(--color-light) !important; 
+  color: var(--color-light) !important;
 }
 
-#canvas
-{  
+#canvas {
   animation-fill-mode: forwards;
   background-size: 40px 40px;
   background-image:
@@ -76,24 +74,23 @@ body {
 }
 
 
-.outer-scroll{
-  
+.outer-scroll {
+
   max-height: 80%;
   overflow: scroll;
   position: relative;
 }
 
-.inner-scroll{
+.inner-scroll {
   width: 3000px;
   height: 2000px;
   position: relative;
 }
 
-.round-box
-{
+.round-box {
   border: 3px solid;
   border-color: var(--color-secondary-border);
-  background-color: var(--color-secondary); 
+  background-color: var(--color-secondary);
   border-radius: 25px;
   color: var(--text-color);
 
@@ -111,12 +108,12 @@ body {
   font-size: 24px;
   color: var(--text-color);
   text-align: center;
-  word-wrap:none;
+  word-wrap: none;
   position: absolute;
-  align-items:center;
-  justify-content:center;
+  align-items: center;
+  justify-content: center;
   line-height: 60px;
-  
+
 }
 
 .inicial {
@@ -127,7 +124,7 @@ body {
 .inicial .dot-text {
   --shadow: #89f358 !important;
   font-weight: 600;
-  color: #098b85; 
+  color: #098b85;
 }
 
 .actual {
@@ -138,7 +135,7 @@ body {
 .actual .dot-text {
   --shadow: #f3e458 !important;
   font-weight: 600;
-  color: #c47011; 
+  color: #c47011;
 }
 
 .dot-text {
@@ -149,15 +146,15 @@ body {
   z-index: 9999;
 }
 
-.dot:hover{
+.dot:hover {
   box-shadow: inset 0 0 100px #ffffff3d !important;
 }
 
 .dot:active {
-  box-shadow : 0 2px 10px var(--dot-shadow-color) !important;
+  box-shadow: 0 2px 10px var(--dot-shadow-color) !important;
 }
 
-.arrow{
+.arrow {
   position: absolute;
   left: 37px;
   top: -62px;
@@ -166,7 +163,7 @@ body {
   pointer-events: none;
   font-size: 64px;
   overflow: visible;
-  
+
 }
 
 
@@ -178,13 +175,13 @@ body {
   border-radius: 50%;
   border: 3px solid;
   border-color: var(--skip-color-border);
-  background-color: var(--skip-color); 
+  background-color: var(--skip-color);
   z-index: 99;
   color: var(--skip-color-shadow);
   font-size: 28px;
   text-align: center;
-  align-items:center;
-  justify-content:center;
+  align-items: center;
+  justify-content: center;
   line-height: 40px;
   font-weight: 900;
 }
@@ -205,7 +202,7 @@ body {
 }
 
 .zoom-group {
-  position:absolute;
+  position: absolute;
   right: 60px;
   bottom: 120px;
 }
@@ -277,29 +274,26 @@ body {
 
 
 
-::-webkit-scrollbar-track
-{
-	width: 30px;
+::-webkit-scrollbar-track {
+  width: 30px;
   height: 30px;
   margin: 20px;
-	border-radius: 25px;
-	background-color: #ffffff00;
+  border-radius: 25px;
+  background-color: #ffffff00;
 }
 
-::-webkit-scrollbar
-{
+::-webkit-scrollbar {
 
-	width: 12px;
+  width: 12px;
   height: 12px;
 
-	background-color: #ffffff00;
+  background-color: #ffffff00;
 }
 
-::-webkit-scrollbar-thumb
-{
-	border-radius: 25px;
-	
-	background-color: var(--color-terciary);
+::-webkit-scrollbar-thumb {
+  border-radius: 25px;
+
+  background-color: var(--color-terciary);
   border: 3px solid var(--color-secondary);
 }
 

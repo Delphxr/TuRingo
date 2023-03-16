@@ -4,7 +4,7 @@ views = Blueprint('views', __name__)
 
 @views.route('/',methods=['GET','POST'])
 def home():
-    return "TuRingo home"
+    return render_template("homepage.html")
 
 @views.route('/editor', methods=['GET','POST'])
 def editor():

@@ -24,111 +24,141 @@
 
     <link rel="stylesheet" href="{{ url_for('static',filename='css/theme-definer.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/test.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/menu.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/cinta.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/homepage.css') }}" />
+    
 
 
 </head>
-<!--ff404a   4043ff   -->
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#" style="padding: 0; padding-left: 1%;">
-            <svg height="40" viewBox="0 0 478 144" fill="blue" xmlns="http://www.w3.org/2000/svg"
-                style="fill: var(--text-color) !important; stroke: var(--text-color) !important;">
-                <path
-                    d="M56.352 38.32V53.296H38.304V106H19.488V53.296H1.632V38.32H56.352ZM83.1855 38.32V77.584C83.1855 81.232 84.0175 84.048 85.6815 86.032C87.4095 88.016 90.0015 89.008 93.4575 89.008C96.9135 89.008 99.5055 88.016 101.234 86.032C103.026 83.984 103.922 81.168 103.922 77.584V38.32H122.738V77.584C122.738 83.792 121.426 89.104 118.802 93.52C116.177 97.872 112.594 101.168 108.05 103.408C103.569 105.584 98.5775 106.672 93.0735 106.672C87.5695 106.672 82.6415 105.584 78.2895 103.408C74.0015 101.168 70.6095 97.872 68.1135 93.52C65.6815 89.168 64.4655 83.856 64.4655 77.584V38.32H83.1855ZM168.809 106L155.369 81.04H153.353V106H134.537V38.32H164.201C169.641 38.32 174.249 39.28 178.025 41.2C181.801 43.056 184.649 45.648 186.569 48.976C188.489 52.24 189.449 55.92 189.449 60.016C189.449 64.624 188.169 68.688 185.609 72.208C183.113 75.664 179.433 78.128 174.569 79.6L189.833 106H168.809ZM153.353 68.176H162.665C165.225 68.176 167.145 67.568 168.425 66.352C169.705 65.136 170.345 63.376 170.345 61.072C170.345 58.896 169.673 57.2 168.329 55.984C167.049 54.704 165.161 54.064 162.665 54.064H153.353V68.176ZM218.262 38.32V106H199.446V38.32H218.262ZM293.105 106H274.289L249.233 68.176V106H230.417V38.32H249.233L274.289 76.624V38.32H293.105V106ZM348.464 60.592C347.376 58.8 345.872 57.424 343.952 56.464C342.096 55.504 339.888 55.024 337.328 55.024C332.592 55.024 328.848 56.56 326.096 59.632C323.408 62.704 322.064 66.832 322.064 72.016C322.064 77.84 323.504 82.288 326.384 85.36C329.328 88.368 333.584 89.872 339.152 89.872C345.744 89.872 350.448 86.896 353.264 80.944H334.352V67.408H369.488V85.648C368.016 89.232 365.84 92.592 362.96 95.728C360.144 98.864 356.56 101.456 352.208 103.504C347.856 105.488 342.896 106.48 337.328 106.48C330.544 106.48 324.528 105.04 319.28 102.16C314.096 99.216 310.064 95.152 307.184 89.968C304.368 84.72 302.96 78.736 302.96 72.016C302.96 65.36 304.368 59.44 307.184 54.256C310.064 49.008 314.096 44.944 319.28 42.064C324.464 39.12 330.448 37.648 337.232 37.648C345.744 37.648 352.784 39.696 358.352 43.792C363.92 47.888 367.376 53.488 368.72 60.592H348.464Z"
-                    fill="black" style="fill: inherit !important; stroke: inherit !important;" />
-                <path
-                    d="M459.186 54L455 58.23L468.598 72L455 85.77L459.186 90L475.608 73.4068C476.379 72.6275 476.379 71.3725 475.608 70.5932L459.186 54Z"
-                    fill="black" stroke="black" stroke-width="3"
-                    style="fill: inherit !important; stroke: inherit !important;" />
-                <path
-                    d="M408.6 48.472V38C391.6 39.7 378 54.354 378 72C378 89.646 391.6 104.3 408.6 106V95.528C398.4 93.896 388.2 83.968 388.2 72C388.2 60.032 398.4 50.104 408.6 48.472ZM435.698 68.6H446C444.402 51.6 432.4 39.598 415.4 38V48.472C425.6 49.934 434.236 58.4 435.698 68.6ZM415.4 95.528V106C432.4 104.402 444.402 92.4 446 75.4H435.698C434.236 85.6 425.6 94.066 415.4 95.528Z"
-                    fill="black" style="fill: inherit !important; stroke: inherit !important;" />
-                <path
-                    d="M412.5 62C406.693 62 402 66.6935 402 72.5C402 78.3065 406.693 83 412.5 83C418.306 83 423 78.3065 423 72.5C423 66.6935 418.306 62 412.5 62Z"
-                    fill="black" style="fill: inherit !important; stroke: inherit !important;" />
-            </svg>
-        </a>
-
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex justify-content-end">
 
 
-            <li class="nav-item dropdown d-flex">
-                <div class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
-                    data-bs-target="#navbar-settings" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                        class="bi bi-gear-fill" viewBox="0 0 16 16">
-                        <path
-                            d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
-                    </svg>
-                </div>
-                <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
-                    <li><a class="dropdown-item" onclick="setTheme('theme-light')">Light</a></li>
-                    <li><a class="dropdown-item" onclick="setTheme('theme-pastel')">Pastel</a></li>
-                    <li><a class="dropdown-item" onclick="setTheme('theme-lemonpie')">Lemon Pie</a></li>
-                    <li><a class="dropdown-item" onclick="setTheme('theme-dark')">Dark</a></li>
-                    <li><a class="dropdown-item" onclick="setTheme('theme-matrix')">Matrix</a></li>
-                    <li><a class="dropdown-item" onclick="setTheme('theme-blueberry')">Blueberry</a></li>
-                </ul>
-            </li>
-
-            <li class="nav-item dropdown d-flex">
-                <div class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
-                    data-bs-target="#navbar-settings" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                        class="bi bi-person-circle" viewBox="0 0 16 16">
-                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                        <path fill-rule="evenodd"
-                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                    </svg>
-                </div>
-                <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
-                    <li><a class="dropdown-item" href="#">Perfil</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
-                </ul>
-            </li>
-        </ul>
-
-    </div>
-</nav>
 <body>
-	<div class="row round-box p-3" style="height: 70%; margin-top: 2%; width: 50%; margin-left: auto; margin-right: auto; background-color: #000000; border: 1px solid white;">
-        <h1 style="text-align: center;">Perfil estudiante</h1>   
-        <h2> Nombre <span style="font-size: 20px;"> info del estudiante</span></h2>
-        
-        <h2> Carnet <span style="font-size: 20px;"> 2023000000</span></h2>
-        
-        <h2> Correo <span style="font-size: 20px;"> estudiante@estudiantec.cr</span></h2>
+    <!--ff404a   4043ff   -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{url_for('views.home')}}" style="padding: 0; padding-left: 1%;">
+                <svg height="40" viewBox="0 0 478 144" fill="blue" xmlns="http://www.w3.org/2000/svg"
+                    style="fill: var(--text-color) !important; stroke: var(--text-color) !important;">
+                    <path
+                        d="M56.352 38.32V53.296H38.304V106H19.488V53.296H1.632V38.32H56.352ZM83.1855 38.32V77.584C83.1855 81.232 84.0175 84.048 85.6815 86.032C87.4095 88.016 90.0015 89.008 93.4575 89.008C96.9135 89.008 99.5055 88.016 101.234 86.032C103.026 83.984 103.922 81.168 103.922 77.584V38.32H122.738V77.584C122.738 83.792 121.426 89.104 118.802 93.52C116.177 97.872 112.594 101.168 108.05 103.408C103.569 105.584 98.5775 106.672 93.0735 106.672C87.5695 106.672 82.6415 105.584 78.2895 103.408C74.0015 101.168 70.6095 97.872 68.1135 93.52C65.6815 89.168 64.4655 83.856 64.4655 77.584V38.32H83.1855ZM168.809 106L155.369 81.04H153.353V106H134.537V38.32H164.201C169.641 38.32 174.249 39.28 178.025 41.2C181.801 43.056 184.649 45.648 186.569 48.976C188.489 52.24 189.449 55.92 189.449 60.016C189.449 64.624 188.169 68.688 185.609 72.208C183.113 75.664 179.433 78.128 174.569 79.6L189.833 106H168.809ZM153.353 68.176H162.665C165.225 68.176 167.145 67.568 168.425 66.352C169.705 65.136 170.345 63.376 170.345 61.072C170.345 58.896 169.673 57.2 168.329 55.984C167.049 54.704 165.161 54.064 162.665 54.064H153.353V68.176ZM218.262 38.32V106H199.446V38.32H218.262ZM293.105 106H274.289L249.233 68.176V106H230.417V38.32H249.233L274.289 76.624V38.32H293.105V106ZM348.464 60.592C347.376 58.8 345.872 57.424 343.952 56.464C342.096 55.504 339.888 55.024 337.328 55.024C332.592 55.024 328.848 56.56 326.096 59.632C323.408 62.704 322.064 66.832 322.064 72.016C322.064 77.84 323.504 82.288 326.384 85.36C329.328 88.368 333.584 89.872 339.152 89.872C345.744 89.872 350.448 86.896 353.264 80.944H334.352V67.408H369.488V85.648C368.016 89.232 365.84 92.592 362.96 95.728C360.144 98.864 356.56 101.456 352.208 103.504C347.856 105.488 342.896 106.48 337.328 106.48C330.544 106.48 324.528 105.04 319.28 102.16C314.096 99.216 310.064 95.152 307.184 89.968C304.368 84.72 302.96 78.736 302.96 72.016C302.96 65.36 304.368 59.44 307.184 54.256C310.064 49.008 314.096 44.944 319.28 42.064C324.464 39.12 330.448 37.648 337.232 37.648C345.744 37.648 352.784 39.696 358.352 43.792C363.92 47.888 367.376 53.488 368.72 60.592H348.464Z"
+                        fill="black" style="fill: inherit !important; stroke: inherit !important;" />
+                    <path
+                        d="M459.186 54L455 58.23L468.598 72L455 85.77L459.186 90L475.608 73.4068C476.379 72.6275 476.379 71.3725 475.608 70.5932L459.186 54Z"
+                        fill="black" stroke="black" stroke-width="3"
+                        style="fill: inherit !important; stroke: inherit !important;" />
+                    <path
+                        d="M408.6 48.472V38C391.6 39.7 378 54.354 378 72C378 89.646 391.6 104.3 408.6 106V95.528C398.4 93.896 388.2 83.968 388.2 72C388.2 60.032 398.4 50.104 408.6 48.472ZM435.698 68.6H446C444.402 51.6 432.4 39.598 415.4 38V48.472C425.6 49.934 434.236 58.4 435.698 68.6ZM415.4 95.528V106C432.4 104.402 444.402 92.4 446 75.4H435.698C434.236 85.6 425.6 94.066 415.4 95.528Z"
+                        fill="black" style="fill: inherit !important; stroke: inherit !important;" />
+                    <path
+                        d="M412.5 62C406.693 62 402 66.6935 402 72.5C402 78.3065 406.693 83 412.5 83C418.306 83 423 78.3065 423 72.5C423 66.6935 418.306 62 412.5 62Z"
+                        fill="black" style="fill: inherit !important; stroke: inherit !important;" />
+                </svg>
+            </a>
 
-        <table class = "table">
-            <table style="background-color:#000000;">
-  
-            <thead>
-                <tr>
-                    
-                    <th scope = "col" style="text-align: center;"> Nombre de tarea</th>
-                    <th scope = "col" style="text-align: center;"> Nota</th>
-                    <th scope = "col" style="text-align: center;"> Ver</th>
-                </tr>
-            </thead>
-            <tbody>
-                <td style="text-align: center;">
-                    palindromo
-                </td>
-                <td style="text-align: center;">
-                    90
-                </td>
-                <td style="text-align: center;">
-                    <button onclick="window.history.back();" style="display: block; margin: 0 auto;">Ver</button>
-                </td>
-                
-            </tbody>
-        </table>
-        <button onclick="window.history.back();" style="display: block; margin: 0 auto;">Regresar</button>
-    </div>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex justify-content-end">
+
+
+                <li class="nav-item dropdown d-flex">
+                    <div class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
+                        data-bs-target="#navbar-settings" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-gear-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                        </svg>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
+                        <li><a class="dropdown-item" onclick="setTheme('theme-light')">Light</a></li>
+                        <li><a class="dropdown-item" onclick="setTheme('theme-pastel')">Pastel</a></li>
+                        <li><a class="dropdown-item" onclick="setTheme('theme-lemonpie')">Lemon Pie</a></li>
+                        <li><a class="dropdown-item" onclick="setTheme('theme-dark')">Dark</a></li>
+                        <li><a class="dropdown-item" onclick="setTheme('theme-matrix')">Matrix</a></li>
+                        <li><a class="dropdown-item" onclick="setTheme('theme-blueberry')">Blueberry</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown d-flex">
+                    <div class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
+                        data-bs-target="#navbar-settings" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                            <path fill-rule="evenodd"
+                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                        </svg>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
+                        <li><a class="dropdown-item" href="{{url_for('views.estudiantes')}}">Perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Cerrar Sesión</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+        <!-- Contenedor principal -->
+        <div class="container my-1">
+            <h2 style="color: var(--text-color)">Perfil de Estudiante</h2>
+            <div class="row">
+                <!-- Columna de la carta -->
+                <div class="col-3 rounded-3">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Nombre Estudiante</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><i class="bi bi-envelope"></i> estudiante@estudiantec.cr</li>
+                                <li class="list-group-item"><i class="bi bi-telephone"></i> 2020044568</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
     
+                <!-- Columna de la tabla -->
+                <div class="col-12 col-md-8">
+                    <div class="table-responsive rounded">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre Tarea</th>
+                                    <th scope="col">Nota</th>
+                                    <th scope="col">Fecha Entrega</th>
+                                    <th scope="col">Detalles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Name 1</td>
+                                    <td>Note 1</td>
+                                    <td>Date 1</td>
+                                    <td><button type="button" class="btn btn-primary">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Name 2</td>
+                                    <td>Note 2</td>
+                                    <td>Date 2</td>
+                                    <td><button type="button" class="btn btn-primary">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Name 3</td>
+                                    <td>Note 3</td>
+                                    <td>Date 3</td>
+                                    <td><button type="button" class="btn btn-primary">Ver</button></td>
+                                </tr>
+                               
+                           </tbody>
+                     </table>
+                 </div>
+            </div>
+       </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="{{ url_for('static',filename='JS/utils.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
 </body>

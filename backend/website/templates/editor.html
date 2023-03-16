@@ -32,7 +32,7 @@
 <!--ff404a   4043ff   -->
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#" style="padding: 0; padding-left: 1%;">
+        <a class="navbar-brand" href="{{url_for('views.home')}}" style="padding: 0; padding-left: 1%;">
             <svg height="40" viewBox="0 0 478 144" fill="blue" xmlns="http://www.w3.org/2000/svg"
                 style="fill: var(--text-color) !important; stroke: var(--text-color) !important;">
                 <path
@@ -84,7 +84,7 @@
                     </svg>
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
-                    <li><a class="dropdown-item" href="#">Perfil</a></li>
+                    <li><a class="dropdown-item" href="{{url_for('views.estudiantes')}}">Perfil</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
@@ -95,7 +95,6 @@
 
     </div>
 </nav>
-
 
 
 <body>
@@ -336,6 +335,7 @@
 <script src="{{ url_for('static',filename='JS/leader-line.min.js') }}"></script>
 <script src="{{ url_for('static',filename='JS/cinta.js') }}"></script>
 <script src="{{ url_for('static',filename='JS/code-manager.js') }}"></script>
+<script src="{{ url_for('static',filename='JS/utils.js') }}"></script>
 <script src="{{ url_for('static',filename='JS/editor.js') }}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
