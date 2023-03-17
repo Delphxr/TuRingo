@@ -20,17 +20,12 @@ jobs:
   pull-changes:
     runs-on: ubuntu-latest
     steps:
+      - name: Codigo checkout
       - uses: actions/checkout@v2
       - name: Connect to VM and pull changes
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ env.SSH_HOST }}
-          username: ${{ env.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ env.SSH_PORT }}
-          script: |
-            cd TuRingo
-            git pull
+        run: |
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@140.84.172.6 -p 5000 "cd TuRingo && git pull"
+        
   build:
 
     runs-on: ubuntu-latest
