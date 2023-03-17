@@ -74,9 +74,10 @@ let instrucciones = {
 
 async function executeCode() {
 
-  if (EXECUTING) {
-    return
+  if (EXECUTING == true) {
+    return;
   }
+  
   EXECUTING = true;
 
   // Obtenemos la cinta inicial y la convertimos en un array para poder modificarla
