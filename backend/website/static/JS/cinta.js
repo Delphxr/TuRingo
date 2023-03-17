@@ -101,7 +101,12 @@ async function executeCode() {
   for (const element of instrucciones.instrucciones) {
     let instruccion = element
 
-    setExecutingNode(instruccion.nodo)
+    try {
+      setExecutingNode(instruccion.nodo)
+    } catch {
+      console.log("El nodo que desea seleccionar no existe")
+    }
+    
 
     // Modificamos la cinta en función de la instrucción
     if (instruccion.movimiento === "L") {
@@ -123,8 +128,13 @@ async function executeCode() {
   }
   audio.pause()
   audio.remove()
-  setExecutingNode(null, true)
 
+  try {
+    setExecutingNode(null, true)
+  } catch {
+    console.log("El nodo que desea seleccionar no existe")
+  }
+  
 }
 
 async function nextInstruction() {
@@ -135,7 +145,13 @@ async function nextInstruction() {
 
   let insActual = instrucciones.instrucciones[current_instruction]
 
-  setExecutingNode(insActual.nodo)
+
+  try {
+    setExecutingNode(insActual.nodo)
+  } catch {
+    console.log("El nodo que desea seleccionar no existe")
+  }
+  
 
   if (insActual.movimiento === "L") {
     moveTapeLeft();
@@ -160,7 +176,11 @@ async function backInstruction() {
 
   let insActual = instrucciones.instrucciones[current_instruction]
 
-  setExecutingNode(insActual.nodo)
+  try {
+    setExecutingNode(insActual.nodo)
+  } catch {
+    console.log("El nodo que desea seleccionar no existe")
+  }
 
   if (insActual.movimiento === "L") {
     moveTapeLeft();
@@ -179,7 +199,11 @@ async function backInstruction() {
 
 
 function stopExecution(){
-  setExecutingNode(null, true)
+  try {
+    setExecutingNode(null, true)
+  } catch {
+    console.log("El nodo que desea seleccionar no existe")
+  }
   current_instruction = 0;
 }
 
