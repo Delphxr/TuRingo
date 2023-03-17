@@ -22,7 +22,7 @@ jobs:
         with:
           host: 140.84.172.6
           username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 5000
           script: |
             cd TuRingo
