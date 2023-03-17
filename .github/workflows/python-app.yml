@@ -15,14 +15,21 @@ permissions:
 jobs:
 
   pull-changes:
-  
     runs-on: ubuntu-latest
-    
     steps:
-      - uses: actions/checkout@v2
-      - name: Connect to VM and pull changes
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup SSH
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@140.84.172.6
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -p 5000 140.84.172.6 >> ~/.ssh/known_hosts
+      
+      - name: Pull Changes
+        run: |
+          ssh -p 5000 ubuntu@140.84.172.6 "cd /home/ubuntu/TuRingo/backend && git pull"
         
   build:
 
