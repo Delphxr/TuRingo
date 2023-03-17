@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Connect to VM and pull changes
         run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@140.84.172.6 -p 5000 "cd TuRingo && git pull"
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ubuntu@140.84.172.6
         
   build:
 
