@@ -13,6 +13,20 @@ permissions:
   contents: read
 
 jobs:
+  pull-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Connect to VM and pull changes
+        uses: appleboy/ssh-action@master
+        with:
+          host: 140.84.172.6
+          username: ubuntu
+          key: ${{ secrets.SSH_KEY }}
+          port: 5000
+          script: |
+            cd TuRingo
+            git pull
   build:
 
     runs-on: ubuntu-latest
