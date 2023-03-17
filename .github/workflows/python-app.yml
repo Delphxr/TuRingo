@@ -3,10 +3,6 @@
 
 name: Python application
 
-env:
-  SSH_PORT: 5000
-  SSH_HOST: 140.84.172.6
-  SSH_USERNAME: "ubuntu"
 on:
   push:
     branches: [ "main" ]
@@ -17,10 +13,12 @@ permissions:
   contents: read
 
 jobs:
+
   pull-changes:
+  
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Codigo checkout
       - uses: actions/checkout@v2
       - name: Connect to VM and pull changes
         run: |
