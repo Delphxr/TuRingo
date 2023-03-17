@@ -8,7 +8,7 @@ const nextBtn = document.getElementById("next-button")
 
 let activeIndex = 2; // Índice del elemento activo
 let current_instruction = 0;
-
+let EXECUTING = false;
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -74,6 +74,11 @@ let instrucciones = {
 
 async function executeCode() {
 
+  if (EXECUTING) {
+    return
+  }
+  EXECUTING = true;
+
   // Obtenemos la cinta inicial y la convertimos en un array para poder modificarla
   let cinta = instrucciones.cintaInicial.split('')
 
@@ -128,6 +133,7 @@ async function executeCode() {
   }
   audio.pause()
   audio.remove()
+  EXECUTING = false
 
   try {
     setExecutingNode(null, true)
