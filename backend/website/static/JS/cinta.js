@@ -77,7 +77,7 @@ async function executeCode() {
   if (EXECUTING == true) {
     return;
   }
-  
+
   EXECUTING = true;
 
   // Obtenemos la cinta inicial y la convertimos en un array para poder modificarla
@@ -145,6 +145,10 @@ async function executeCode() {
 }
 
 async function nextInstruction() {
+  if (EXECUTING == true) {
+    return;
+  }
+
   if (current_instruction == instrucciones.instrucciones.length -1) {
     return;
   }
@@ -176,6 +180,9 @@ async function nextInstruction() {
 }
 
 async function backInstruction() {
+  if (EXECUTING == true) {
+    return;
+  }
   if (current_instruction == 0) {
     return;
   }
