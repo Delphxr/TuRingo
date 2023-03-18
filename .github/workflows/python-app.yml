@@ -24,12 +24,8 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/ssh-key-2023-03-02.key
-          echo "github.com,140.82.113.4 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
-          140.82.112.3 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
-          140.84.172.6 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILkN9Phwt8vT5EbVNkjW9nuvjDb3TgzRtYYlnSAtgK5X
-          140.84.172.6 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCiw7bVvdtFjzzZpYrJ6//8rQ3PqpjV+0TDDZ5edW5UoLysb77ARCMq1BVdfprGXzPaYfm69M45H/u6ATkMINCwxaJXPVGsUZvZ998HCYM3ByiqNRdlsT5amo6AU1P73Y5kWCa9jTIhqDjROdunbCTXvjPQmsHoSNG7E7oX/4HckMYOx+SDB4syfprc5KBIFd7BUVti2ijemgmZAjiW/00jqjX78KdaC4MvjLNwpQ2PPMvQi3QxDz2Dh1FnEW4sOf0MyaAqFa02V1x6pdzpEOitfThLzlMHaQ8L1J3OUrOBxl43Vi692xGbQN0WgHOslvdOObLcV2Po26pXzt+VqiKZJLOPa/ia88NqOcQYB6VJu1MK1kQwO1i1XaTB8YDckqqImE3joEoqLYu4kQP5gL4koErJWPz0XkcKRgVyBnF/h8APd9d9f4czCJ8QfJku1j9iJwilJota9fe27/wVpNO+zAHvMsutGzAZ40x30H2S3F3XrqRuFxMComkjx/1U5q0=
-          140.84.172.6 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBJE/0mU7RK75g2vKC7yPGXnscMIXng+Gck2614iaOr9cCRuj+R/U1FxEy5PWO3i+xEC7MZ6i/6kcyLvMyIraWeo=" > ~/.ssh/known_hosts
-          echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCmWP0/7OnTPyVwzrlL9h3sQNTwErYdao+3MERQkIKuEO1uYTjpio3G9XL4ZoWNhEsnchXq8IL9IA9VWsNXpUcrllICD7Bd06MZib6fd5WBhZCY7XYwUJYfznldBeNm9KLchpdmEdENi3ygMJr1PNRbUhKatJJ8OgtoEyFx2LiJkuJ39WGUtmIH60G5/4bhcA9j+OOfnkD+kumRjm+/4Y38kXYGNh7q4lIM1bvULfiqTtLfVhw1M+BvmEuSepz5s67OCpehHmzUorm/ZzenGy7471Qaf4LCdoPh4aqYdjx1j+o0QYg6f/Ha4QxHGGxNQnmj7IyshE3a7vpVtctaiAzB ssh-key-2023-03-02" > ~/.ssh/ssh-key-2023-03-02.key.pub
+          echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PUBLIC_KEY }}" > ~/.ssh/ssh-key-2023-03-02.key.pub
           chmod 600 ~/.ssh/ssh-key-2023-03-02.key
           
       - name: Pull Changes
