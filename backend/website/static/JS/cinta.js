@@ -100,6 +100,12 @@ async function animateCode(instrucciones) {
     let instruccion = element
 
     await sleep(500);
+
+    try {
+      setExecutingNode(instruccion.nodo)
+    } catch {
+      console.log("El nodo que desea seleccionar no existe")
+    }
     if (tape.children[activeIndex].textContent != instruccion.valorNuevo) {
       playSound("/static/assets/audio/key.ogg")
     }
@@ -113,11 +119,7 @@ async function animateCode(instrucciones) {
       moveTapeRight();
     }
 
-    try {
-      setExecutingNode(instruccion.nodo)
-    } catch {
-      console.log("El nodo que desea seleccionar no existe")
-    }
+
 
 
   }
@@ -149,7 +151,11 @@ async function nextInstruction() {
   let insActual = localInstrucciones.instrucciones[current_instruction]
 
 
-
+  try {
+    setExecutingNode(insActual.nodo)
+  } catch {
+    console.log("El nodo que desea seleccionar no existe")
+  }
 
   if (tape.children[activeIndex].textContent != insActual.valorNuevo) {
     playSound("/static/assets/audio/key.ogg")
@@ -162,12 +168,6 @@ async function nextInstruction() {
     moveTapeLeft();
   } else if (insActual.movimiento === "R") {
     moveTapeRight();
-  }
-
-  try {
-    setExecutingNode(insActual.nodo)
-  } catch {
-    console.log("El nodo que desea seleccionar no existe")
   }
 
 }
