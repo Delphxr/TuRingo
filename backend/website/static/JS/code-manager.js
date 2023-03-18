@@ -46,7 +46,7 @@ class PseudoCodigo {
     }
   }
 
-  obtenerCodigoJson() {
+  obtenerCodigoJson(entrada, vacio) {
     const codigo = {};
 
     for (let id in this.codigo) {
@@ -61,7 +61,14 @@ class PseudoCodigo {
       };
     }
 
-    return JSON.stringify(codigo, null, 2);
+    const codigoConInfo = {
+      codigo: codigo,
+      entrada: entrada,
+      vacio: vacio
+    };
+
+    console.log(JSON.stringify(codigoConInfo, null, 2))
+    return JSON.stringify(codigoConInfo, null, 2);
   }
 
   eliminarNodo(Id) {

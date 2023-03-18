@@ -108,11 +108,21 @@
                 </div>
             </div>
             <div class="row round-box p-3" style="height: 83%; margin-top: 3%;">
-                
-                    Loremt ipsum dolor sit amet, consectetur adipiscing elit. Duis sit amet tincidunt libero, eu ultrices dui. Phasellus accumsan ante in sem scelerisque consectetur. Integer sed lorem pretium, vulputate sem vel, blandit tortor. Integer iaculis auctor eleifend. Cras vel est velit. Duis fringilla dictum scelerisque. Praesent erat magna, aliquet non orci vitae, tristique finibus diam.
 
-                    Nullam vitae tincidunt ipsum, sed semper diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean lectus dolor, tincidunt a urna vel, mollis tempus dui. Curabitur consectetur tellus vel risus rutrum, ac tempus dolor sodales. Aliquam fermentum quam arcu, a venenatis ipsum aliquet quis. Nulla venenatis aliquam massa sit amet tristique. Suspendisse et erat porta, fermentum eros ut, pulvinar elit. Maecenas ultricies massa at magna faucibus, eu consectetur lectus tempus. Phasellus feugiat aliquet nulla non accumsan. Integer dictum rutrum enim sed tempus. Nullam mollis lorem lectus, eu vehicula lectus porta non. Nunc interdum accumsan metus, eu cursus leo commodo at.
-               
+                Loremt ipsum dolor sit amet, consectetur adipiscing elit. Duis sit amet tincidunt libero, eu ultrices
+                dui. Phasellus accumsan ante in sem scelerisque consectetur. Integer sed lorem pretium, vulputate sem
+                vel, blandit tortor. Integer iaculis auctor eleifend. Cras vel est velit. Duis fringilla dictum
+                scelerisque. Praesent erat magna, aliquet non orci vitae, tristique finibus diam.
+
+                Nullam vitae tincidunt ipsum, sed semper diam. Vestibulum ante ipsum primis in faucibus orci luctus et
+                ultrices posuere cubilia curae; Aenean lectus dolor, tincidunt a urna vel, mollis tempus dui. Curabitur
+                consectetur tellus vel risus rutrum, ac tempus dolor sodales. Aliquam fermentum quam arcu, a venenatis
+                ipsum aliquet quis. Nulla venenatis aliquam massa sit amet tristique. Suspendisse et erat porta,
+                fermentum eros ut, pulvinar elit. Maecenas ultricies massa at magna faucibus, eu consectetur lectus
+                tempus. Phasellus feugiat aliquet nulla non accumsan. Integer dictum rutrum enim sed tempus. Nullam
+                mollis lorem lectus, eu vehicula lectus porta non. Nunc interdum accumsan metus, eu cursus leo commodo
+                at.
+
             </div>
 
         </div>
@@ -137,14 +147,6 @@
                         </svg>
                     </button>
 
-                    <button id="back-button" type="button" class="btn skip-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            class="bi bi-skip-backward-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5z" />
-                        </svg>
-                    </button>
-
                     <button id="next-button" type="button" class="btn skip-button">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                             class="bi bi-skip-forward-fill" viewBox="0 0 16 16">
@@ -153,6 +155,16 @@
                         </svg>
                     </button>
 
+                    
+                    <form class="form-floating" style="width: 30%;">
+                        <input type="text" class="form-control action-input" id="entradaCinta" placeholder="">
+                        <label for="entradaCinta" style="color: var(--text-color)">Entrada</label>
+                    </form>
+
+                    <form class="form-floating" style="width: 15%; margin-left: 10px;">
+                        <input type="text" class="form-control action-input" id="vacioCinta" placeholder="" maxlength="1">
+                        <label for="vacioCinta" style="color: var(--text-color)">Vacio</label>
+                    </form>
                 </div>
             </div>
             <div id="outer" class="outer-scroll round-box">
@@ -265,13 +277,13 @@
                                     <label>Si leo:</label>
                                 </div>
                                 <div class="col-2">
-                                    <input class="form-control mx-0" type="text" id="read" maxlength="1"></input>
+                                    <input class="form-control mx-0" type="text" id="read-ins" maxlength="1"></input>
                                 </div>
                                 <div class="col-auto">
                                     <label>, Escribo:</label>
                                 </div>
                                 <div class="col-2">
-                                    <input class="form-control" type="text" id="write" maxlength="1"></input>
+                                    <input class="form-control" type="text" id="write-ins" maxlength="1"></input>
                                 </div>
                             </div>
                         </li>

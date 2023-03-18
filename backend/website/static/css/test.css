@@ -43,6 +43,14 @@ body {
   border: var(--bs-border-width) solid var(--color-primary) !important;
 }
 
+.action-input {
+  margin: 5px !important;
+  border-color: var(--color-secondary-border) !important;
+
+}
+
+
+
 .dropdown-menu {
   background-color: var(--color-light) !important;
 }
@@ -209,6 +217,7 @@ body {
 
 
 .action-button {
+  height: 43px;
   margin: 5px;
   background-color: var(--action-color);
   border: 3px solid;
@@ -231,6 +240,7 @@ body {
 
 
 .stop-button {
+  height: 43px;
   margin: 5px;
   background-color: var(--stop-color);
   border: 3px solid;
@@ -252,6 +262,7 @@ body {
 }
 
 .skip-button {
+  height: 43px;
   margin: 5px;
   background-color: var(--skip-color);
   border: 3px solid;
@@ -271,6 +282,7 @@ body {
   border-color: var(--skip-color-border-active) !important;
   color: var(--skip-color-text-active) !important;
 }
+
 
 
 

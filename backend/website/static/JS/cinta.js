@@ -6,83 +6,23 @@ const backBtn = document.getElementById("back-button")
 const nextBtn = document.getElementById("next-button")
 
 
-let activeIndex = 2; // Índice del elemento activo
-let current_instruction = 0;
+let activeIndex = 0; // Índice del elemento activo
+let startindex = 0; //indice para reiniciar
+let startTape = "" //cinta para reiniciar
+
 let EXECUTING = false;
+let STOP = false
+
+let current_instruction = 0;
+let localInstrucciones = "_"
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let instrucciones = {
-  "indexInicial": 7,
-  "cintaInicial": "00000010111010000",
-  "instrucciones": [
-    {
-      "movimiento": "R",
-      "valorNuevo": "0",
-      "nodo": "q0"
-    },
-    {
-      "movimiento": "L",
-      "valorNuevo": "1",
-      "nodo": "q0"
-    },
-    {
-      "movimiento": "R",
-      "valorNuevo": "1",
-      "nodo": "q1"
-    },
-    {
-      "movimiento": "L",
-      "valorNuevo": "0",
-      "nodo": "q1"
-    },
-    {
-      "movimiento": "L",
-      "valorNuevo": "1",
-      "nodo": "q2"
-    },
-    {
-      "movimiento": "R",
-      "valorNuevo": "0",
-      "nodo": "q3"
-    },
-    {
-      "movimiento": "R",
-      "valorNuevo": "1",
-      "nodo": "q4"
-    },
-    {
-      "movimiento": "R",
-      "valorNuevo": "0",
-      "nodo": "q3"
-    },
-    {
-      "movimiento": "L",
-      "valorNuevo": "1",
-      "nodo": "q5"
-    },
-    {
-      "movimiento": "L",
-      "valorNuevo": "0",
-      "nodo": "q6"
-    }
-  ]
-}
 
-
-
-async function executeCode() {
-
-  if (EXECUTING == true) {
-    return;
-  }
-
-  EXECUTING = true;
-
-  // Obtenemos la cinta inicial y la convertimos en un array para poder modificarla
-  let cinta = instrucciones.cintaInicial.split('')
-
+function SetCinta(newCinta) {
+  let cinta = newCinta.cintaInicial.split('');
   // Obtenemos el contenedor de la cinta
   let contenedor = document.getElementById('tape')
 
@@ -96,66 +36,120 @@ async function executeCode() {
     div.innerText = element
     contenedor.appendChild(div)
   }
+}
+
+async function executeCode() {
+
+  let entrada = document.getElementById("entradaCinta").value
+  let vacio = document.getElementById("vacioCinta").value
+
+  const response = await fetch('http://127.0.0.1:5000/turing-compiler', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
+  })
+
+  const code = await response.json();
+
+  animateCode(code)
+}
+
+async function animateCode(instrucciones) {
+  if (EXECUTING) {
+    return;
+  }
+  STOP = false
+  EXECUTING = true;
+
+  // Obtenemos la cinta inicial y la convertimos en un array para poder modificarla
+
+  localInstrucciones = instrucciones;
+  SetCinta(instrucciones)
 
   // Obtenemos el índice inicial
   let index = instrucciones.indexInicial
   activeIndex = index
+  startindex = index
   updateTapePosition();
 
   // Iteramos por las instrucciones
   let audio = playSound("/static/assets/audio/gear.ogg", true)
   for (const element of instrucciones.instrucciones) {
+    if (STOP) { //reiniciamos todo si hay un stop a media ejecucion
+      SetCinta(localInstrucciones)
+      activeIndex = startindex
+      updateTapePosition()
+      break
+    };
+
     let instruccion = element
-
-    try {
-      setExecutingNode(instruccion.nodo)
-    } catch {
-      console.log("El nodo que desea seleccionar no existe")
-    }
     
-
-    // Modificamos la cinta en función de la instrucción
-    if (instruccion.movimiento === "L") {
-      moveTapeLeft();
-
-    } else if (instruccion.movimiento === "R") {
-      moveTapeRight();
-
-    }
     await sleep(500);
-
     if (tape.children[activeIndex].textContent != instruccion.valorNuevo) {
       playSound("/static/assets/audio/key.ogg")
     }
     updateActiveValue(instruccion.valorNuevo);
     await sleep(250);
 
+    // Modificamos la cinta en función de la instrucción
+    if (instruccion.movimiento === "L") {
+      moveTapeLeft();
+    } else if (instruccion.movimiento === "R") {
+      moveTapeRight();
+    }
+
+    try {
+      setExecutingNode(instruccion.nodo)
+    } catch {
+      console.log("El nodo que desea seleccionar no existe")
+    }
+
 
   }
   audio.pause()
-  audio.remove()
-  EXECUTING = false
 
+  EXECUTING = false
   try {
     setExecutingNode(null, true)
   } catch {
     console.log("El nodo que desea seleccionar no existe")
   }
-  
+
 }
 
 async function nextInstruction() {
-  if (EXECUTING == true) {
+  if (EXECUTING) {
+    return;
+  }
+  if (localInstrucciones == "_") {
+    return
+  }
+  if (current_instruction == localInstrucciones.instrucciones.length - 1) {
     return;
   }
 
-  if (current_instruction == instrucciones.instrucciones.length -1) {
-    return;
-  }
+
   current_instruction++;
 
-  let insActual = instrucciones.instrucciones[current_instruction]
+  let insActual = localInstrucciones.instrucciones[current_instruction]
 
+
+  
+
+  if (tape.children[activeIndex].textContent != insActual.valorNuevo) {
+    playSound("/static/assets/audio/key.ogg")
+  }
+  updateActiveValue(insActual.valorNuevo);
+  await sleep(250);
+
+  // Modificamos la cinta en función de la instrucción
+  if (insActual.movimiento === "L") {
+    moveTapeLeft();
+  } else if (insActual.movimiento === "R") {
+    moveTapeRight();
+  }
 
   try {
     setExecutingNode(insActual.nodo)
@@ -163,62 +157,26 @@ async function nextInstruction() {
     console.log("El nodo que desea seleccionar no existe")
   }
   
-
-  if (insActual.movimiento === "L") {
-    moveTapeLeft();
-
-  } else if (insActual.movimiento === "R") {
-    moveTapeRight();
-
-  }
-  await sleep(250);
-
-  if (tape.children[activeIndex].textContent != insActual.valorNuevo) {
-    playSound("/static/assets/audio/key.ogg")
-  }
-  updateActiveValue(insActual.valorNuevo);
-}
-
-async function backInstruction() {
-  if (EXECUTING == true) {
-    return;
-  }
-  if (current_instruction == 0) {
-    return;
-  }
-  current_instruction--;
-
-  let insActual = instrucciones.instrucciones[current_instruction]
-
-  try {
-    setExecutingNode(insActual.nodo)
-  } catch {
-    console.log("El nodo que desea seleccionar no existe")
-  }
-
-  if (insActual.movimiento === "L") {
-    moveTapeLeft();
-
-  } else if (insActual.movimiento === "R") {
-    moveTapeRight();
-
-  }
-  await sleep(250);
-
-  if (tape.children[activeIndex].textContent != insActual.valorNuevo) {
-    playSound("/static/assets/audio/key.ogg")
-  }
-  updateActiveValue(insActual.valorNuevo);
 }
 
 
-function stopExecution(){
+function stopExecution() {
   try {
     setExecutingNode(null, true)
   } catch {
     console.log("El nodo que desea seleccionar no existe")
   }
-  current_instruction = 0;
+
+  if (EXECUTING) {
+    current_instruction = 0;
+    STOP = true;
+  } else {
+    current_instruction = 0;
+    STOP = true;
+    SetCinta(localInstrucciones)
+    activeIndex = startindex
+    updateTapePosition()
+  }
 }
 
 
@@ -262,7 +220,6 @@ function updateActiveValue(value) {
 // Eventos de botón
 playBtn.addEventListener("click", executeCode);
 nextBtn.addEventListener("click", nextInstruction);
-backBtn.addEventListener("click", backInstruction);
 stopBtn.addEventListener("click", stopExecution);
 
 // Actualizar la posición de la cinta en la carga inicial de la página

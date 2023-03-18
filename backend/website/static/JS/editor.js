@@ -247,8 +247,8 @@ var elmWrapper = document.getElementById("wrapper"),
 //generamos una nueva instrucción
 function new_instruction() {
   let origenId = CURRENT_CLICKED_NODE[0];
-  e = document.getElementById("destino");
   let mover = document.getElementById("cinta").value; //L o R
+
   e = document.getElementById("destino");
   let destino = e.options[e.selectedIndex].value; // Obtenemos el nodo de destino seleccionado en el menú desplegable
   let instructionContainer = document.getElementById("listainstrucciones");
@@ -257,25 +257,38 @@ function new_instruction() {
 
   let instruction = "";
   for (const element of listaInstrucciones) {
+
     
-    let read = element.querySelector("#read").value;
-    
-    let write = element.querySelector("#write").value;
+
+    let read = element.querySelector("#read-ins").value;
+    if (read === "") {
+      read = "_"
+    }
+
+
+    let write = element.querySelector("#write-ins").value;
+    if (write === "") {
+      write = "_"
+    }
+
+    console.log("despues = i[" + read + "] - j[" + write + "]")
+
     pseudoCodigo.agregarLinea(origenId, read, write, mover, destino);
     //(q1, 1) -> (q2, 0, L)
     let newInstruction = ""
     if (read != write) {
-      newInstruction = + read +
+      newInstruction += read +
         " → " +
         write;
     }
     else {
-      newInstruction = + read;
+      newInstruction += read;
     }
     newInstruction += ", " + mover + "\n";
     instruction += newInstruction;
   }
   //si el nodo destino y el nodo origen son diferentes, hacemos una linea que los conecte
+  console.log(instruction)
   if (origenId != destino) {
     generate_line(instruction);
   } else {
