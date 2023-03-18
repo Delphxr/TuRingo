@@ -54,7 +54,7 @@ async function executeCode() {
     vacio = "_"
   }
 
-  const response = await fetch('http://127.0.0.1:5000/turing-compiler', {
+  const response = await fetch('http://140.84.172.6:5000/turing-compiler', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
