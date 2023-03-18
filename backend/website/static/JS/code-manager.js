@@ -67,7 +67,6 @@ class PseudoCodigo {
       vacio: vacio
     };
 
-    console.log(JSON.stringify(codigoConInfo, null, 2))
     return JSON.stringify(codigoConInfo, null, 2);
   }
 

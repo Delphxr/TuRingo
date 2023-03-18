@@ -284,7 +284,7 @@ function new_instruction() {
     else {
       newInstruction += read;
     }
-    newInstruction += ", " + mover + "\n";
+    newInstruction += " , " + mover + "\n";
     instruction += newInstruction;
   }
   //si el nodo destino y el nodo origen son diferentes, hacemos una linea que los conecte

@@ -22,6 +22,10 @@ function sleep(ms) {
 
 
 function SetCinta(newCinta) {
+  if (newCinta == "_") {
+    return;
+  };
+
   let cinta = newCinta.cintaInicial.split('');
   // Obtenemos el contenedor de la cinta
   let contenedor = document.getElementById('tape')
@@ -39,9 +43,16 @@ function SetCinta(newCinta) {
 }
 
 async function executeCode() {
+  if (EXECUTING) {
+    return;
+  }
 
   let entrada = document.getElementById("entradaCinta").value
   let vacio = document.getElementById("vacioCinta").value
+
+  if (vacio === "") {
+    vacio = "_"
+  }
 
   const response = await fetch('http://127.0.0.1:5000/turing-compiler', {
     method: 'POST',
@@ -50,10 +61,12 @@ async function executeCode() {
     },
     body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
   })
-
   const code = await response.json();
-
-  animateCode(code)
+  if (code.hasOwnProperty('error')) {
+    console.log(code)
+  } else {
+    animateCode(code)
+  }
 }
 
 async function animateCode(instrucciones) {
@@ -85,7 +98,7 @@ async function animateCode(instrucciones) {
     };
 
     let instruccion = element
-    
+
     await sleep(500);
     if (tape.children[activeIndex].textContent != instruccion.valorNuevo) {
       playSound("/static/assets/audio/key.ogg")
@@ -126,7 +139,7 @@ async function nextInstruction() {
   if (localInstrucciones == "_") {
     return
   }
-  if (current_instruction == localInstrucciones.instrucciones.length - 1) {
+  if (current_instruction == localInstrucciones.instrucciones.length) {
     return;
   }
 
@@ -136,7 +149,7 @@ async function nextInstruction() {
   let insActual = localInstrucciones.instrucciones[current_instruction]
 
 
-  
+
 
   if (tape.children[activeIndex].textContent != insActual.valorNuevo) {
     playSound("/static/assets/audio/key.ogg")
@@ -156,7 +169,7 @@ async function nextInstruction() {
   } catch {
     console.log("El nodo que desea seleccionar no existe")
   }
-  
+
 }
 
 
