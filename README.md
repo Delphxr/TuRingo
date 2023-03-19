@@ -1,7 +1,7 @@
 # Turingo
 
 ## Link del Demo:
-Link de la aplicación: [Turingo](http://140.84.172.6:5000/)
+**Link de la aplicación:** [Turingo](http://140.84.172.6:5000/)
 
 ## Tabla de contenidos
 
@@ -18,11 +18,11 @@ Turingo es una aplicación web que permite el desarrollo y la ejecución de máq
 
 ## Tecnologias utilizadas
 Se utilizaron las siguientes tecnologías para desarrollar la aplicación:
-- Mongo (Base de datos)
-- Flask (Servidor del backend)
-- JavaScript/HTML (Frontend)
-- Oracle Cloud (Alojamiento de la aplicación web)
-- Python (Lenguaje de programación)
+- **Mongo** (Base de datos)
+- **Flask** (Servidor del backend)
+- **JavaScript/HTML** (Frontend)
+- **Oracle Cloud** (Alojamiento de la aplicación web)
+- **Python** (Lenguaje de programación)
 
 ## Instrucciones de uso para desarrolladores
 
@@ -42,12 +42,12 @@ Actualmente, la primera version de Turingo se encuentra en desarrollo.
 
 ## Creditos
 Colaboradores:
-- Coordinador: Kevin Alvarado Lamas
-- Desarrollador: Alejandro Castro Araya
-- Desarrollador: Keilor Yadir Martínez Rodríguez
-- Desarrollador: Kelvin Eduardo Núñez Barrantes
-- Desarrollador: Luis Oswaldo Ramírez Fernández
-- Supervisor: Rodolfo Mora Zamora
+- **Coordinador**: Kevin Alvarado Lamas
+- **Desarrollador**: Alejandro Castro Araya
+- **Desarrollador**: Keilor Yadir Martínez Rodríguez
+- **Desarrollador**: Kelvin Eduardo Núñez Barrantes
+- **Desarrollador**: Luis Oswaldo Ramírez Fernández
+- **Supervisor**: Rodolfo Mora Zamora
 
 
 ## Licencia
