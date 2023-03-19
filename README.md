@@ -29,7 +29,7 @@ Se utilizaron las siguientes tecnologías para desarrollar la aplicación:
 ### Instalación de dependencias
 - [Descargar la versión más reciente de Python](https://www.python.org/downloads/)
 - [Descargar la versión más reciente de MongoDB](https://www.mongodb.com/try/download/community)
-- pip install -U Flask
+- `pip install -U Flask`
 
 ### Ejecución de la aplicación
 - Descargar o clonar este repositorio
