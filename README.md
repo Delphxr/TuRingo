@@ -1,5 +1,4 @@
-# Título del Proyecto
-Turingo
+# Turingo
 
 ## Link del Demo:
 Link de la aplicación: [Turingo](http://140.84.172.6:5000/)
@@ -38,11 +37,6 @@ Se utilizaron las siguientes tecnologías para desarrollar la aplicación:
 - Abrir el folder `backend`
 - Ejecutar el archivo `app.py` dentro del folder `backend`
 - En el navegador, abrir el URL http://127.0.0.1:5000/ para accederla localmente, o bien abrir el URL http://140.84.172.6:5000/ para accederla en la nube
-
-## Instrucciones de uso para consumidores
-
-### Ejecución de la aplicación
-- En el navegador abrir el URL http://140.84.172.6:5000/ para acceder la aplicación
 
 ## Status
 Actualmente, la primera version de Turingo se encuentra en desarrollo.
