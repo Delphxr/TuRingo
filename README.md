@@ -6,18 +6,19 @@ Link de la aplicación: [Turingo](http://140.84.172.6:5000/)
 
 ## Tabla de contenidos
 
-- [Acerca del app](#about)
-- [Tecnologías utilizadas](#technologies)
-- [Setup](#setup)
+- [Acerca del app](#acerca-del-app)
+- [Tecnologías utilizadas](#tecnologias-utilizadas)
+- [Instrucciones de uso para desarrolladores](#instrucciones-de-uso-para-desarrolladores)
+- [Instrucciones de uso para consumidores](#instrucciones-de-uso-para-consumidores)
 - [Status](#status)
-- [Créditos](#credits)
-- [Licencia](#license)
+- [Créditos](#creditos)
+- [Licencia](#licencia)
 
 ## Acerca del app
 Turingo es una aplicación web que permite el desarrollo y la ejecución de máquinas de Turing, para que luego los resultados de los ejercicios sean enviados al profesor con su respectiva nota.
 
 
-## Tecnologías utilizadas
+## Tecnologias utilizadas
 Se utilizaron las siguientes tecnologías para desarrollar la aplicación:
 - Mongo (Base de datos)
 - Flask (Servidor del backend)
@@ -25,7 +26,7 @@ Se utilizaron las siguientes tecnologías para desarrollar la aplicación:
 - Oracle Cloud (Alojamiento de la aplicación web)
 - Python (Lenguaje de programación)
 
-## Setup
+## Instrucciones de uso para desarrolladores
 
 ### Instalación de dependencias
 - [Descargar la versión más reciente de Python](https://www.python.org/downloads/)
@@ -35,14 +36,18 @@ Se utilizaron las siguientes tecnologías para desarrollar la aplicación:
 ### Ejecución de la aplicación
 - Descargar o clonar este repositorio
 - Abrir el folder `backend`
-- Ejecutar el archivo `app.py`
-- Abrir `http://140.84.172.6:5000/` en el navegador
+- Ejecutar el archivo `app.py` dentro del folder `backend`
+- En el navegador, abrir el URL `http://140.84.172.6:5000/` para accederla en la nube, o `http://127.0.0.1:5000/` para accederla localmente.
 
+## Instrucciones de uso para consumidores
+
+### Ejecución de la aplicación
+- En el navegador abrir el URL `http://140.84.172.6:5000/` para acceder la aplicación
 
 ## Status
 Actualmente, la primera version de Turingo se encuentra en desarrollo.
 
-## Créditos
+## Creditos
 Colaboradores:
 - Coordinador: Kevin Alvarado Lamas
 - Desarrollador: Alejandro Castro Araya
@@ -52,6 +57,6 @@ Colaboradores:
 - Supervisor: Rodolfo Mora Zamora
 
 
-## License
+## Licencia
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
