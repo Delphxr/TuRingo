@@ -10,3 +10,16 @@ function playSound(audioName, loop = false) {
     audio.play();
     return audio;
 }
+
+
+function startLoading() {
+    let loadingCircle = document.createElement("div")
+    loadingCircle.classList.add("overlay")
+    loadingCircle.innerHTML = 
+        '<div class="overlay__inner">' +
+            '<div class="overlay__content"><span class="spinner"></span></div>' +
+        '</div>';
+    
+    let circle = document.body.appendChild(loadingCircle)
+    return circle;
+}

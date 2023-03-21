@@ -42,6 +42,8 @@ function SetCinta(newCinta) {
   }
 }
 
+
+//ejecutamos codigo, llamamos el API y lo mandamos luego a dibujar
 async function executeCode() {
   if (EXECUTING) {
     return;
@@ -54,6 +56,8 @@ async function executeCode() {
     vacio = "_"
   }
 
+  let circle = startLoading()
+
   const response = await fetch('http://140.84.172.6:5000/turing-compiler', {
     method: 'POST',
     headers: {
@@ -62,6 +66,11 @@ async function executeCode() {
     body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
   })
   const code = await response.json();
+
+
+  circle.remove()
+
+  
   if (code.hasOwnProperty('error')) {
     console.log(code)
   } else {

@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/test.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/menu.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/cinta.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/loading.css') }}" />
 
 
 </head>
@@ -224,7 +225,7 @@
         <li class="menu-item text-success font-weight-bold" onclick="set_start_node()">Definir Inicial</li>
         <li id="ins_button" class="menu-item">Instrucción</li>
         <li class="menu-item" data-bs-toggle="modal" data-bs-target="#modalRenombrar">Renombrar nodo</li>
-        <li class="menu-item text-danger font-weight-bold" onclick="remove_circle()">Eliminar nodo</li>
+        <li class="menu-item text-danger font-weight-bold" onclick="remove_circle()" style="margin-top: 10px;">Eliminar nodo</li>
     </ul>
 
 
