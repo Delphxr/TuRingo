@@ -276,7 +276,7 @@ function rename_circle() {
 
   CURRENT_CLICKED_NODE[1].firstElementChild.textContent = newNombre;
   pseudoCodigo.definirApodo(CURRENT_CLICKED_NODE[0], newNombre);
-
+  document.getElementById("renombrar").value = "";
 }
 
 //aqui metemos las lineas
@@ -459,3 +459,8 @@ function decrease_zoom() {
 }
 
 
+$(document).ready(function () {
+  $('#modalRenombrar').on('shown.bs.modal', function () {
+    $('#renombrar').trigger('focus');
+  });
+});
