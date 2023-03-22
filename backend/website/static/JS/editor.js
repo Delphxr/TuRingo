@@ -11,7 +11,8 @@ let CURRENT_CLICKED_NODE; //nodo al que le hicimos click izquierdo actualmente
 let CURRENT_START_NODE; //nodo inicio
 let CURRENT_EXECUTING_NODE; //nodo inicio
 
-
+const elmPoint = document.getElementById('elm-point'); //lo usamos para moverlo junto al mouse en la linea dinamica
+let connectMode, line;
 
 
 //para hacer un nuevo nodo
@@ -49,15 +50,7 @@ menu_nodo.addEventListener("click", () => {
 });
 
 
-
-
-///////////////
-const elm0 = document.getElementById('elm0'),
-  elmsItem = Array.from(document.querySelectorAll('#items > div')),
-  elmPoint = document.getElementById('elm-point');
-
-let connectMode, line;
-
+//actualizamos una linea segun el mouse
 function updateLine(event) {
   let position = getPosition(event);
   elmPoint.style.left = `${position.x}px`;
@@ -65,9 +58,8 @@ function updateLine(event) {
   line.position();
 }
 
-
+//si se apreta el botonde instruccion comenzamos la linea dinamics
 document.getElementById("ins_button").addEventListener("click", event => {
-
   elmPoint.style.display = 'block';
   line = new LeaderLine(CURRENT_CLICKED_NODE[1], elmPoint, {
     color: "var(--line-color)",
@@ -78,7 +70,7 @@ document.getElementById("ins_button").addEventListener("click", event => {
   console.log("click a flecha")
 });
 
-
+//para llamar la funcion menos que lo que se hace usualmente, para tener mejor rendimiento basicamente
 function throttle(callback, wait) {
   var timeout
   return function (e) {
@@ -87,10 +79,11 @@ function throttle(callback, wait) {
   }
 }
 
+//si el mouse se mueve y estamos en el canvas, movemos la linea dimamica
 document.addEventListener('mousemove', throttle(function (event) {
   if (connectMode && event.target == clickable) { updateLine(event); }
 }, 10));
-//////////////////
+
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
