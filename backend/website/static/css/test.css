@@ -2,7 +2,7 @@ html {
   height: 100%;
   margin: 0;
   padding: 0px;
-  overflow: hidden;
+  /*overflow: hidden;*/
   transition: background-color 1000ms linear, color 1000ms linear, border 1000ms linear;
 
 }
@@ -283,7 +283,12 @@ body {
   color: var(--skip-color-text-active) !important;
 }
 
-
+#elm-point {
+  position: absolute;
+  width: 0;
+  height: 0;
+  display: none;
+}
 
 
 ::-webkit-scrollbar-track {

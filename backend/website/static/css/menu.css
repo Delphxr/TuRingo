@@ -1,90 +1,104 @@
 #clickable {
-    display: block;
-    background-color: #efefef;
-    height: 300px;
-    width: 300px;
-    border-radius: 20px;
-    box-shadow: 0px 5px 30px -10px var(--color-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    color: grey;
-  }
+  display: block;
+  background-color: #efefef;
+  height: 300px;
+  width: 300px;
+  border-radius: 20px;
+  box-shadow: 0px 5px 30px -10px var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: grey;
+}
 
 
-  .menu {
-    display: block;
-    background-color: var(--color-light);
-    padding: 10px 0px;
-    border-radius: 5px;
-    box-shadow: 2px 2px 15px var(--color-primary);
-    border: 1px solid;
-    border-color: var(--color-terciary);
-    position: absolute;
-    transform-origin: center;
-    z-index: 2;
-    opacity: 0;
-    transform: scale(0);
-    transition: transform 0.2s, opacity 0.2s;
-  }
+.menu-radial {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+.menu-radial.active {
+  opacity: 1;
+  visibility: visible;
+} 
+
+.menu-radial li {
+  color: var(--text-color);
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  left: 0;
+  list-style: none;
+  transform-origin: 75px;
+  transition:  0.1s ease-out;
+  transition-delay: calc(0.01s * var(--i));
+  transform: rotate(0deg) translateX(45px);
   
-  .menu.show {
-    opacity: 1;
-    transform: scale(1);
-    transform-origin: top left;
-  }
-  
-  .menu-item {
-    display: block;
-    padding: 10px 30px;
-    transition: 0.1s;
-    color: var(--text-color);
-  }
-  
-  .menu-item:hover {
-    background-color: var(--color-grid);
-    cursor: pointer;
-  }
-  
-  #out-click {
-    height: 100vh;
-    width: 100vw;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    display: none;
-  }
+}
+
+.menu-radial.active li {
+  transform: rotate(calc(360deg / 3 * var(--i))) translateY(75px);
+
+}
+
+.menu-radial li a {
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  padding: 20px;
+  background-color: var(--color-light);
+  border-radius: 50%;
+  transform: rotate(calc(360deg / -3 * var(--i)));
+  box-shadow: 0 2px 10px var(--color-primary);
+ 
+}
 
 
-  .animation{
-    -webkit-animation-duration: 0.3s;
-    animation-duration: 0.3s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-  }
-  
-  
-  @keyframes slideDownIn {
-    0% {
-      transform: scale(0.8), translateY(-20px);
-      opacity: 0;
-      transition: transform 0.05s, opacity 0.2s;    
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) translateY(0px);
-      transition: transform 0.05s, opacity 0.2s;
-    }
-    0% {
-      opacity: 0;
-      transform: scale(0.8) translateY(-20px);
-      transition: transform 0.05s, opacity 0.2s;
-    }
-  }
-  
-  .slideDownIn {
-    -webkit-animation-name: slideDownIn;
-    animation-name: slideDownIn;
-  }
+
+.menu-radial li a:hover {
+  background-color:var(--color-grid)
+}
+
+
+.toggle {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 1.25s;
+  background: #efefef;
+}
+
+.menu-radial.active .toggle {
+  transform: rotate(315deg);
+}
+
+
+
+#out-click {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: none;
+}

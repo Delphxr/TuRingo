@@ -1,5 +1,4 @@
 const clickable = document.getElementById("canvas");
-const menu = document.getElementById("menu");
 const menu_nodo = document.getElementById("menu-nodo");
 const outClick = document.getElementById("out-click");
 let MOUSE_POSITION = { x: 0, y: 0 };
@@ -12,63 +11,86 @@ let CURRENT_CLICKED_NODE; //nodo al que le hicimos click izquierdo actualmente
 let CURRENT_START_NODE; //nodo inicio
 let CURRENT_EXECUTING_NODE; //nodo inicio
 
-document.getElementById("canvas").addEventListener("contextmenu", setPosition);
 
 
-let dropdowns = document.querySelectorAll('.dropdown-toggle')
-dropdowns.forEach((dd) => {
-  dd.addEventListener('click', function (e) {
-    var el = this.nextElementSibling
-    el.style.display = el.style.display === 'block' ? 'none' : 'block'
-  })
-})
 
-//para sacar el menu de nuevo nodo
+//para hacer un nuevo nodo
+clickable.addEventListener("dblclick", (e) => {
+  e.preventDefault();
+  setPosition(e)
+  generate_circle()
+});
+
 clickable.addEventListener("contextmenu", (e) => {
   e.preventDefault();
+});
 
-  menu.style.top = `${e.clientY}px`;
-  menu.style.left = `${e.clientX}px`;
-  menu.classList.add("show");
+clickable.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (connectMode) {
 
-  outClick.style.display = "block";
+    line.remove();
+
+    elmPoint.style.display = 'none';
+    connectMode = false;
+  }
 });
 
 //cerrar menus al dar click por fiera
 outClick.addEventListener("click", () => {
-  menu.classList.remove("show");
-  menu_nodo.classList.remove("show");
+  menu_nodo.classList.remove("active");
   outClick.style.display = "none";
 });
 
-//cerrar menus al hacer click en una opcion
-menu.addEventListener("click", () => {
-  menu.classList.remove("show");
-  outClick.style.display = "none";
-});
 //cerrar menus al hacer click en una opcion
 menu_nodo.addEventListener("click", () => {
-  menu_nodo.classList.remove("show");
+  menu_nodo.classList.remove("active");
   outClick.style.display = "none";
 });
 
-//manejor del modal de nueva instruccion
-document.addEventListener("DOMContentLoaded", function () {
-  let insButton = document.getElementById("ins_button");
-  let destinoSelect = document.getElementById("destino");
 
-  insButton.addEventListener("click", function () {
-    $("#modal_instruccion").modal("show");
 
-    destinoSelect.innerHTML = "";
-    for (const element of NODES) {
-      let option = document.createElement("option");
-      option.value = element[0];
-      option.text = pseudoCodigo.obtenerApodo(element[0]);
-      destinoSelect.add(option);
-    }
+
+///////////////
+const elm0 = document.getElementById('elm0'),
+  elmsItem = Array.from(document.querySelectorAll('#items > div')),
+  elmPoint = document.getElementById('elm-point');
+
+let connectMode, line;
+
+function updateLine(event) {
+  let position = getPosition(event);
+  elmPoint.style.left = `${position.x}px`;
+  elmPoint.style.top = `${position.y}px`;
+  line.position();
+}
+
+
+document.getElementById("ins_button").addEventListener("click", event => {
+
+  elmPoint.style.display = 'block';
+  line = new LeaderLine(CURRENT_CLICKED_NODE[1], elmPoint, {
+    color: "var(--line-color)",
+    path: "magnet"
   });
+  connectMode = true;
+  updateLine(event);
+  console.log("click a flecha")
 });
+
+
+function throttle(callback, wait) {
+  var timeout
+  return function (e) {
+    if (timeout) return;
+    timeout = setTimeout(() => (callback(e), timeout = undefined), wait)
+  }
+}
+
+document.addEventListener('mousemove', throttle(function (event) {
+  if (connectMode && event.target == clickable) { updateLine(event); }
+}, 10));
+//////////////////
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
@@ -88,8 +110,8 @@ function getPosition(e) {
 //colocamos la pocision actual del mouse en una variable global
 function setPosition(e) {
   let position = getPosition(e);
-  MOUSE_POSITION.x = Math.round(position.x);
-  MOUSE_POSITION.y = Math.round(position.y);
+  MOUSE_POSITION.x = Math.round(position.x) - 35; //35 el la mitad del tamano del nodo
+  MOUSE_POSITION.y = Math.round(position.y) - 35;
 }
 
 // Genera un nuevo círculo en el canvas
@@ -111,6 +133,31 @@ function generate_circle() {
   // Crea un nuevo elemento span que será el círculo
   let dot = document.createElement("span");
 
+
+  //doble click define nodo inicial
+  dot.addEventListener("dblclick", (e) => {
+    e.stopPropagation();
+    set_start_node(e.currentTarget)
+  })
+
+  dot.addEventListener("click", (e) => {
+    if (connectMode) {
+      let elmTarget = NODES.find((element) => element[1] === e.target);
+      console.log(elmTarget)
+      line.remove();
+      $("#modal_instruccion").modal("show");
+      let destinoSelect = document.getElementById("destino");
+      destinoSelect.innerHTML = "";
+      let option = document.createElement("option");
+      option.value = elmTarget[0];
+      option.text = elmTarget[0];
+      destinoSelect.add(option);
+
+
+      elmPoint.style.display = 'none';
+      connectMode = false;
+    }
+  })
   // Maneja el evento de click derecho (menú de opciones)
   dot.addEventListener("contextmenu", (e) => {
     e.preventDefault();
@@ -121,13 +168,14 @@ function generate_circle() {
     CURRENT_CLICKED_NODE = [currentId, e.currentTarget];
 
     // Muestra el menú de opciones
-    menu_nodo.style.top = `${e.clientY}px`;
-    menu_nodo.style.left = `${e.clientX}px`;
-    menu_nodo.classList.add("show");
+    let rect = e.currentTarget.getBoundingClientRect()
+    menu_nodo.style.top = `calc(${rect.top}px - 40px)`;
+    menu_nodo.style.left = `calc(${rect.left}px - 40px)`;
+    menu_nodo.classList.add("active");
 
     // Muestra el div de "outClick" para poder cerrar el menú de opciones
     outClick.style.display = "block";
-    menu.classList.remove("show");
+
   });
 
   // Establece el ID del círculo como el largo actual de la matriz NODES
@@ -169,17 +217,18 @@ function generate_circle() {
 }
 
 //definimos cual es el nodo inicial del codigo
-function set_start_node() {
+function set_start_node(node) {
   try {
     CURRENT_START_NODE.classList.remove("inicial")
   } catch (e) {
     console.log("aun no hay nodo inicial")
   }
-  CURRENT_CLICKED_NODE[1].classList.add("inicial");
-  CURRENT_START_NODE = CURRENT_CLICKED_NODE[1];
 
-  pseudoCodigo.setInicial(CURRENT_CLICKED_NODE[0])
+  let currentId = NODES.find((element) => element[1] === node)[0];
+  node.classList.add("inicial");
+  CURRENT_START_NODE = node;
 
+  pseudoCodigo.setInicial(currentId)
 
 }
 
@@ -248,9 +297,11 @@ var elmWrapper = document.getElementById("wrapper"),
 function new_instruction() {
   let origenId = CURRENT_CLICKED_NODE[0];
   let mover = document.getElementById("cinta").value; //L o R
-
   e = document.getElementById("destino");
-  let destino = e.options[e.selectedIndex].value; // Obtenemos el nodo de destino seleccionado en el menú desplegable
+  let final = e.options[e.selectedIndex].value;
+
+  let destino = NODES.find((element) => element[0] === final)[1]; //obmos el elemento html usando el id
+
   let instructionContainer = document.getElementById("listainstrucciones");
   let listaInstrucciones =
     instructionContainer.getElementsByClassName("instruccioninfo");
@@ -258,7 +309,7 @@ function new_instruction() {
   let instruction = "";
   for (const element of listaInstrucciones) {
 
-    
+
 
     let read = element.querySelector("#read-ins").value;
     if (read === "") {
@@ -273,7 +324,7 @@ function new_instruction() {
 
     console.log("despues = i[" + read + "] - j[" + write + "]")
 
-    pseudoCodigo.agregarLinea(origenId, read, write, mover, destino);
+    pseudoCodigo.agregarLinea(origenId, read, write, mover, final);
     //(q1, 1) -> (q2, 0, L)
     let newInstruction = ""
     if (read != write) {
@@ -289,8 +340,8 @@ function new_instruction() {
   }
   //si el nodo destino y el nodo origen son diferentes, hacemos una linea que los conecte
   console.log(instruction)
-  if (origenId != destino) {
-    generate_line(instruction);
+  if (origenId != final) {
+    generate_line(instruction, destino);
   } else {
     addSelfLine(instruction);
   }
@@ -308,12 +359,11 @@ function addSelfLine(instruction) {
 }
 
 // Creamos una nueva línea de conexión entre dos nodos y añadimos la instrucción correspondiente
-function generate_line(instruction) {
+function generate_line(instruction, destino) {
   let origen = CURRENT_CLICKED_NODE[1]; // Obtenemos el nodo de origen (al que le hicimos click derecho0)
   e = document.getElementById("destino");
-  let destino = e.options[e.selectedIndex].value; // Obtenemos el nodo de destino seleccionado en el menú desplegable
 
-  destino = NODES.find((element) => element[0] === destino)[1]; //obmos el elemento html usando el id
+
 
   fixPosition();
 

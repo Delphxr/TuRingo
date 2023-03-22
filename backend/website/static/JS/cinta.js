@@ -58,24 +58,30 @@ async function executeCode() {
 
   let circle = startLoading()
 
-  const response = await fetch('http://140.84.172.6:5000/turing-compiler', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
-  })
-  const code = await response.json();
+  try {
+    const response = await fetch('http://140.84.172.6:5000/turing-compiler', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
+    })
+    const code = await response.json();
 
 
-  circle.remove()
+    circle.remove()
 
-  
-  if (code.hasOwnProperty('error')) {
-    console.log(code)
-  } else {
-    animateCode(code)
+
+    if (code.hasOwnProperty('error')) {
+      console.log(code)
+    } else {
+      animateCode(code)
+    }
+  } catch {
+    console.log("hubo un error al conectarse con el API")
+    circle.remove()
   }
+
 }
 
 async function animateCode(instrucciones) {
