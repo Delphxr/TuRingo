@@ -161,7 +161,7 @@ async function nextInstruction() {
   }
 
 
-  current_instruction++;
+  
 
   let insActual = localInstrucciones.instrucciones[current_instruction]
 
@@ -184,6 +184,8 @@ async function nextInstruction() {
   } else if (insActual.movimiento === "R") {
     moveTapeRight();
   }
+
+  current_instruction++;
 
 }
 
