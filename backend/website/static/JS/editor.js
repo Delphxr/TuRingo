@@ -289,7 +289,7 @@ var elmWrapper = document.getElementById("wrapper"),
 //generamos una nueva instrucción
 function new_instruction() {
   let origenId = CURRENT_CLICKED_NODE[0];
-  let mover = document.getElementById("cinta").value; //L o R
+  let mover = document.querySelector('input[name="directionT"]:checked').value; //L o R
   e = document.getElementById("destino");
   let final = e.options[e.selectedIndex].value;
 

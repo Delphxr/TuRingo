@@ -46,7 +46,7 @@
 }
 
 .menu-radial.active li {
-  transform: rotate(calc(360deg / 3 * var(--i))) translateY(70px);
+  transform: rotate(calc(360deg / 3 * var(--i))) translateY(60px);
 
 }
 

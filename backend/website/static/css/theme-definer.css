@@ -35,7 +35,7 @@
     --action-color-border-hover: #1d8c9c;
     --action-color-active: #6de0f0;
     --action-color-border-active: #1d8c9c;
-    --action-color-text-active: #33bacc;
+    --action-color-text-active: #1d8c9c;
 
     --stop-color: #fb8880;
     --stop-color-border: #e4665d;
@@ -45,7 +45,7 @@
     --stop-color-border-hover: #e4665d;
     --stop-color-active: #ffaaa4;
     --stop-color-border-active: #e4665d;
-    --stop-color-text-active: #fb8880;
+    --stop-color-text-active: #e4665d;
 
     --skip-color: #f6d178;
     --skip-color-border: #f2b459;
@@ -55,7 +55,7 @@
     --skip-color-border-hover: #f2b459;
     --skip-color-active: #ffeab8;
     --skip-color-border-active: #f2b459;
-    --skip-color-text-active: #f6d178;
+    --skip-color-text-active: #f2b459;
  }
 
 .theme-light {
@@ -96,7 +96,7 @@
     --action-color-border-hover: #0f4cc2;
     --action-color-active: #0db9fd;
     --action-color-border-active: #0e4dc2;
-    --action-color-text-active: #0d6efd;
+    --action-color-text-active: #0e4dc2;
 
     --stop-color: #dc3545;
     --stop-color-border: #b02a37;
@@ -106,7 +106,7 @@
     --stop-color-border-hover: #b02a37;
     --stop-color-active: #fe5757;
     --stop-color-border-active: #b02a37;
-    --stop-color-text-active: #dc3545;
+    --stop-color-text-active: #b02a37;
 
     --skip-color: #ffba26;
     --skip-color-border: #ff8b14;
@@ -116,7 +116,7 @@
     --skip-color-border-hover: #ff8b14;
     --skip-color-active: #fcd86e;
     --skip-color-border-active: #ff8b14;
-    --skip-color-text-active: #ffba26;
+    --skip-color-text-active: #ff8b14;
  }
 
  .theme-dark {
@@ -156,7 +156,7 @@
     --action-color-border-hover: #4531ad;
     --action-color-active: #6e65fc;
     --action-color-border-active: #4531ad;
-    --action-color-text-active: #4f45e9;
+    --action-color-text-active: #4531ad;
 
     --stop-color: #E94545;
     --stop-color-border: #b73358;
@@ -166,7 +166,7 @@
     --stop-color-border-hover: #b73358;
     --stop-color-active: #f97575;
     --stop-color-border-active: #b73358;
-    --stop-color-text-active: #E94545;
+    --stop-color-text-active: #b73358;
 
     --skip-color: #f8b94e;
     --skip-color-border: #e57838;
@@ -176,7 +176,7 @@
     --skip-color-border-hover: #e57838;
     --skip-color-active: #fbdc6d;
     --skip-color-border-active: #e57838;
-    --skip-color-text-active: #f8b94e;
+    --skip-color-text-active: #e57838;
  }
 
  .theme-matrix {

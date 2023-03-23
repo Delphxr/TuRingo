@@ -283,6 +283,30 @@ body {
   color: var(--skip-color-text-active) !important;
 }
 
+.direction-button {
+  width: 20%;
+  height: 43px;
+  margin: 5px;
+  background-color: var(--color-light);
+  border: 3px solid;
+  border-color: var(--color-terciary);
+  color: var(--text-color);
+  box-shadow: 0 8px 0 var(--color-terciary);
+}
+
+.btn-check:hover+.direction-button {
+  border-color: var(--skip-color-border-hover);
+  color: var(--skip-color-text);
+  box-shadow: 0 8px 0 var(--skip-color-shadow);
+}
+
+.btn-check:checked+.direction-button {
+  background-color: var(--skip-color-active) !important;
+  border-color: var(--skip-color-border-active) !important;
+  color: var(--skip-color-text-active) !important;
+  box-shadow: 0 8px 0 var(--skip-color-shadow);
+}
+
 #elm-point {
   position: absolute;
   width: 0;
