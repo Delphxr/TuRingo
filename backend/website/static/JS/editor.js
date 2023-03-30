@@ -100,6 +100,13 @@ function getPosition(e) {
   };
 }
 
+function getAbsolutePosition(elemento) {
+  let rect = elemento.getBoundingClientRect();
+  return { x: rect.left, y: rect.top };
+}
+
+
+
 //colocamos la pocision actual del mouse en una variable global
 function setPosition(e) {
   let position = getPosition(e);
@@ -134,9 +141,8 @@ function generate_circle() {
   })
 
   dot.addEventListener("click", (e) => {
-    if (connectMode) {
+    if (connectMode) { //si hacemos click en un nodo mientras tenemos una linea de coneccion siguiendo el mouse
       let elmTarget = NODES.find((element) => element[1] === e.target);
-      console.log(elmTarget)
       line.remove();
       $("#modal_instruccion").modal("show");
       let destinoSelect = document.getElementById("destino");
@@ -161,9 +167,10 @@ function generate_circle() {
     CURRENT_CLICKED_NODE = [currentId, e.currentTarget];
 
     // Muestra el menú de opciones
-    let rect = e.currentTarget.getBoundingClientRect()
-    menu_nodo.style.top = `calc(${rect.top}px - 40px)`;
-    menu_nodo.style.left = `calc(${rect.left}px - 40px)`;
+    let rect = e.currentTarget
+    const { x, y } = getAbsolutePosition(rect)
+    menu_nodo.style.top = `calc(${y}px - 40px)`;
+    menu_nodo.style.left = `calc(${x}px - 40px)`;
     menu_nodo.classList.add("active");
 
     // Muestra el div de "outClick" para poder cerrar el menú de opciones
@@ -185,6 +192,11 @@ function generate_circle() {
   dot.classList.add("dot");
 
   NODES.push([ID, dot]);
+
+  if (NODES.length == 1) {
+    set_start_node(dot)
+  }
+
   // Establece el color de fondo y el borde del círculo
   dot.style.backgroundColor = color[0];
   dot.style.borderColor = color[1];
@@ -315,7 +327,7 @@ function new_instruction() {
       write = "_"
     }
 
-    console.log("despues = i[" + read + "] - j[" + write + "]")
+
 
     pseudoCodigo.agregarLinea(origenId, read, write, mover, final);
     //(q1, 1) -> (q2, 0, L)
@@ -345,10 +357,23 @@ function new_instruction() {
 function addSelfLine(instruction) {
   let origen = CURRENT_CLICKED_NODE[1]; //obtenemos el nodo irgen al que le dimos click
 
-  origen.innerHTML +=
-    '<svg class="arrow" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><g stroke-width="16" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.8746197071393959,-0.4848096202463369,0.4848096202463369,0.8746197071393959,-450.77173095429305,61.07596524277645)" style="stroke:var(--line-color) !important;"><path d="M177.3860626220703 327.4269676208496Q954.3860626220703 159.4269676208496 375.3860626220703 525.4269676208496 " marker-end="url(#SvgjsMarker3954)"></path></g><defs><marker markerWidth="4.5" markerHeight="4.5" refX="2.25" refY="2.25" viewBox="0 0 4.5 4.5" orient="auto" id="SvgjsMarker3954"><polygon points="0,4.5 0,0 4.5,2.25" fill="#ffffff" style="fill: var(--line-color) !important;"></polygon></marker></defs><text style="stroke-linejoin: round; paint-order: stroke; stroke-width: 2.11118px; stroke: var(--color-secondary); fill: var(--text-color)" x="200px" y="100px" >' +
-    instruction +
-    '</text></svg>';
+  if (origen.getElementsByClassName("arrow") == 0) {
+    origen.innerHTML +=
+      '<svg class="arrow" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><g stroke-width="16" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.8746197071393959,-0.4848096202463369,0.4848096202463369,0.8746197071393959,-450.77173095429305,61.07596524277645)" style="stroke:var(--line-color) !important;"><path d="M177.3860626220703 327.4269676208496Q954.3860626220703 159.4269676208496 375.3860626220703 525.4269676208496 " marker-end="url(#SvgjsMarker3954)"></path></g><defs><marker markerWidth="4.5" markerHeight="4.5" refX="2.25" refY="2.25" viewBox="0 0 4.5 4.5" orient="auto" id="SvgjsMarker3954"><polygon points="0,4.5 0,0 4.5,2.25" fill="#ffffff" style="fill: var(--line-color) !important;"></polygon></marker></defs><text style="stroke-linejoin: round; paint-order: stroke; stroke-width: 2.11118px; stroke: var(--color-secondary); fill: var(--text-color)" x="200px" y="100px" >' +
+      instruction +
+      '</text></svg>';
+  } else {
+    let num = origen.getElementsByClassName("arrow").length
+    origen.innerHTML +=
+      '<svg class="arrow" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 800 800"><g stroke-width="16" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0.8746197071393959,-0.4848096202463369,0.4848096202463369,0.8746197071393959,-450.77173095429305,61.07596524277645)" style="stroke:var(--line-color) !important;"><path d="M177.3860626220703 327.4269676208496Q954.3860626220703 159.4269676208496 375.3860626220703 525.4269676208496 " marker-end="url(#SvgjsMarker3954)"></path></g><defs><marker markerWidth="4.5" markerHeight="4.5" refX="2.25" refY="2.25" viewBox="0 0 4.5 4.5" orient="auto" id="SvgjsMarker3954"><polygon points="0,4.5 0,0 4.5,2.25" fill="#ffffff" style="fill: var(--line-color) !important;"></polygon></marker></defs><text style="stroke-linejoin: round; paint-order: stroke; stroke-width: 2.11118px; stroke: var(--color-secondary); fill: var(--text-color)" x="200px" y="' + 
+      (100 + 70*num) +
+      'px" >' +
+      instruction +
+      '</text></svg>';
+    
+  }
+
+
 }
 
 // Creamos una nueva línea de conexión entre dos nodos y añadimos la instrucción correspondiente
@@ -367,10 +392,23 @@ function generate_line(instruction, destino) {
       path: "magnet", // Establecemos el tipo de camino que seguirá la línea para conectar los nodos
     });
 
+  //revisamos su hay mas instrucciones que conectan los mismos 2 nodos
+  let offset = 0 
+  for (const element of LINES) {
+    let l = element[0]
+    if (l.start == origen && l.end == destino) {
+      offset += 20;
+      console.log("coma mango")
+    }
+  }
+
+
   line.setOptions({
     // Establecemos las opciones de la línea, en este caso, añadimos una etiqueta en el centro de la línea con la instrucción
-    middleLabel: LeaderLine.captionLabel(instruction, { color: "var(--text-color)", outlineColor: "var(--color-secondary)" }),
+    middleLabel: LeaderLine.captionLabel(instruction, { color: "var(--text-color)", outlineColor: "var(--color-secondary)"}),
   });
+
+  
 
   let line_element = document.querySelector("body>.leader-line:last-of-type"); // Obtenemos el elemento HTML de la línea creada por LeaderLine
 

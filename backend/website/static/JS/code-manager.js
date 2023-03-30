@@ -9,6 +9,9 @@ class PseudoCodigo {
   generateId() {
     let newID = "q" + this.id;
     this.id = this.id + 1;
+    
+    this.codigo[newID] = [];
+
     return newID;
   }
 
