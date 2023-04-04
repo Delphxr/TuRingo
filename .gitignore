@@ -10,6 +10,15 @@ lerna-debug.log*
 __pycache__/
 backend/website/__pycache__/
 
+**/build/
+**/*.egg-info/
+build/
+/build/
+*.egg-info/
+turingo.egg-info/
+backend/website/turingo.egg-info/
+backend/website/build/
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
