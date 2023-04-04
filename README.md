@@ -35,7 +35,7 @@ Se utilizaron las siguientes tecnologías para desarrollar la aplicación:
 - Descargar o clonar este repositorio
 - Abrir el folder `backend`
 - Ejecutar el archivo `app.py` dentro del folder `backend`
-- En el navegador, abrir el URL http://127.0.0.1:5000/ para accederla localmente, o bien abrir el URL http://140.84.172.6:5000/ para accederla en la nube
+- En el navegador, abrir el URL http://127.0.0.1:5000/ para accederla localmente
 
 ## Status
 Actualmente, la primera version de Turingo se encuentra en desarrollo.
