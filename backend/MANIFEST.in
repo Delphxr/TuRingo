@@ -1,0 +1,3 @@
+recursive-include website/static *
+recursive-include website/templates *
+global-exclude *.pyc
