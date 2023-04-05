@@ -35,6 +35,7 @@ Se utilizaron las siguientes tecnologías para desarrollar la aplicación:
 ### Ejecución de la aplicación
 - Descargar o clonar este repositorio
 - Abrir el folder `backend`
+- En el archivo app.py dentro del directorio TuRingo/backend, cambiar la línea 6 por: `mongo\_uri = "mongodb://localhost:27017"` para poder realizar la conexión a la base de datos localmente.
 - Ejecutar el archivo `app.py` dentro del folder `backend`
 - En el navegador, abrir el URL http://127.0.0.1:5000/ para accederla localmente
 
