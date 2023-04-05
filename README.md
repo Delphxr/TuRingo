@@ -30,6 +30,7 @@ Se utilizaron las siguientes tecnologías para desarrollar la aplicación:
 - [Descargar la versión más reciente de Python](https://www.python.org/downloads/)
 - [Descargar la versión más reciente de MongoDB](https://www.mongodb.com/try/download/community)
 - Correr el comando `pip install -U Flask` para instalar Flask
+- Correr el comando `pip install pymongo` para instalar PyMongo
 
 ### Ejecución de la aplicación
 - Descargar o clonar este repositorio
