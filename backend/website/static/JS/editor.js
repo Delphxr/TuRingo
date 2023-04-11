@@ -317,13 +317,13 @@ function new_instruction() {
 
 
     let read = element.querySelector("#read-ins").value;
-    if (read === "") {
+    if (read === "" || read == " ") {
       read = "_"
     }
 
 
     let write = element.querySelector("#write-ins").value;
-    if (write === "") {
+    if (write === "" || write == " ") {
       write = "_"
     }
 

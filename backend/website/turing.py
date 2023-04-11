@@ -15,7 +15,7 @@ class TuringMachine:
 
         # buscamos el estado inicial
         for i in self.input_json:
-            print(self.input_json[i]["inicial"])
+            #print(self.input_json[i]["inicial"])
             if (self.input_json[i]["inicial"] == "True"):
                 self.current_state = i
                 return
@@ -50,7 +50,7 @@ class TuringMachine:
 
             # iteramos las intrucciones
             for instruction in state['instrucciones']:
-                print(instruction["leer"], cinta[index])
+                #print(instruction["leer"], cinta[index])
                 # Actualiza la cinta y el índice según la instrucción
                 if (instruction["leer"] != cinta[index]):
                     continue
@@ -70,7 +70,7 @@ class TuringMachine:
                 instrucciones.append({
                     "movimiento": instruction['direccion'],
                     "valorNuevo": instruction['escribir'],
-                    "nodo": self.current_state
+                    "nodo": instruction['estado_siguiente']
                 })
 
                 if (index < 0 or len(cinta) <= index):
@@ -79,7 +79,7 @@ class TuringMachine:
                 # Actualiza el estado actual de la máquina con el estado siguiente de la instrucción
                 self.current_state = instruction['estado_siguiente']
 
-            print(sin_salida)
+            #print(sin_salida)
             if (sin_salida):
                 end = False
 
@@ -91,7 +91,7 @@ class TuringMachine:
         }
         return output_dict
 
-
+#esto es un ejempl
 # code = '{"q0":{"inicial":"True","apodo":"","instrucciones":[{"leer":" ","escribir":"_","direccion":"R","estado_siguiente":"q4"}]},"q3":{"inicial":"False","apodo":"","instrucciones":[{"leer":"_","escribir":"_","direccion":"R","estado_siguiente":"q2"}]},"q4":{"inicial":"False","apodo":"","instrucciones":[{"leer":"_","escribir":"0","direccion":"R","estado_siguiente":"q3"}]},"q2":{"inicial":"False","apodo":"","instrucciones":[{"leer":"_","escribir":"1","direccion":"R","estado_siguiente":"q0"}]}}'
 
 # maquina = TuringMachine()
