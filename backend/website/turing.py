@@ -42,7 +42,7 @@ class TuringMachine:
 
         # Ciclo principal que se ejecuta mientras el estado actual tenga instrucciones
         end = True
-        sin_salida = True
+        sin_salida = True #si entramos en un nodo, y no hay ninguna transicion viable, llegamos a un callejon sin salida
         while end:
             sin_salida = True
             # Obtiene las instrucciones para el estado actual del JSON de entrada
@@ -57,14 +57,9 @@ class TuringMachine:
 
                 sin_salida = False
 
-                if instruction['direccion'] == "R":
-                    cinta = cinta[:index] + \
-                        instruction['escribir'] + cinta[index+1:]
-                    index += 1
-                elif instruction['direccion'] == "L":
-                    cinta = cinta[:index] + \
-                        instruction['escribir'] + cinta[index+1:]
-                    index -= 1
+                cinta = cinta[:index] + instruction['escribir'] + cinta[index+1:]
+                
+                index += 1 if instruction['direccion'] == "R" else index -1
 
                 # Agrega la instrucción actual a la lista de instrucciones
                 instrucciones.append({
