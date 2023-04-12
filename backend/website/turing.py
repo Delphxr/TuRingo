@@ -59,7 +59,10 @@ class TuringMachine:
 
                 cinta = cinta[:index] + instruction['escribir'] + cinta[index+1:]
                 
-                index += 1 if instruction['direccion'] == "R" else index -1
+                if instruction['direccion'] == "R":
+                    index += 1
+                elif instruction['direccion'] == "L":
+                    index =-1
 
                 # Agrega la instrucción actual a la lista de instrucciones
                 instrucciones.append({
