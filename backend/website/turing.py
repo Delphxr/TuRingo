@@ -2,6 +2,8 @@ import json
 
 debug = True
 
+max_steps = 150 #numero total de pasos que la maquina puede hacer, así evitamos maquinas que tengan un loop infinito
+
 
 class TuringMachine:
     def __init__(self):
@@ -29,6 +31,7 @@ class TuringMachine:
             return {'error': 'no hay nodo inicial'}
 
         # Inicializa la cinta y el índice inicial
+        current_step = 0
         margin_index = 100
         margenes = self.vacio * margin_index
         index = margin_index
@@ -50,10 +53,12 @@ class TuringMachine:
 
             # iteramos las intrucciones
             for instruction in state['instrucciones']:
-                #print(instruction["leer"], cinta[index])
-                # Actualiza la cinta y el índice según la instrucción
+                
+                #si lo que queremos leer no es igual al elemento actual de la cinta, no podemos hacer nada
                 if (instruction["leer"] != cinta[index]):
                     continue
+
+                current_step += 1
 
                 sin_salida = False
 
@@ -71,14 +76,16 @@ class TuringMachine:
                     "nodo": instruction['estado_siguiente']
                 })
 
-                if (index < 0 or len(cinta) <= index):
+                if (index < 0 or len(cinta) <= index): # nos salimos al llegar al final de la cinta
                     end = False
-                    break  # nos salimos al finalizar la cinta
+                    break  
+
                 # Actualiza el estado actual de la máquina con el estado siguiente de la instrucción
                 self.current_state = instruction['estado_siguiente']
+                break
 
             #print(sin_salida)
-            if (sin_salida):
+            if (sin_salida or current_step > max_steps):
                 end = False
 
         # Crea un diccionario con la información final y lo devuelve
@@ -90,9 +97,18 @@ class TuringMachine:
         return output_dict
 
 #esto es un ejempl
-# code = '{"q0":{"inicial":"True","apodo":"","instrucciones":[{"leer":" ","escribir":"_","direccion":"R","estado_siguiente":"q4"}]},"q3":{"inicial":"False","apodo":"","instrucciones":[{"leer":"_","escribir":"_","direccion":"R","estado_siguiente":"q2"}]},"q4":{"inicial":"False","apodo":"","instrucciones":[{"leer":"_","escribir":"0","direccion":"R","estado_siguiente":"q3"}]},"q2":{"inicial":"False","apodo":"","instrucciones":[{"leer":"_","escribir":"1","direccion":"R","estado_siguiente":"q0"}]}}'
+malo = '{"q0":{"inicial":"True","apodo":"","instrucciones":[{"leer":"a","escribir":"_","direccion":"R","estado_siguiente":"q2"},{"leer":"b","escribir":"_","direccion":"R","estado_siguiente":"q1"}]},"q1":{"inicial":"False","apodo":"","instrucciones":[{"leer":"a","escribir":"a","direccion":"R","estado_siguiente":"q1"},{"leer":"b","escribir":"b","direccion":"R","estado_siguiente":"q1"}]},"q2":{"inicial":"False","apodo":"","instrucciones":[{"leer":"a","escribir":"a","direccion":"R","estado_siguiente":"q2"},{"leer":"b","escribir":"b","direccion":"R","estado_siguiente":"q2"}]}}'
+bueno = '{"q0":{"inicial":"True","apodo":"","instrucciones":[{"leer":"b","escribir":"_","direccion":"R","estado_siguiente":"q1"},{"leer":"a","escribir":"_","direccion":"R","estado_siguiente":"q2"}]},"q1":{"inicial":"False","apodo":"","instrucciones":[{"leer":"a","escribir":"a","direccion":"R","estado_siguiente":"q1"},{"leer":"b","escribir":"b","direccion":"R","estado_siguiente":"q1"}]},"q2":{"inicial":"False","apodo":"","instrucciones":[{"leer":"a","escribir":"a","direccion":"R","estado_siguiente":"q2"},{"leer":"b","escribir":"b","direccion":"R","estado_siguiente":"q2"}]}}'
 
-# maquina = TuringMachine()
-# maquina.set_code(code)
+maquina = TuringMachine()
+maquina.set_code(malo)
+maquina.set_blank("_")
 
-# print(maquina.run(None))
+print("\n\n\nMALO:\n\n\n")
+
+print(maquina.run("abba"))
+
+print("\n\n\nBUENO:\n\n\n")
+
+maquina.set_code(bueno)
+print(maquina.run("abba"))
