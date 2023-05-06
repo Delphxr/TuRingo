@@ -275,41 +275,22 @@ def crear_tarea():
         elif(id_creador == None or id_creador == "" or id_creador == " "):
             flash("El ID del creador de la tarea no puede estar vacío.",category='error')
         else:
-            valid = True
+            entradasalida = []
 
-            for entrada in entradas:
-                if entrada.strip() == "":
-                    valid = False
-                    break
+            for entrada, salida in zip(entradas, salidas):
+                entradasalida.append({'entrada': entrada, 'salida': salida})
 
-            for salida in salidas:
-                if salida.strip() == "":
-                    valid = False
-                    break
-            
-            print(valid)
-            if valid:
-                entradasalida = []
+            result = {'entradasalida': entradasalida}
 
-                for entrada, salida in zip(entradas, salidas):
-                    entradasalida.append({'entrada': entrada, 'salida': salida})
-
-                result = {'entradasalida': entradasalida}
-
-                try:
-                    insertar_tarea(nombre, descripcion, fechacreacion, id_creador, entradasalida, True)
-                    flash('Se ha creado una tarea correctamente!', category='success')
-                    administrador = get_usuario(id_creador)
-                    tareas_administrador = get_tareas_creador(id_creador)
-                    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
-                except Exception as e:
-                    flash("Error: No se dio un administrador valido.",category='error')
-                    return render_template("administrador.html",administrador=None,tareas_administrador=None)
-            elif not valid:
-                flash("Todas las entradas y salidas deben estar llenas.",category='error')
+            try:
+                insertar_tarea(nombre, descripcion, fechacreacion, id_creador, entradasalida, True)
+                flash('Se ha creado una tarea correctamente!', category='success')
                 administrador = get_usuario(id_creador)
                 tareas_administrador = get_tareas_creador(id_creador)
                 return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+            except Exception as e:
+                flash("Error: No se dio un administrador valido.",category='error')
+                return render_template("administrador.html",administrador=None,tareas_administrador=None)
 
     administrador = get_usuario(id_creador)
 
