@@ -278,12 +278,12 @@ def crear_tarea():
             valid = True
 
             for entrada in entradas:
-                if not entrada.strip():
+                if entrada.strip() == "":
                     valid = False
                     break
 
             for salida in salidas:
-                if not salida.strip():
+                if salida.strip() == "":
                     valid = False
                     break
             
