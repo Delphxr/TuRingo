@@ -272,6 +272,8 @@ def crear_tarea():
             flash("La descripcion no puede estar vacía.",category='error')
         elif(bool(re.match('[0-9a-zA-Z\s]+$', descripcion))==False):
             flash("Solo puede usar caracteres de A-Z  y números en la descripcion.",category='error')
+        elif(id_creador == None or id_creador == "" or id_creador == " "):
+            flash("El ID del creador de la tarea no puede estar vacío.",category='error')
         else:
             valid = True
 
@@ -294,11 +296,15 @@ def crear_tarea():
 
                 result = {'entradasalida': entradasalida}
 
-                flash('Se ha creado una tarea correctamente!', category='success')
-                insertar_tarea(nombre, descripcion, fechacreacion, id_creador, entradasalida, True)
-                administrador = get_usuario(id_creador)
-                tareas_administrador = get_tareas_creador(id_creador)
-                return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+                try:
+                    insertar_tarea(nombre, descripcion, fechacreacion, id_creador, entradasalida, True)
+                    flash('Se ha creado una tarea correctamente!', category='success')
+                    administrador = get_usuario(id_creador)
+                    tareas_administrador = get_tareas_creador(id_creador)
+                    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+                except Exception as e:
+                    flash("Error: No se dio un administrador valido.",category='error')
+                    return render_template("administrador.html",administrador=None,tareas_administrador=None)
             elif not valid:
                 flash("Todas las entradas y salidas deben estar llenas.",category='error')
                 administrador = get_usuario(id_creador)
