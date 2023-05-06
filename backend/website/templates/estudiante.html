@@ -107,10 +107,11 @@
                 <div class="col-3 rounded-3">
                     <div class="card">
                         <div class="card-body text-center">
-                            <h5 class="card-title">Nombre Estudiante</h5>
+                            <h5 class="card-title">{{ estudiante['nombre'] }} {{ estudiante['apellidos'] }}</h5>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><i class="bi bi-envelope"></i> estudiante@estudiantec.cr</li>
-                                <li class="list-group-item"><i class="bi bi-telephone"></i> 2020044568</li>
+                                <li class="list-group-item"><i class="bi bi-envelope"></i> {{ estudiante['correo'] }}</li>
+                                <li class="list-group-item"><i class="bi bi-telephone"></i> {{ estudiante['carne'] }}</li>
+                                <li class="list-group-item"><i class="bi bi-telephone"></i>  Tipo usuario: {{ estudiante['tipousuario'] }}</li>
                             </ul>
                         </div>
                     </div>
@@ -129,24 +130,16 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% if tareas_usuario %}
+                                {% for tarea in tareas_usuario: %}
                                 <tr>
-                                    <td>Name 1</td>
-                                    <td>Note 1</td>
-                                    <td>Date 1</td>
+                                    <td>{{ tarea['informacion'][0].nombre }}</td>
+                                    <td>{{ tarea['nota'] }}</td>
+                                    <td>{{ tarea['fechaentrega'] }}</td>
                                     <td><button type="button" class=" action-button btn btn-primary">Ver</button></td>
                                 </tr>
-                                <tr>
-                                    <td>Name 2</td>
-                                    <td>Note 2</td>
-                                    <td>Date 2</td>
-                                    <td><button type="button" class=" action-button btn btn-primary">Ver</button></td>
-                                </tr>
-                                <tr>
-                                    <td>Name 3</td>
-                                    <td>Note 3</td>
-                                    <td>Date 3</td>
-                                    <td><button type="button" class=" action-button btn btn-primary">Ver</button></td>
-                                </tr>
+                                {% endfor %}
+                                {% endif %}
                                
                            </tbody>
                      </table>
