@@ -63,10 +63,10 @@ def signup():
             flash("Los apellidos no pueden estar vacíos.",category='error')
         elif(bool(re.match('[a-zA-Z\s]+$', apellidos))==False):
             flash("Solo puede usar caracteres de A-Z en los apellidos.",category='error')
-        elif carne == None or carne == "" or carne == " ":
-            flash("El carne no puede estar vacío.",category='error')
-        elif not carne.isnumeric():
-            flash("Solo puede usar números en el carne.",category='error')
+        #elif carne == None or carne == "" or carne == " ":
+        #    flash("El carne no puede estar vacío.",category='error')
+        #elif not carne.isnumeric():
+        #    flash("Solo puede usar números en el carne.",category='error')
         else:
             if check_existing_user(correo):
                 flash("El usuario ya está registrado en la base de datos.", category='error')
@@ -87,6 +87,8 @@ def get_usuarios():
 
 def get_tareas():
     from app import usuarios
+    from app import tareas
+
     lista_tareas = list(tareas.find())
 
     return lista_tareas
@@ -124,15 +126,43 @@ def get_tarea_busqueda(busqueda):
 
     return tareas_encontradas
 
+def get_usuario_busqueda(busqueda):
+    from app import usuarios
+
+    usuarios_encontrados = usuarios.find({
+        "$or": [
+            {"nombre": {"$regex": busqueda, "$options": "i"}},
+            {"apellidos": {"$regex": busqueda, "$options": "i"}}
+        ]
+    })
+
+    return usuarios_encontrados
+
 def get_tarea(tarea_id):
     from app import usuarios
+    from app import tareas
 
     try:
         document = tareas.find_one({'_id': ObjectId(tarea_id)})
         if document:
-            return document  # Return the document as a string representation
+            return document
         else:
-            return 'Tarea no encontrada'
+            print('Tarea no encontrada')
+            return None
+    except Exception as e:
+        return str(e)
+
+def get_datos_entrada_salida(id_tarea):
+    from app import datos_entrada_salida
+    from app import tareas
+
+    try:
+        document = datos_entrada_salida.find_one({'idtarea': ObjectId(id_tarea)})
+        if document:
+            return document
+        else:
+            print('Datos de entrada y salida no encontrados')
+            return None
     except Exception as e:
         return str(e)
 
@@ -151,12 +181,28 @@ def get_usuario(usuario_id):
 def cambiar_permiso_usuario(usuario_id, tipo_usuario):
     from app import usuarios
 
-    usuarios.update_one(
-        {'_id': usuario_id},
-        {'$set': {'tipousuario': tipo_usuario}}
-    )
+    tipo_usuario = tipo_usuario.upper()
+    print(tipo_usuario)
 
-    return 'Permisos de usuario cambiados con exito'
+    nuevo_tipo = ""
+
+    if tipo_usuario == "ESTUDIANTE":
+        nuevo_tipo = "administrador"
+    elif tipo_usuario == "ADMINISTRADOR":
+        nuevo_tipo = "estudiante"
+
+    administrador_count = usuarios.count_documents({'tipousuario': 'administrador'})
+
+    if administrador_count == 1 and nuevo_tipo == 'estudiante':
+        flash("No se puede cambiar el tipo de usuario. Debe haber al menos un usuario con tipo 'administrador'.", category='error')
+    else:
+        usuarios.update_one(
+            {'_id': ObjectId(usuario_id)},
+            {'$set': {'tipousuario': nuevo_tipo}}
+        )
+        flash("Tipo de cuenta del usuario cambiado con éxito a " + nuevo_tipo, category='success')
+
+    return
 
 def insertar_tarea(nombre,descripcion,fechacreacion,idcreador,entradasalida,ejemplo):
     from app import tareas
@@ -201,7 +247,14 @@ def home():
 
 @views.route('/editor', methods=['GET','POST'])
 def editor():
-    return render_template("editor.html")
+    id_tarea = request.args.get('id_tarea')
+    tarea = get_tarea(id_tarea)
+    print(tarea)
+
+    datos_entrada_salida = get_datos_entrada_salida(id_tarea)
+    print(datos_entrada_salida)
+
+    return render_template("editor.html",tarea=tarea,datos_entrada_salida=datos_entrada_salida)
 
 @views.route('/estudiante', methods=['GET','POST'])
 def estudiantes():
@@ -233,11 +286,22 @@ def estudiantes():
 def busqueda_tarea():
     busqueda = request.args.get('busqueda', default = '*', type = str)
     busqueda=busqueda.upper()
-    if (len(busqueda)<3):
-        return render_template("busqueda_tarea.html",tareas=None,busqueda=busqueda)
-    else:
-        tareas = get_tarea_busqueda(busqueda)
-        return render_template("busqueda_tarea.html",tareas=tareas,busqueda=busqueda)
+    print(busqueda)
+
+    lista_tareas = get_tarea_busqueda(busqueda)
+
+    return render_template("ver_tareas.html",lista_tareas=lista_tareas,busqueda=busqueda)
+
+@views.route('/busqueda_usuario',methods=['GET','POST'])
+def busqueda_usuario():
+    busqueda = request.args.get('busqueda', default = '*', type = str)
+    busqueda=busqueda.upper()
+    print(busqueda)
+
+    lista_estudiantes = get_usuario_busqueda(busqueda)
+    print(lista_estudiantes)
+
+    return render_template("ver_estudiantes.html",lista_estudiantes=lista_estudiantes,busqueda=busqueda)
 
 @views.route('/administrador', methods=['GET','POST'])
 def administrador():
@@ -297,6 +361,28 @@ def crear_tarea():
     tareas_administrador = get_tareas_creador(id_creador)
 
     return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+
+@views.route('/ver_tareas', methods=['GET','POST'])
+def ver_tareas():
+    lista_tareas = get_tareas()
+    return render_template("ver_tareas.html",lista_tareas=lista_tareas)
+
+@views.route('/ver_estudiantes', methods=['GET','POST'])
+def ver_estudiantes():
+    lista_estudiantes = get_usuarios()
+    return render_template("ver_estudiantes.html",lista_estudiantes=lista_estudiantes)
+
+@views.route('/cambiar_permisos', methods=['GET','POST'])
+def cambiar_permisos():
+    id_usuario = request.args.get('id')
+    tipo_usuario = request.args.get('tipo')
+    print(id_usuario)
+    print(tipo_usuario)
+
+    cambiar_permiso_usuario(id_usuario, tipo_usuario)
+
+    lista_estudiantes = get_usuarios()
+    return render_template("ver_estudiantes.html",lista_estudiantes=lista_estudiantes)
 
 @views.route('/turing-compiler', methods=['POST'])
 def turing_compiler():
