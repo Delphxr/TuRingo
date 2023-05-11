@@ -146,7 +146,9 @@
                         <thead>
                             <tr>
                                 <th scope="col">Nombre Tarea</th>
+                                <th scope="col">Descripcion Tarea</th>
                                 <th scope="col">Fecha Creación</th>
+                                <th scope="col">Datos entrada y salida</th>
                                 <th scope="col">Editar</th>
                             </tr>
                         </thead>
@@ -155,8 +157,15 @@
                             {% for tarea in tareas_administrador: %}
                             <tr>
                                 <td>{{ tarea['nombre'] }}</td>
+                                <td>{{ tarea['descripcion'] }}</td>
                                 <td>{{ tarea['fechacreacion'] }}</td>
-                                <td><button type="button" class="action-button btn btn-primary">Editar</button></td>
+                                <td>{{ tarea['datos_entrada_salida'][0]['entradasalida'] }}</td>
+                                <td>
+                                    <button type="button" id="editarButton" class="action-button btn btn-primary" data-bs-toggle="modal" 
+                                    data-bs-target="#updateModal" onclick="updateFormAction('{{ tarea['_id'] }}')">
+                                    Editar
+                                    </button>
+                                </td>
                             </tr>
                             {% endfor %}
                             {% endif %}
@@ -223,6 +232,70 @@
         </div>
     </div>
 </div>
+
+<!-- Update Example Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Editar Ejercicio</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="/editar_tarea?id_creador={{ administrador['_id'] }}">
+                <div class="modal-body">
+                    <!-- Input fields -->
+                    <div class="row g-3 align-items-center m-2 mt-0">
+                        <div class="col-auto">
+                            <label>Nombre:</label>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" name="nombre"></input>
+                        </div>
+                    </div>
+                    <div class="row g-3 align-items-center m-2 mt-0">
+                        <div class="col-auto">
+                            <label>Descripcion:</label>
+                        </div>
+                        <div class="col">
+                            <textarea class="form-control" name="descripcion" aria-label="With textarea"></textarea>
+                        </div>
+                    </div>
+            
+                    <ul class="list-group" id="listainstruccionesEditar" style="max-height: 50%;">
+                        <li class="list-group-item instruccioninfo" id="entradasalidaEditar">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label>Entrada:</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control mx-0" type="text" name="entrada" id="readEditar"></input>
+                                </div>
+                                <div class="col-auto">
+                                    <label>Salida:</label>
+                                </div>
+                                <div class="col-4">
+                                    <input class="form-control" type="text" name="salida" id="writeEditar"></input>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <button type="button" class="btn action-button btn-secondary" onclick="addInstructionEditar()">Añadir</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn action-button btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn stop-button btn-primary">Aplicar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <script>
+        function updateFormAction(tareaId) {
+            const form = document.querySelector('#updateModal form');
+            form.action = `/editar_tarea?id_creador={{ administrador['_id'] }}&id_tarea=${tareaId}`;
+        }
+    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="{{ url_for('static',filename='JS/admin.js') }}"></script>

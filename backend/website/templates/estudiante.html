@@ -127,7 +127,7 @@
                                     <th scope="col">Nombre Tarea</th>
                                     <th scope="col">Nota</th>
                                     <th scope="col">Fecha Entrega</th>
-                                    <th scope="col">Detalles</th>
+                                    <th scope="col">Volver a hacer</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -137,7 +137,9 @@
                                     <td>{{ tarea['informacion'][0].nombre }}</td>
                                     <td>{{ tarea['nota'] }}</td>
                                     <td>{{ tarea['fechaentrega'] }}</td>
-                                    <td><button type="button" class=" action-button btn btn-primary">Ver</button></td>
+                                    <td><a href="/editor?id_tarea={{ tarea['idtarea'] }}">
+                                        <button type="button" class="action-button btn btn-primary">Rehacer</button>
+                                        </a></td>
                                 </tr>
                                 {% endfor %}
                                 {% endif %}

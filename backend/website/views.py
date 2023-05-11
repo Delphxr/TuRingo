@@ -55,14 +55,14 @@ def signup():
         print(request.form)
         if nombre == None or nombre == "" or nombre == " ":
             flash("El nombre no puede estar vacío.",category='error')
-        elif(bool(re.match('[a-zA-Z\s]+$', nombre))==False):
-            flash("Solo puede usar caracteres de A-Z en el nombre.",category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
+            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
         elif password == None or password == "" or password == " ":
             flash("El password no puede estar vacío.",category='error')
         elif apellidos == None or apellidos == "" or apellidos == " ":
             flash("Los apellidos no pueden estar vacíos.",category='error')
-        elif(bool(re.match('[a-zA-Z\s]+$', apellidos))==False):
-            flash("Solo puede usar caracteres de A-Z en los apellidos.",category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', apellidos):
+            flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en los apellidos.", category='error')
         #elif carne == None or carne == "" or carne == " ":
         #    flash("El carne no puede estar vacío.",category='error')
         #elif not carne.isnumeric():
@@ -88,8 +88,16 @@ def get_usuarios():
 def get_tareas():
     from app import usuarios
     from app import tareas
+    from app import datos_entrada_salida
 
     lista_tareas = list(tareas.find())
+
+    # Obtener los datos de entrada y salida para cada tarea
+    for tarea in lista_tareas:
+        id_tarea = tarea['_id']
+        datos = list(datos_entrada_salida.find({'idtarea': id_tarea}))
+        if datos:
+            tarea['datos_entrada_salida'] = datos[0]
 
     return lista_tareas
 
@@ -108,23 +116,37 @@ def get_tareas_usuario(usuario_id):
 
 def get_tareas_creador(creador_id):
     from app import tareas
+    from app import datos_entrada_salida
 
     try:
-        document = tareas.find({'idcreador': creador_id})
-        
-        if document:
-            return document  # Return the document as a string representation
-        else:
-            return 'Creador no encontrado'
+        tareas_encontradas = tareas.find({'idcreador': creador_id})
+        resultado = []
+
+        for tarea in tareas_encontradas:
+            tarea_actual = tarea.copy()
+            entradasalida = datos_entrada_salida.find({"idtarea": tarea["_id"]})
+            tarea_actual["datos_entrada_salida"] = list(entradasalida)
+            resultado.append(tarea_actual)
+
+        return resultado
+
     except Exception as e:
         return str(e)
 
+
 def get_tarea_busqueda(busqueda):
     from app import tareas
+    from app import datos_entrada_salida
 
-    tareas_encontradas = tareas.find({"nombre": {"$regex": busqueda, "$options": "i"}})
+    lista_tareas = list(tareas.find({"nombre": {"$regex": busqueda, "$options": "i"}}))
 
-    return tareas_encontradas
+    for tarea in lista_tareas:
+        id_tarea = tarea['_id']
+        datos = list(datos_entrada_salida.find({'idtarea': id_tarea}))
+        if datos:
+            tarea['datos_entrada_salida'] = datos[0]
+
+    return lista_tareas
 
 def get_usuario_busqueda(busqueda):
     from app import usuarios
@@ -227,18 +249,42 @@ def insertar_tarea(nombre,descripcion,fechacreacion,idcreador,entradasalida,ejem
 
     return f'Datos entrada salida agregados con el id {result2.inserted_id}'
 
-def entregar_tarea(idusuario,idtarea,fechaentrega,nota,codigodiagrama):
+def actualizar_tarea(idtarea,nombre,descripcion,fechacreacion,entradasalida):
+    from app import tareas
+    from app import datos_entrada_salida
+
+    tareas.update_one(
+        {'_id': ObjectId(idtarea)},
+        {'$set': {
+            'nombre': nombre,
+            'descripcion': descripcion,
+            'fechacreacion': fechacreacion
+        }}
+    )
+
+    datos_entrada_salida.update_one(
+        {'idtarea': ObjectId(idtarea)},
+        {'$set': {
+            'entradasalida': entradasalida
+        }}
+    )
+
+    return
+
+def entregar_tarea(idusuario,idtarea,fechaentrega,nota,codigodiagrama,entradasalida):
     from app import tareas_usuario
+    from app import datos_entrada_salida
 
     tarea_usuario = {
-        'idusuario': nombre,
-        'idtarea': descripcion,
-        'fechaentrega': fechacreacion,
-        'nota': idcreador,
+        'idusuario': idusuario,
+        'idtarea': idtarea,
+        'fechaentrega': fechaentrega,
+        'nota': nota,
         'codigodiagrama': codigodiagrama
     }
 
     result = tareas_usuario.insert_one(tarea_usuario)
+
     return f'Tarea de usuario entregada con el id {result.inserted_id}'
 
 @views.route('/',methods=['GET','POST'])
@@ -312,7 +358,7 @@ def administrador():
     administrador = get_usuario(id_creador)
 
     tareas_administrador = get_tareas_creador(id_creador)
-
+    
     return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
 
 @views.route('/crear_tarea', methods=['GET','POST'])
@@ -330,12 +376,12 @@ def crear_tarea():
 
         if nombre == None or nombre == "" or nombre == " ":
             flash("El nombre no puede estar vacío.",category='error')
-        elif(bool(re.match('[0-9a-zA-Z\s]+$', nombre))==False):
-            flash("Solo puede usar caracteres de A-Z y números en el nombre.",category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
+            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
         elif descripcion == None or descripcion == "" or descripcion == " ":
             flash("La descripcion no puede estar vacía.",category='error')
-        elif(bool(re.match('[0-9a-zA-Z\s]+$', descripcion))==False):
-            flash("Solo puede usar caracteres de A-Z  y números en la descripcion.",category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', descripcion):
+            flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en la descripcion.", category='error')
         elif(id_creador == None or id_creador == "" or id_creador == " "):
             flash("El ID del creador de la tarea no puede estar vacío.",category='error')
         else:
@@ -353,6 +399,55 @@ def crear_tarea():
                 tareas_administrador = get_tareas_creador(id_creador)
                 return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
             except Exception as e:
+                flash("Error: No se dio un administrador valido.",category='error')
+                return render_template("administrador.html",administrador=None,tareas_administrador=None)
+
+    administrador = get_usuario(id_creador)
+
+    tareas_administrador = get_tareas_creador(id_creador)
+
+    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+
+@views.route('/editar_tarea', methods=['GET','POST'])
+def editar_tarea():
+    from app import usuarios
+
+    id_creador = request.args.get('id_creador')
+    id_tarea = request.args.get('id_tarea')
+
+    if request.method == 'POST':
+        nombre = request.form.get('nombre')
+        descripcion = request.form.get('descripcion')
+        fechacreacion = datetime.now().strftime("%d-%m-%Y")
+        entradas = request.form.getlist('entrada')
+        salidas = request.form.getlist('salida')
+
+        if nombre is None or nombre.strip() == "":
+            flash("El nombre no puede estar vacío.", category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
+            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
+        elif descripcion is None or descripcion.strip() == "":
+            flash("La descripción no puede estar vacía.", category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', descripcion):
+            flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en la descripción.", category='error')
+        elif(id_creador == None or id_creador == "" or id_creador == " "):
+            flash("El ID del creador de la tarea no puede estar vacío.",category='error')
+        else:
+            entradasalida = []
+
+            for entrada, salida in zip(entradas, salidas):
+                entradasalida.append({'entrada': entrada, 'salida': salida})
+
+            result = {'entradasalida': entradasalida}
+
+            try:
+                actualizar_tarea(id_tarea,nombre,descripcion,fechacreacion,entradasalida)
+                flash('Se ha editado la tarea correctamente!', category='success')
+                administrador = get_usuario(id_creador)
+                tareas_administrador = get_tareas_creador(id_creador)
+                return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+            except Exception as e:
+                print(e)
                 flash("Error: No se dio un administrador valido.",category='error')
                 return render_template("administrador.html",administrador=None,tareas_administrador=None)
 

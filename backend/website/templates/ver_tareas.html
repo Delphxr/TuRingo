@@ -129,6 +129,7 @@
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripcion</th>
                                 <th scope="col">Fecha Creación</th>
+                                <th scope="col">Datos entrada y salida</th>
                                 <th scope="col">Realizar tarea</th>
                             </tr>
                         </thead>
@@ -139,7 +140,8 @@
                                 <td>{{ tarea['nombre'] }}</td>
                                 <td>{{ tarea['descripcion'] }}</td>
                                 <td>{{ tarea['fechacreacion'] }}</td>
-                                <td><button type="button" class="action-button btn btn-primary" onclick='javascript: window.open("/editor?id_tarea="+ "{{ tarea['_id'] }}", "_self");'>Realizar tarea</button></td>
+                                <td>{{ tarea['datos_entrada_salida']['entradasalida'] }}</td>
+                                <td><button type="button" class="action-button btn btn-primary" onclick='javascript: window.open("/editor?id_tarea="+ "{{ tarea['_id'] }}", "_self");'>Realizar</button></td>
                             </tr>
                             {% endfor %}
                             {% endif %}
