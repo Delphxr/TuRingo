@@ -302,6 +302,11 @@ def editor():
 
     return render_template("editor.html",tarea=tarea,datos_entrada_salida=datos_entrada_salida)
 
+
+@views.route('/gameditor', methods=['GET','POST'])
+def editor():
+    return render_template("gameditor.html")
+
 @views.route('/estudiante', methods=['GET','POST'])
 def estudiantes():
     from app import usuarios
