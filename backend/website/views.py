@@ -304,7 +304,7 @@ def editor():
 
 
 @views.route('/gameditor', methods=['GET','POST'])
-def editor():
+def gameditor():
     return render_template("gameditor.html")
 
 @views.route('/estudiante', methods=['GET','POST'])
