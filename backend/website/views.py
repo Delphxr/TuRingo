@@ -29,10 +29,11 @@ def insertar_usuario(nombre,apellidos,password,correo,carne,tipo_usuario):
     # Encrypt the password
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
+
     usuario = {
         'nombre': nombre,
         'apellidos': apellidos,
-        'password': hashed_password.decode('utf-8'),
+        'password': hashed_password,
         'correo': correo,
         'carne': carne,
         'tipo_usuario': tipo_usuario
@@ -45,7 +46,43 @@ def check_existing_user(correo):
     from app import usuarios
     
     existing_user = usuarios.find_one({'correo': correo})
-    return existing_user is not None
+    return existing_user
+
+def get_user_password(correo):
+    from app import usuarios
+
+    user = usuarios.find_one({'correo': correo})
+    if user:
+        return user.get('password')
+    else:
+        return None
+
+@views.route('/login', methods=['POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        tareas = get_tareas()
+        usuario = None
+
+        if check_existing_user(email):
+
+            hashed_password = get_user_password(email)
+
+            if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+                flash('Se ha iniciado sesión correctamente!', category='success')
+                usuario = True
+                return render_template("homepage.html",usuario=usuario,tareas=tareas)
+            else:
+                flash('Password incorrecta, por favor intente de nuevo.', category='error')
+                return render_template("homepage.html",tareas=tareas)
+
+        else:
+            flash('El correo no está registrado, por favor intente de nuevo.', category='error')
+            return render_template("homepage.html",tareas=tareas)
+
+    return render_template("homepage.html")
 
 
 @views.route('/signup', methods=['GET', 'POST'])
@@ -58,10 +95,13 @@ def signup():
 
         password = request.form['password']
 
-        correo = request.form['correo']
+        correo = request.form['email']
         carne = request.form['carne']
 
         tipo_usuario = 'Estudiante'
+
+        tareas = get_tareas()
+        usuario = None
 
         print(request.form)
         if nombre == None or nombre == "" or nombre == " ":
@@ -74,23 +114,24 @@ def signup():
             flash("Los apellidos no pueden estar vacíos.",category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', apellidos):
             flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en los apellidos.", category='error')
-        #elif carne == None or carne == "" or carne == " ":
-        #    flash("El carne no puede estar vacío.",category='error')
-        #elif not carne.isnumeric():
-        #    flash("Solo puede usar números en el carne.",category='error')
+        elif carne == None or carne == "" or carne == " ":
+            flash("El carne no puede estar vacío.",category='error')
+        elif not carne.isnumeric():
+            flash("Solo puede usar números en el carne.",category='error')
         else:
             if check_existing_user(correo):
                 flash("El usuario ya está registrado en la base de datos.",
                       category='error')
-                return render_template("signup.html")
+                return render_template("homepage.html")
 
             else:
                 insertar_usuario(nombre, apellidos, password,
                                  correo, carne, tipo_usuario)
                 flash('Se ha creado una cuenta correctamente!', category='success')
-                return render_template("homepage.html")
+                usuario = True
+                return render_template("homepage.html",usuario = usuario, tareas=tareas)
 
-    return render_template("signup.html")
+    return render_template("homepage.html")
 
 
 def get_usuarios():
@@ -322,7 +363,7 @@ def entregar_tarea(idusuario, idtarea, fechaentrega, nota, codigodiagrama, entra
 @views.route('/', methods=['GET', 'POST'])
 def home():
     from app import tareas
-    
+
     tareas = get_tareas()
     
 
