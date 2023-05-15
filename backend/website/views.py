@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template, request,flash
+from flask import Blueprint, render_template, request, flash
 from website import turing
 from bson import json_util
 import json
@@ -12,6 +12,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 views = Blueprint('views', __name__)
+
 
 def borrar_usuario(usuario_id):
     from app import usuarios
@@ -39,13 +40,15 @@ def insertar_usuario(nombre,apellidos,password,correo,carne,tipo_usuario):
     result = usuarios.insert_one(usuario)
     return f'Usuario agregado con el id {result.inserted_id}'
 
+
 def check_existing_user(correo):
     from app import usuarios
     
     existing_user = usuarios.find_one({'correo': correo})
     return existing_user is not None
 
-@views.route('/signup', methods=['GET','POST'])
+
+@views.route('/signup', methods=['GET', 'POST'])
 def signup():
     from app import usuarios
 
@@ -63,35 +66,39 @@ def signup():
         print(request.form)
         if nombre == None or nombre == "" or nombre == " ":
             flash("El nombre no puede estar vacío.",category='error')
-        elif not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$', nombre):
-            flash("Solo puede usar caracteres de A-Z, espacios y tildes en el nombre.", category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
+            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
         elif password == None or password == "" or password == " ":
-            flash("El password no puede estar vacío.",category='error')
+            flash("El password no puede estar vacío.", category='error')
         elif apellidos == None or apellidos == "" or apellidos == " ":
             flash("Los apellidos no pueden estar vacíos.",category='error')
-        elif not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$', apellidos):
-            flash("Solo puede usar caracteres de A-Z, espacios y tildes en los apellidos.", category='error')
-        elif carne == None or carne == "" or carne == " ":
-            flash("El carne no puede estar vacío.",category='error')
-        elif not carne.isnumeric():
-            flash("Solo puede usar números en el carne.",category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', apellidos):
+            flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en los apellidos.", category='error')
+        #elif carne == None or carne == "" or carne == " ":
+        #    flash("El carne no puede estar vacío.",category='error')
+        #elif not carne.isnumeric():
+        #    flash("Solo puede usar números en el carne.",category='error')
         else:
             if check_existing_user(correo):
-                flash("El usuario ya está registrado en la base de datos.", category='error')
+                flash("El usuario ya está registrado en la base de datos.",
+                      category='error')
                 return render_template("signup.html")
-            
+
             else:
-                insertar_usuario(nombre, apellidos, password, correo, carne, tipo_usuario)
+                insertar_usuario(nombre, apellidos, password,
+                                 correo, carne, tipo_usuario)
                 flash('Se ha creado una cuenta correctamente!', category='success')
                 return render_template("homepage.html")
 
     return render_template("signup.html")
+
 
 def get_usuarios():
     from app import usuarios
     lista_usuarios = list(usuarios.find())
 
     return lista_usuarios
+
 
 def get_tareas():
     from app import usuarios
@@ -109,18 +116,20 @@ def get_tareas():
 
     return lista_tareas
 
+
 def get_tareas_usuario(usuario_id):
     from app import tareas_usuario
 
     try:
         document = tareas_usuario.find({'idusuario': usuario_id})
-        
+
         if document:
             return document  # Return the document as a string representation
         else:
             return 'Usuario no encontrado'
     except Exception as e:
         return str(e)
+
 
 def get_tareas_creador(creador_id):
     from app import tareas
@@ -132,7 +141,8 @@ def get_tareas_creador(creador_id):
 
         for tarea in tareas_encontradas:
             tarea_actual = tarea.copy()
-            entradasalida = datos_entrada_salida.find({"idtarea": tarea["_id"]})
+            entradasalida = datos_entrada_salida.find(
+                {"idtarea": tarea["_id"]})
             tarea_actual["datos_entrada_salida"] = list(entradasalida)
             resultado.append(tarea_actual)
 
@@ -146,7 +156,8 @@ def get_tarea_busqueda(busqueda):
     from app import tareas
     from app import datos_entrada_salida
 
-    lista_tareas = list(tareas.find({"nombre": {"$regex": busqueda, "$options": "i"}}))
+    lista_tareas = list(tareas.find(
+        {"nombre": {"$regex": busqueda, "$options": "i"}}))
 
     for tarea in lista_tareas:
         id_tarea = tarea['_id']
@@ -155,6 +166,7 @@ def get_tarea_busqueda(busqueda):
             tarea['datos_entrada_salida'] = datos[0]
 
     return lista_tareas
+
 
 def get_usuario_busqueda(busqueda):
     from app import usuarios
@@ -167,6 +179,7 @@ def get_usuario_busqueda(busqueda):
     })
 
     return usuarios_encontrados
+
 
 def get_tarea(tarea_id):
     from app import usuarios
@@ -182,12 +195,14 @@ def get_tarea(tarea_id):
     except Exception as e:
         return str(e)
 
+
 def get_datos_entrada_salida(id_tarea):
     from app import datos_entrada_salida
     from app import tareas
 
     try:
-        document = datos_entrada_salida.find_one({'idtarea': ObjectId(id_tarea)})
+        document = datos_entrada_salida.find_one(
+            {'idtarea': ObjectId(id_tarea)})
         if document:
             return document
         else:
@@ -195,6 +210,7 @@ def get_datos_entrada_salida(id_tarea):
             return None
     except Exception as e:
         return str(e)
+
 
 def get_usuario(usuario_id):
     from app import usuarios
@@ -207,6 +223,7 @@ def get_usuario(usuario_id):
             return 'Usuario no encontrado'
     except Exception as e:
         return str(e)
+
 
 def cambiar_permiso_usuario(usuario_id, tipo_usuario):
     from app import usuarios
@@ -221,7 +238,8 @@ def cambiar_permiso_usuario(usuario_id, tipo_usuario):
     elif tipo_usuario == "ADMINISTRADOR":
         nuevo_tipo = "estudiante"
 
-    administrador_count = usuarios.count_documents({'tipousuario': 'administrador'})
+    administrador_count = usuarios.count_documents(
+        {'tipousuario': 'administrador'})
 
     if administrador_count == 1 and nuevo_tipo == 'estudiante':
         flash("No se puede cambiar el tipo de usuario. Debe haber al menos un usuario con tipo 'administrador'.", category='error')
@@ -230,11 +248,13 @@ def cambiar_permiso_usuario(usuario_id, tipo_usuario):
             {'_id': ObjectId(usuario_id)},
             {'$set': {'tipousuario': nuevo_tipo}}
         )
-        flash("Tipo de cuenta del usuario cambiado con éxito a " + nuevo_tipo, category='success')
+        flash("Tipo de cuenta del usuario cambiado con éxito a " +
+              nuevo_tipo, category='success')
 
     return
 
-def insertar_tarea(nombre,descripcion,fechacreacion,idcreador,entradasalida,ejemplo):
+
+def insertar_tarea(nombre, descripcion, fechacreacion, idcreador, entradasalida, ejemplo):
     from app import tareas
     from app import datos_entrada_salida
 
@@ -251,14 +271,15 @@ def insertar_tarea(nombre,descripcion,fechacreacion,idcreador,entradasalida,ejem
     datos = {
         'idtarea': result.inserted_id,
         'entradasalida': entradasalida,
-        'ejemplo':ejemplo
+        'ejemplo': ejemplo
     }
 
     result2 = datos_entrada_salida.insert_one(datos)
 
     return f'Datos entrada salida agregados con el id {result2.inserted_id}'
 
-def actualizar_tarea(idtarea,nombre,descripcion,fechacreacion,entradasalida):
+
+def actualizar_tarea(idtarea, nombre, descripcion, fechacreacion, entradasalida):
     from app import tareas
     from app import datos_entrada_salida
 
@@ -280,7 +301,8 @@ def actualizar_tarea(idtarea,nombre,descripcion,fechacreacion,entradasalida):
 
     return
 
-def entregar_tarea(idusuario,idtarea,fechaentrega,nota,codigodiagrama,entradasalida):
+
+def entregar_tarea(idusuario, idtarea, fechaentrega, nota, codigodiagrama, entradasalida):
     from app import tareas_usuario
     from app import datos_entrada_salida
 
@@ -296,11 +318,13 @@ def entregar_tarea(idusuario,idtarea,fechaentrega,nota,codigodiagrama,entradasal
 
     return f'Tarea de usuario entregada con el id {result.inserted_id}'
 
-@views.route('/',methods=['GET','POST'])
+
+@views.route('/', methods=['GET', 'POST'])
 def home():
     return render_template("homepage.html")
 
-@views.route('/editor', methods=['GET','POST'])
+
+@views.route('/editor', methods=['GET', 'POST'])
 def editor():
     id_tarea = request.args.get('id_tarea')
     tarea = get_tarea(id_tarea)
@@ -309,14 +333,15 @@ def editor():
     datos_entrada_salida = get_datos_entrada_salida(id_tarea)
     print(datos_entrada_salida)
 
-    return render_template("editor.html",tarea=tarea,datos_entrada_salida=datos_entrada_salida)
+    return render_template("editor.html", tarea=tarea, datos_entrada_salida=datos_entrada_salida)
 
 
-@views.route('/gameditor', methods=['GET','POST'])
+@views.route('/gameditor', methods=['GET', 'POST'])
 def gameditor():
     return render_template("gameditor.html")
 
-@views.route('/estudiante', methods=['GET','POST'])
+
+@views.route('/estudiante', methods=['GET', 'POST'])
 def estudiantes():
     from app import usuarios
     from app import tareas
@@ -336,54 +361,56 @@ def estudiantes():
     tareas_id = [ObjectId(tarea['idtarea']) for tarea in backup_tareas_usuario]
 
     tareas_info = tareas.find({'_id': {'$in': tareas_id}})
-    
+
     result = []
     for tarea in tareas_usuario:
-        tarea_informacion = [info_tarea for info_tarea in tareas_info if info_tarea['_id'] == ObjectId(tarea['idtarea'])]
+        tarea_informacion = [
+            info_tarea for info_tarea in tareas_info if info_tarea['_id'] == ObjectId(tarea['idtarea'])]
         tarea['informacion'] = tarea_informacion
         result.append(tarea)
-        tarea_entrada_salida = get_datos_entrada_salida(tarea['idtarea'])
-        tarea['entradasalida'] = tarea_entrada_salida['entradasalida']
-        print(tarea['entradasalida'])
         
     tareas_usuario = result
 
-    return render_template("estudiante.html",estudiante=estudiante,tareas_usuario=tareas_usuario,student_view=student_view)
+    return render_template("estudiante.html",estudiante=estudiante,tareas_usuario=tareas_usuario)
 
-@views.route('/busqueda_tarea',methods=['GET','POST'])
+
+@views.route('/busqueda_tarea', methods=['GET', 'POST'])
 def busqueda_tarea():
-    busqueda = request.args.get('busqueda', default = '*', type = str)
-    busqueda=busqueda.upper()
+    busqueda = request.args.get('busqueda', default='*', type=str)
+    busqueda = busqueda.upper()
     print(busqueda)
 
     lista_tareas = get_tarea_busqueda(busqueda)
 
-    return render_template("ver_tareas.html",lista_tareas=lista_tareas,busqueda=busqueda)
+    return render_template("ver_tareas.html", lista_tareas=lista_tareas, busqueda=busqueda)
 
-@views.route('/busqueda_usuario',methods=['GET','POST'])
+
+@views.route('/busqueda_usuario', methods=['GET', 'POST'])
 def busqueda_usuario():
-    busqueda = request.args.get('busqueda', default = '*', type = str)
-    busqueda=busqueda.upper()
+    busqueda = request.args.get('busqueda', default='*', type=str)
+    busqueda = busqueda.upper()
     print(busqueda)
 
     lista_estudiantes = get_usuario_busqueda(busqueda)
     print(lista_estudiantes)
 
-    return render_template("ver_estudiantes.html",lista_estudiantes=lista_estudiantes,busqueda=busqueda)
+    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes, busqueda=busqueda)
 
-@views.route('/administrador', methods=['GET','POST'])
+
+@views.route('/administrador', methods=['GET', 'POST'])
 def administrador():
-    from app import usuarios
+    #from app import usuarios
 
     id_creador = request.args.get('id')
 
     administrador = get_usuario(id_creador)
 
     tareas_administrador = get_tareas_creador(id_creador)
-    
-    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
 
-@views.route('/crear_tarea', methods=['GET','POST'])
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
+
+
+@views.route('/crear_tarea', methods=['GET', 'POST'])
 def crear_tarea():
     from app import usuarios
 
@@ -398,12 +425,12 @@ def crear_tarea():
 
         if nombre == None or nombre == "" or nombre == " ":
             flash("El nombre no puede estar vacío.",category='error')
-        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', nombre):
-            flash("Solo puede usar caracteres de A-Z, números, tildes, espacios, signos de puntuación y tildes en el nombre.", category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
+            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
         elif descripcion == None or descripcion == "" or descripcion == " ":
-            flash("La descripcion no puede estar vacía.",category='error')
+            flash("La descripcion no puede estar vacía.", category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', descripcion):
-            flash("Solo puede usar caracteres de A-Z, números, tildes, espacios, signos de puntuación y espacios en la descripción.", category='error')
+            flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en la descripcion.", category='error')
         elif(id_creador == None or id_creador == "" or id_creador == " "):
             flash("El ID del creador de la tarea no puede estar vacío.",category='error')
         else:
@@ -415,22 +442,24 @@ def crear_tarea():
             result = {'entradasalida': entradasalida}
 
             try:
-                insertar_tarea(nombre, descripcion, fechacreacion, id_creador, entradasalida, True)
+                insertar_tarea(nombre, descripcion, fechacreacion,
+                               id_creador, entradasalida, True)
                 flash('Se ha creado una tarea correctamente!', category='success')
                 administrador = get_usuario(id_creador)
                 tareas_administrador = get_tareas_creador(id_creador)
-                return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
             except Exception as e:
-                flash("Error: No se dio un administrador valido.",category='error')
-                return render_template("administrador.html",administrador=None,tareas_administrador=None)
+                flash("Error: No se dio un administrador valido.", category='error')
+                return render_template("administrador.html", administrador=None, tareas_administrador=None)
 
     administrador = get_usuario(id_creador)
 
     tareas_administrador = get_tareas_creador(id_creador)
 
-    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
 
-@views.route('/editar_tarea', methods=['GET','POST'])
+
+@views.route('/editar_tarea', methods=['GET', 'POST'])
 def editar_tarea():
     from app import usuarios
 
@@ -446,12 +475,12 @@ def editar_tarea():
 
         if nombre is None or nombre.strip() == "":
             flash("El nombre no puede estar vacío.", category='error')
-        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', nombre):
-            flash("Solo puede usar caracteres de A-Z, números, tildes, espacios, signos de puntuación y tildes en el nombre.", category='error')
-        elif descripcion == None or descripcion == "" or descripcion == " ":
-            flash("La descripcion no puede estar vacía.",category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
+            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
+        elif descripcion is None or descripcion.strip() == "":
+            flash("La descripción no puede estar vacía.", category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', descripcion):
-            flash("Solo puede usar caracteres de A-Z, números, tildes, espacios, signos de puntuación y espacios en la descripción.", category='error')
+            flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en la descripción.", category='error')
         elif(id_creador == None or id_creador == "" or id_creador == " "):
             flash("El ID del creador de la tarea no puede estar vacío.",category='error')
         else:
@@ -463,33 +492,37 @@ def editar_tarea():
             result = {'entradasalida': entradasalida}
 
             try:
-                actualizar_tarea(id_tarea,nombre,descripcion,fechacreacion,entradasalida)
+                actualizar_tarea(id_tarea, nombre, descripcion,
+                                 fechacreacion, entradasalida)
                 flash('Se ha editado la tarea correctamente!', category='success')
                 administrador = get_usuario(id_creador)
                 tareas_administrador = get_tareas_creador(id_creador)
-                return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
             except Exception as e:
                 print(e)
-                flash("Error: No se dio un administrador valido.",category='error')
-                return render_template("administrador.html",administrador=None,tareas_administrador=None)
+                flash("Error: No se dio un administrador valido.", category='error')
+                return render_template("administrador.html", administrador=None, tareas_administrador=None)
 
     administrador = get_usuario(id_creador)
 
     tareas_administrador = get_tareas_creador(id_creador)
 
-    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
 
-@views.route('/ver_tareas', methods=['GET','POST'])
+
+@views.route('/ver_tareas', methods=['GET', 'POST'])
 def ver_tareas():
     lista_tareas = get_tareas()
-    return render_template("ver_tareas.html",lista_tareas=lista_tareas)
+    return render_template("ver_tareas.html", lista_tareas=lista_tareas)
 
-@views.route('/ver_estudiantes', methods=['GET','POST'])
+
+@views.route('/ver_estudiantes', methods=['GET', 'POST'])
 def ver_estudiantes():
     lista_estudiantes = get_usuarios()
-    return render_template("ver_estudiantes.html",lista_estudiantes=lista_estudiantes)
+    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes)
 
-@views.route('/cambiar_permisos', methods=['GET','POST'])
+
+@views.route('/cambiar_permisos', methods=['GET', 'POST'])
 def cambiar_permisos():
     id_usuario = request.args.get('id')
     tipo_usuario = request.args.get('tipo')
@@ -499,34 +532,7 @@ def cambiar_permisos():
     cambiar_permiso_usuario(id_usuario, tipo_usuario)
 
     lista_estudiantes = get_usuarios()
-    return render_template("ver_estudiantes.html",lista_estudiantes=lista_estudiantes)
-
-def set_tarea_no_visible(id_tarea):
-    from app import tareas
-
-    tareas.update_one(
-            {'_id': ObjectId(id_tarea)},
-            {'$set': {'visible': False}}
-        )
-    flash("Tarea borrada con éxito.", category='success')
-
-
-@views.route('/borrar_tarea', methods=['GET','POST'])
-def borrar_tarea():
-    from app import usuarios
-
-    id_tarea = request.args.get('idtarea')
-    print(id_tarea)
-
-    set_tarea_no_visible(id_tarea)
-
-    id_creador = request.args.get('id')
-
-    administrador = get_usuario(id_creador)
-
-    tareas_administrador = get_tareas_creador(id_creador)
-    
-    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
+    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes)
 
 @views.route('/turing-compiler', methods=['POST'])
 def turing_compiler():
@@ -537,16 +543,14 @@ def turing_compiler():
     codigo = json.dumps(request_data["codigo"])
     vacio = request_data["vacio"]
 
-    maquina = turing.TuringMachine() 
+    maquina = turing.TuringMachine()
     maquina.set_blank(vacio)
     maquina.set_code(codigo)
-    
-    
+
     if entrada == "":
         resultado = maquina.run(None)
     else:
         resultado = maquina.run(entrada)
-    
 
     resultado = json.dumps(resultado)
     return resultado

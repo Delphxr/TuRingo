@@ -101,16 +101,16 @@
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %} {% for category, message in messages %} {% if category ==
-        'error' %}
-        <div class="alert alert-danger alter-dismissable fade show" role="alert">
+    messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
         {{ message }}
-        </div>
-        {% else %}
-        <div class="alert alert-success alter-dismissable fade show" role="alert">
-          {{ message }}
-        </div>
-        {% endif %} {% endfor %} {% endif %} {% endwith %}
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+        {{ message }}
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
 
     <!-- Contenedor principal -->
     <div class="container my-1">
@@ -122,18 +122,21 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">{{ administrador['nombre'] }} {{ administrador['apellidos'] }}</h5>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item"><i class="bi bi-envelope"></i> {{ administrador['correo'] }}</li>
-                            <li class="list-group-item"><i class="bi bi-telephone"></i>  Tipo usuario: {{ administrador['tipousuario'] }}</li>
+                            <li class="list-group-item"><i class="bi bi-envelope"></i> {{ administrador['correo'] }}
+                            </li>
+                            <li class="list-group-item"><i class="bi bi-telephone"></i> Tipo usuario: {{
+                                administrador['tipousuario'] }}</li>
                             <br>
                             <button type="button" class="action-button btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">
                                 Nuevo Ejercicio
                             </button>
-                            
-                                <button type="button" class="action-button btn btn-primary" onclick="window.location.href='/ver_estudiantes'">
-                                    Ver Usuarios
-                                </button>
-                            
+
+                            <button type="button" class="action-button btn btn-primary"
+                                onclick="window.location.href='/ver_estudiantes'">
+                                Ver Usuarios
+                            </button>
+
                         </ul>
                     </div>
                 </div>
@@ -165,9 +168,10 @@
                                 <td>{{ tarea['fechacreacion'] }}</td>
                                 <td>{{ tarea['datos_entrada_salida'][0]['entradasalida'] }}</td>
                                 <td>
-                                    <button type="button" id="editarButton" class="action-button btn btn-primary" data-bs-toggle="modal" 
-                                    data-bs-target="#updateModal" onclick="updateFormAction('{{ tarea['_id'] }}')">
-                                    Editar
+                                    <button type="button" id="editarButton" class="action-button btn btn-primary"
+                                        data-bs-toggle="modal" data-bs-target="#updateModal"
+                                        onclick="updateFormAction('{{ tarea['id'] }}')">
+                                        Editar
                                     </button>
                                 </td>
                                 <td><button type="button" class="action-button btn btn-primary" onclick="confirmBorrarTarea('{{ tarea['_id'] }}')">Borrar</button></td>
@@ -187,118 +191,123 @@
     </div>
 
     <!-- Example Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Nuevo Ejercicio</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="POST" action="/crear_tarea?id={{ administrador['_id'] }}">
-                <div class="modal-body">
-                    <!-- Input fields -->
-                    <div class="row g-3 align-items-center m-2 mt-0">
-                        <div class="col-auto">
-                            <label>Nombre:</label>
-                        </div>
-                        <div class="col">
-                            <input class="form-control" type="text" name="nombre"></input>
-                        </div>
-                    </div>
-                    <div class="row g-3 align-items-center m-2 mt-0">
-                        <div class="col-auto">
-                            <label>Descripcion:</label>
-                        </div>
-                        <div class="col">
-                            <textarea class="form-control" name="descripcion" aria-label="With textarea"></textarea>
-                        </div>
-                    </div>
-            
-                    <ul class="list-group" id="listainstrucciones" style="max-height: 50%;">
-                        <li class="list-group-item instruccioninfo" id="entradasalida">
-                            <div class="row g-3 align-items-center">
-                                <div class="col-auto">
-                                    <label>Entrada:</label>
-                                </div>
-                                <div class="col-4">
-                                    <input class="form-control mx-0" type="text" name="entrada" id="read"></input>
-                                </div>
-                                <div class="col-auto">
-                                    <label>Salida:</label>
-                                </div>
-                                <div class="col-4">
-                                    <input class="form-control" type="text" name="salida" id="write"></input>
-                                </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Nuevo Ejercicio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/crear_tarea?id={{ administrador['_id'] }}">
+                    <div class="modal-body">
+                        <!-- Input fields -->
+                        <div class="row g-3 align-items-center m-2 mt-0">
+                            <div class="col-auto">
+                                <label>Nombre:</label>
                             </div>
-                        </li>
-                    </ul>
-                    <button type="button" class="btn action-button btn-secondary" onclick="addInstruction()">Añadir</button>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn action-button btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn stop-button btn-primary">Aplicar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                            <div class="col">
+                                <input class="form-control" type="text" name="nombre"></input>
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center m-2 mt-0">
+                            <div class="col-auto">
+                                <label>Descripcion:</label>
+                            </div>
+                            <div class="col">
+                                <textarea class="form-control" name="descripcion" aria-label="With textarea"></textarea>
+                            </div>
+                        </div>
 
-<!-- Update Example Modal -->
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel">Editar Ejercicio</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <ul class="list-group" id="listainstrucciones" style="max-height: 50%;">
+                            <li class="list-group-item instruccioninfo" id="entradasalida">
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label>Entrada:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input class="form-control mx-0" type="text" name="entrada" id="read"></input>
+                                    </div>
+                                    <div class="col-auto">
+                                        <label>Salida:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input class="form-control" type="text" name="salida" id="write"></input>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <button type="button" class="btn action-button btn-secondary"
+                            onclick="addInstruction()">Añadir</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn action-button btn-secondary"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn stop-button btn-primary">Aplicar</button>
+                    </div>
+                </form>
             </div>
-            <form method="POST" action="/editar_tarea?id_creador={{ administrador['_id'] }}">
-                <div class="modal-body">
-                    <!-- Input fields -->
-                    <div class="row g-3 align-items-center m-2 mt-0">
-                        <div class="col-auto">
-                            <label>Nombre:</label>
-                        </div>
-                        <div class="col">
-                            <input class="form-control" type="text" name="nombre"></input>
-                        </div>
-                    </div>
-                    <div class="row g-3 align-items-center m-2 mt-0">
-                        <div class="col-auto">
-                            <label>Descripcion:</label>
-                        </div>
-                        <div class="col">
-                            <textarea class="form-control" name="descripcion" aria-label="With textarea"></textarea>
-                        </div>
-                    </div>
-            
-                    <ul class="list-group" id="listainstruccionesEditar" style="max-height: 50%;">
-                        <li class="list-group-item instruccioninfo" id="entradasalidaEditar">
-                            <div class="row g-3 align-items-center">
-                                <div class="col-auto">
-                                    <label>Entrada:</label>
-                                </div>
-                                <div class="col-4">
-                                    <input class="form-control mx-0" type="text" name="entrada" id="readEditar"></input>
-                                </div>
-                                <div class="col-auto">
-                                    <label>Salida:</label>
-                                </div>
-                                <div class="col-4">
-                                    <input class="form-control" type="text" name="salida" id="writeEditar"></input>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <button type="button" class="btn action-button btn-secondary" onclick="addInstructionEditar()">Añadir</button>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn action-button btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn stop-button btn-primary">Aplicar</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
+
+    <!-- Update Example Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Editar Ejercicio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="/editar_tarea?id_creador={{ administrador['_id'] }}">
+                    <div class="modal-body">
+                        <!-- Input fields -->
+                        <div class="row g-3 align-items-center m-2 mt-0">
+                            <div class="col-auto">
+                                <label>Nombre:</label>
+                            </div>
+                            <div class="col">
+                                <input class="form-control" type="text" name="nombre"></input>
+                            </div>
+                        </div>
+                        <div class="row g-3 align-items-center m-2 mt-0">
+                            <div class="col-auto">
+                                <label>Descripcion:</label>
+                            </div>
+                            <div class="col">
+                                <textarea class="form-control" name="descripcion" aria-label="With textarea"></textarea>
+                            </div>
+                        </div>
+
+                        <ul class="list-group" id="listainstruccionesEditar" style="max-height: 50%;">
+                            <li class="list-group-item instruccioninfo" id="entradasalidaEditar">
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label>Entrada:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input class="form-control mx-0" type="text" name="entrada"
+                                            id="readEditar"></input>
+                                    </div>
+                                    <div class="col-auto">
+                                        <label>Salida:</label>
+                                    </div>
+                                    <div class="col-4">
+                                        <input class="form-control" type="text" name="salida" id="writeEditar"></input>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <button type="button" class="btn action-button btn-secondary"
+                            onclick="addInstructionEditar()">Añadir</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn action-button btn-secondary"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn stop-button btn-primary">Aplicar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script>
         function updateFormAction(tareaId) {

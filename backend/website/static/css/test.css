@@ -43,6 +43,7 @@ body {
   border: var(--bs-border-width) solid var(--color-primary) !important;
 }
 
+
 .action-input {
   margin: 5px !important;
   border-color: var(--color-secondary-border) !important;
