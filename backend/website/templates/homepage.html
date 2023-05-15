@@ -357,8 +357,8 @@
                                     <div class="form-group">
                                         <label for="password2">Repetir contraseña:</label>
                                         <input type="password" class="form-control" name="password2" id="password2"
-                                            title="Las contraseñas deben coincidir."
-                                            onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Las contraseñas deben coincidir.' : '');if(this.checkValidity()) this.pattern = form.password.value;"
+                                            title="Las contraseñas deben ser iguales."
+                                            onkeyup="this.setCustomValidity(this.value == document.getElementById('password').value ? 'todo bien' : 'Las contraseñas deben coincidir.');"
                                             required>
                                     </div>
 
