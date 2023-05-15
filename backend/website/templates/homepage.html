@@ -252,31 +252,26 @@
 
 
                 <div class="list-group ejercicios">
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 1</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 2</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 3</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 4</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 5</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 6</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 7</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 8</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 9</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 10</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 11</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 12</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 13</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 14</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 15</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 16</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 17</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 18</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 19</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 20</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 21</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 22</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 23</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 24</a>
-                    <a href="#" class="list-group-item list-group-item-action">Tarea 25</a>
+
+                    {% if tareas %}
+
+                    {% set ns = namespace(count = 0) %}
+
+                    {% for tarea in tareas: %}
+
+                    {% set ns.count = ns.count + 1 %}
+
+                    {% if tarea['visible'] %}
+                            
+                    <a href="/editor?id_tarea={{ tarea['_id'] }}" class="list-group-item list-group-item-action">Tarea {{ ns.count }}</a>
+
+                    {% else %}
+
+                    {% endif %}
+
+                    {% endfor %}
+                    {% endif %}
+
                 </div>
 
 
@@ -354,13 +349,13 @@
                                             title="La contraseña debe tener al menos 8 caracteres" required>
                                     </div>
 
-                                    <div class="form-group">
+                                    <!--<div class="form-group">
                                         <label for="password2">Repetir contraseña:</label>
                                         <input type="password" class="form-control" name="password2" id="password2"
                                             title="Las contraseñas deben ser iguales."
                                             onkeyup="this.setCustomValidity(this.value == document.getElementById('password').value ? 'todo bien' : 'Las contraseñas deben coincidir.');"
                                             required>
-                                    </div>
+                                    </div>-->
 
                                     <div class="form-group mt-2">
                                         <button type="submit" class="btn btn-primary">Registrarse</button>

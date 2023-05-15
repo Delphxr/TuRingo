@@ -321,7 +321,12 @@ def entregar_tarea(idusuario, idtarea, fechaentrega, nota, codigodiagrama, entra
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template("homepage.html")
+    from app import tareas
+    
+    tareas = get_tareas()
+    
+
+    return render_template("homepage.html",tareas=tareas)
 
 
 @views.route('/editor', methods=['GET', 'POST'])
