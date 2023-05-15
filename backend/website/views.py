@@ -9,6 +9,7 @@ from datetime import datetime
 import re
 import os
 import sys
+from flask import Flask, session
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 views = Blueprint('views', __name__)
@@ -59,35 +60,61 @@ def get_user_password(correo):
 
 @views.route('/login', methods=['POST'])
 def login():
+    usuario_exists = 'usuario' in session
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
 
         tareas = get_tareas()
         usuario = None
+        _id = None
+        tipo_usuario = None
 
         if check_existing_user(email):
-
             hashed_password = get_user_password(email)
 
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
+                usuario = check_existing_user(email)
+                usuario = json_util.dumps(usuario)  # Convert usuario to JSON string
+                print(usuario)
+                session['usuario'] = usuario
+                print(session)
+                usuario_exists = 'usuario' in session
+                print(usuario_exists)
+
+                session_json = json.loads(session['usuario'])
+                sesion = session_json
+                _id = session_json['_id']['$oid']
+                tipo_usuario = session_json['tipo_usuario']
+
                 flash('Se ha iniciado sesión correctamente!', category='success')
-                usuario = True
-                return render_template("homepage.html",usuario=usuario,tareas=tareas)
+                return render_template("homepage.html",usuario=usuario,usuario_exists=usuario_exists,tareas=tareas,_id=_id,tipo_usuario=tipo_usuario)
             else:
                 flash('Password incorrecta, por favor intente de nuevo.', category='error')
-                return render_template("homepage.html",tareas=tareas)
+                return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,id=_id,tipo_usuario=tipo_usuario)
 
         else:
             flash('El correo no está registrado, por favor intente de nuevo.', category='error')
-            return render_template("homepage.html",tareas=tareas)
+            return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
-    return render_template("homepage.html")
+    return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+
+@views.route('logout', methods=['GET','POST'])
+def logout():
+    session.pop('usuario', None)
+    tareas = get_tareas()
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
+    print(usuario_exists)
+
+    return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/signup', methods=['GET', 'POST'])
 def signup():
     from app import usuarios
+    usuario_exists = 'usuario' in session
 
     if request.method == 'POST':
         nombre = request.form['nombre']
@@ -102,6 +129,8 @@ def signup():
 
         tareas = get_tareas()
         usuario = None
+        _id = None
+        tipo_usuario = None
 
         print(request.form)
         if nombre == None or nombre == "" or nombre == " ":
@@ -122,16 +151,16 @@ def signup():
             if check_existing_user(correo):
                 flash("El usuario ya está registrado en la base de datos.",
                       category='error')
-                return render_template("homepage.html")
+                return render_template("homepage.html",usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
             else:
                 insertar_usuario(nombre, apellidos, password,
                                  correo, carne, tipo_usuario)
                 flash('Se ha creado una cuenta correctamente!', category='success')
-                usuario = True
-                return render_template("homepage.html",usuario = usuario, tareas=tareas)
+                
+                return render_template("homepage.html",usuario = usuario, tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
-    return render_template("homepage.html")
+    return render_template("homepage.html",usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 def get_usuarios():
@@ -275,19 +304,19 @@ def cambiar_permiso_usuario(usuario_id, tipo_usuario):
     nuevo_tipo = ""
 
     if tipo_usuario == "ESTUDIANTE":
-        nuevo_tipo = "administrador"
+        nuevo_tipo = "Administrador"
     elif tipo_usuario == "ADMINISTRADOR":
-        nuevo_tipo = "estudiante"
+        nuevo_tipo = "Estudiante"
 
     administrador_count = usuarios.count_documents(
-        {'tipousuario': 'administrador'})
+        {'tipo_usuario': 'Administrador'})
 
-    if administrador_count == 1 and nuevo_tipo == 'estudiante':
-        flash("No se puede cambiar el tipo de usuario. Debe haber al menos un usuario con tipo 'administrador'.", category='error')
+    if administrador_count == 1 and nuevo_tipo == 'Estudiante':
+        flash("No se puede cambiar el tipo de usuario. Debe haber al menos un usuario con tipo 'Administrador'.", category='error')
     else:
         usuarios.update_one(
             {'_id': ObjectId(usuario_id)},
-            {'$set': {'tipousuario': nuevo_tipo}}
+            {'$set': {'tipo_usuario': nuevo_tipo}}
         )
         flash("Tipo de cuenta del usuario cambiado con éxito a " +
               nuevo_tipo, category='success')
@@ -365,9 +394,17 @@ def home():
     from app import tareas
 
     tareas = get_tareas()
-    
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
 
-    return render_template("homepage.html",tareas=tareas)
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+
+    return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/editor', methods=['GET', 'POST'])
@@ -379,12 +416,32 @@ def editor():
     datos_entrada_salida = get_datos_entrada_salida(id_tarea)
     print(datos_entrada_salida)
 
-    return render_template("editor.html", tarea=tarea, datos_entrada_salida=datos_entrada_salida)
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
+
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+
+    return render_template("editor.html", tarea=tarea, datos_entrada_salida=datos_entrada_salida,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/gameditor', methods=['GET', 'POST'])
 def gameditor():
-    return render_template("gameditor.html")
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
+
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+
+    return render_template("gameditor.html",usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/estudiante', methods=['GET', 'POST'])
@@ -392,6 +449,16 @@ def estudiantes():
     from app import usuarios
     from app import tareas
     from app import datos_entrada_salida
+
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
+
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
 
     id_usuario = request.args.get('id')
 
@@ -417,7 +484,7 @@ def estudiantes():
         
     tareas_usuario = result
 
-    return render_template("estudiante.html",estudiante=estudiante,tareas_usuario=tareas_usuario)
+    return render_template("estudiante.html",estudiante=estudiante,tareas_usuario=tareas_usuario,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/busqueda_tarea', methods=['GET', 'POST'])
@@ -427,8 +494,17 @@ def busqueda_tarea():
     print(busqueda)
 
     lista_tareas = get_tarea_busqueda(busqueda)
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
 
-    return render_template("ver_tareas.html", lista_tareas=lista_tareas, busqueda=busqueda)
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+
+    return render_template("ver_tareas.html", lista_tareas=lista_tareas, busqueda=busqueda,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/busqueda_usuario', methods=['GET', 'POST'])
@@ -439,8 +515,16 @@ def busqueda_usuario():
 
     lista_estudiantes = get_usuario_busqueda(busqueda)
     print(lista_estudiantes)
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
 
-    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes, busqueda=busqueda)
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes, busqueda=busqueda,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/administrador', methods=['GET', 'POST'])
@@ -452,14 +536,31 @@ def administrador():
     administrador = get_usuario(id_creador)
 
     tareas_administrador = get_tareas_creador(id_creador)
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
 
-    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/crear_tarea', methods=['GET', 'POST'])
 def crear_tarea():
     from app import usuarios
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
 
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
     id_creador = request.args.get('id')
 
     if request.method == 'POST':
@@ -493,21 +594,31 @@ def crear_tarea():
                 flash('Se ha creado una tarea correctamente!', category='success')
                 administrador = get_usuario(id_creador)
                 tareas_administrador = get_tareas_creador(id_creador)
-                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
+                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
             except Exception as e:
                 flash("Error: No se dio un administrador valido.", category='error')
-                return render_template("administrador.html", administrador=None, tareas_administrador=None)
+                return render_template("administrador.html", administrador=None, tareas_administrador=None,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
     administrador = get_usuario(id_creador)
 
     tareas_administrador = get_tareas_creador(id_creador)
 
-    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/editar_tarea', methods=['GET', 'POST'])
 def editar_tarea():
     from app import usuarios
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
+
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+    id_creador = request.args.get('id')
 
     id_creador = request.args.get('id_creador')
     id_tarea = request.args.get('id_tarea')
@@ -543,29 +654,51 @@ def editar_tarea():
                 flash('Se ha editado la tarea correctamente!', category='success')
                 administrador = get_usuario(id_creador)
                 tareas_administrador = get_tareas_creador(id_creador)
-                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
+                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
             except Exception as e:
                 print(e)
                 flash("Error: No se dio un administrador valido.", category='error')
-                return render_template("administrador.html", administrador=None, tareas_administrador=None)
+                return render_template("administrador.html", administrador=None, tareas_administrador=None,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
     administrador = get_usuario(id_creador)
 
     tareas_administrador = get_tareas_creador(id_creador)
 
-    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador)
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/ver_tareas', methods=['GET', 'POST'])
 def ver_tareas():
     lista_tareas = get_tareas()
-    return render_template("ver_tareas.html", lista_tareas=lista_tareas)
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
+
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+    id_creador = request.args.get('id')
+
+    return render_template("ver_tareas.html", lista_tareas=lista_tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/ver_estudiantes', methods=['GET', 'POST'])
 def ver_estudiantes():
     lista_estudiantes = get_usuarios()
-    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes)
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
+
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+    id_creador = request.args.get('id')
+
+    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 
 @views.route('/cambiar_permisos', methods=['GET', 'POST'])
@@ -576,9 +709,19 @@ def cambiar_permisos():
     print(tipo_usuario)
 
     cambiar_permiso_usuario(id_usuario, tipo_usuario)
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
+
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+    id_creador = request.args.get('id')
 
     lista_estudiantes = get_usuarios()
-    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes)
+    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 @views.route('/turing-compiler', methods=['POST'])
 def turing_compiler():
