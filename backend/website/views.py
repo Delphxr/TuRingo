@@ -242,7 +242,8 @@ def insertar_tarea(nombre,descripcion,fechacreacion,idcreador,entradasalida,ejem
         'nombre': nombre,
         'descripcion': descripcion,
         'fechacreacion': fechacreacion,
-        'idcreador': idcreador
+        'idcreador': idcreador,
+        'visible' : True
     }
 
     result = tareas.insert_one(tarea)
