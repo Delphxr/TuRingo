@@ -14,6 +14,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 views = Blueprint('views', __name__)
 
 def borrar_usuario(usuario_id):
+    from app import usuarios
+
     result = usuarios.delete_one({'_id': ObjectId(usuario_id)})
     if result.deleted_count == 1:
         return jsonify({'message': 'Usuario borrado con éxito'})
@@ -21,6 +23,8 @@ def borrar_usuario(usuario_id):
         return jsonify({'message': 'Usuario no fue encontrado'})
 
 def insertar_usuario(nombre,apellidos,password,correo,carne,tipo_usuario):
+    from app import usuarios
+
     # Encrypt the password
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
@@ -36,11 +40,15 @@ def insertar_usuario(nombre,apellidos,password,correo,carne,tipo_usuario):
     return f'Usuario agregado con el id {result.inserted_id}'
 
 def check_existing_user(correo):
+    from app import usuarios
+    
     existing_user = usuarios.find_one({'correo': correo})
     return existing_user is not None
 
 @views.route('/signup', methods=['GET','POST'])
 def signup():
+    from app import usuarios
+
     if request.method == 'POST':
         nombre = request.form['nombre']
         apellidos = request.form['apellidos']
@@ -55,18 +63,18 @@ def signup():
         print(request.form)
         if nombre == None or nombre == "" or nombre == " ":
             flash("El nombre no puede estar vacío.",category='error')
-        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
-            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
+        elif not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$', nombre):
+            flash("Solo puede usar caracteres de A-Z, espacios y tildes en el nombre.", category='error')
         elif password == None or password == "" or password == " ":
             flash("El password no puede estar vacío.",category='error')
         elif apellidos == None or apellidos == "" or apellidos == " ":
             flash("Los apellidos no pueden estar vacíos.",category='error')
-        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', apellidos):
-            flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en los apellidos.", category='error')
-        #elif carne == None or carne == "" or carne == " ":
-        #    flash("El carne no puede estar vacío.",category='error')
-        #elif not carne.isnumeric():
-        #    flash("Solo puede usar números en el carne.",category='error')
+        elif not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$', apellidos):
+            flash("Solo puede usar caracteres de A-Z, espacios y tildes en los apellidos.", category='error')
+        elif carne == None or carne == "" or carne == " ":
+            flash("El carne no puede estar vacío.",category='error')
+        elif not carne.isnumeric():
+            flash("Solo puede usar números en el carne.",category='error')
         else:
             if check_existing_user(correo):
                 flash("El usuario ya está registrado en la base de datos.", category='error')
@@ -90,7 +98,7 @@ def get_tareas():
     from app import tareas
     from app import datos_entrada_salida
 
-    lista_tareas = list(tareas.find())
+    lista_tareas = list(tareas.find().sort('_id', -1))
 
     # Obtener los datos de entrada y salida para cada tarea
     for tarea in lista_tareas:
@@ -306,8 +314,13 @@ def editor():
 def estudiantes():
     from app import usuarios
     from app import tareas
+    from app import datos_entrada_salida
 
     id_usuario = request.args.get('id')
+
+    student_view = True
+    if request.args.get('adminview'):
+        student_view = False
 
     estudiante = get_usuario(id_usuario)
 
@@ -323,10 +336,13 @@ def estudiantes():
         tarea_informacion = [info_tarea for info_tarea in tareas_info if info_tarea['_id'] == ObjectId(tarea['idtarea'])]
         tarea['informacion'] = tarea_informacion
         result.append(tarea)
+        tarea_entrada_salida = get_datos_entrada_salida(tarea['idtarea'])
+        tarea['entradasalida'] = tarea_entrada_salida['entradasalida']
+        print(tarea['entradasalida'])
         
     tareas_usuario = result
 
-    return render_template("estudiante.html",estudiante=estudiante,tareas_usuario=tareas_usuario)
+    return render_template("estudiante.html",estudiante=estudiante,tareas_usuario=tareas_usuario,student_view=student_view)
 
 @views.route('/busqueda_tarea',methods=['GET','POST'])
 def busqueda_tarea():
@@ -376,12 +392,12 @@ def crear_tarea():
 
         if nombre == None or nombre == "" or nombre == " ":
             flash("El nombre no puede estar vacío.",category='error')
-        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
-            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', nombre):
+            flash("Solo puede usar caracteres de A-Z, números, tildes, espacios, signos de puntuación y tildes en el nombre.", category='error')
         elif descripcion == None or descripcion == "" or descripcion == " ":
             flash("La descripcion no puede estar vacía.",category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', descripcion):
-            flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en la descripcion.", category='error')
+            flash("Solo puede usar caracteres de A-Z, números, tildes, espacios, signos de puntuación y espacios en la descripción.", category='error')
         elif(id_creador == None or id_creador == "" or id_creador == " "):
             flash("El ID del creador de la tarea no puede estar vacío.",category='error')
         else:
@@ -424,12 +440,12 @@ def editar_tarea():
 
         if nombre is None or nombre.strip() == "":
             flash("El nombre no puede estar vacío.", category='error')
-        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
-            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
-        elif descripcion is None or descripcion.strip() == "":
-            flash("La descripción no puede estar vacía.", category='error')
+        elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', nombre):
+            flash("Solo puede usar caracteres de A-Z, números, tildes, espacios, signos de puntuación y tildes en el nombre.", category='error')
+        elif descripcion == None or descripcion == "" or descripcion == " ":
+            flash("La descripcion no puede estar vacía.",category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', descripcion):
-            flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en la descripción.", category='error')
+            flash("Solo puede usar caracteres de A-Z, números, tildes, espacios, signos de puntuación y espacios en la descripción.", category='error')
         elif(id_creador == None or id_creador == "" or id_creador == " "):
             flash("El ID del creador de la tarea no puede estar vacío.",category='error')
         else:
@@ -478,6 +494,33 @@ def cambiar_permisos():
 
     lista_estudiantes = get_usuarios()
     return render_template("ver_estudiantes.html",lista_estudiantes=lista_estudiantes)
+
+def set_tarea_no_visible(id_tarea):
+    from app import tareas
+
+    tareas.update_one(
+            {'_id': ObjectId(id_tarea)},
+            {'$set': {'visible': False}}
+        )
+    flash("Tarea borrada con éxito.", category='success')
+
+
+@views.route('/borrar_tarea', methods=['GET','POST'])
+def borrar_tarea():
+    from app import usuarios
+
+    id_tarea = request.args.get('idtarea')
+    print(id_tarea)
+
+    set_tarea_no_visible(id_tarea)
+
+    id_creador = request.args.get('id')
+
+    administrador = get_usuario(id_creador)
+
+    tareas_administrador = get_tareas_creador(id_creador)
+    
+    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador)
 
 @views.route('/turing-compiler', methods=['POST'])
 def turing_compiler():

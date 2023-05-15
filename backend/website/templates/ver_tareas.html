@@ -136,6 +136,9 @@
                         <tbody>
                             {% if lista_tareas %}
                             {% for tarea in lista_tareas: %}
+
+                            {% if tarea['visible'] %}
+
                             <tr>
                                 <td>{{ tarea['nombre'] }}</td>
                                 <td>{{ tarea['descripcion'] }}</td>
@@ -143,6 +146,11 @@
                                 <td>{{ tarea['datos_entrada_salida']['entradasalida'] }}</td>
                                 <td><button type="button" class="action-button btn btn-primary" onclick='javascript: window.open("/editor?id_tarea="+ "{{ tarea['_id'] }}", "_self");'>Realizar</button></td>
                             </tr>
+
+                            {% else %}
+
+                            {% endif %}
+
                             {% endfor %}
                             {% endif %}
                         </tbody>

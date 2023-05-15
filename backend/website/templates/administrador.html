@@ -150,11 +150,15 @@
                                 <th scope="col">Fecha Creación</th>
                                 <th scope="col">Datos entrada y salida</th>
                                 <th scope="col">Editar</th>
+                                <th scope="col">Borrar tarea</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% if tareas_administrador %}
                             {% for tarea in tareas_administrador: %}
+
+                            {% if tarea['visible'] %}
+                            
                             <tr>
                                 <td>{{ tarea['nombre'] }}</td>
                                 <td>{{ tarea['descripcion'] }}</td>
@@ -166,7 +170,13 @@
                                     Editar
                                     </button>
                                 </td>
+                                <td><button type="button" class="action-button btn btn-primary" onclick="confirmBorrarTarea('{{ tarea['_id'] }}')">Borrar</button></td>
                             </tr>
+
+                            {% else %}
+
+                            {% endif %}
+
                             {% endfor %}
                             {% endif %}
                         </tbody>
@@ -294,6 +304,20 @@
         function updateFormAction(tareaId) {
             const form = document.querySelector('#updateModal form');
             form.action = `/editar_tarea?id_creador={{ administrador['_id'] }}&id_tarea=${tareaId}`;
+        }
+    </script>
+
+    <script>
+        function confirmBorrarTarea(idTarea) {
+            var confirmed = window.confirm("Seguro que desea borrar esta tarea?");
+            if (confirmed) {
+                var urlParams = new URLSearchParams(window.location.search);
+                var idUsuario = urlParams.get("id");
+                var url = "/borrar_tarea?id=" + idUsuario + "&idtarea=" + idTarea;
+                window.location.href = url;
+            } else {
+            
+            }
         }
     </script>
 

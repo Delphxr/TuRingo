@@ -131,6 +131,7 @@
                                 <th scope="col">Correo</th>
                                 <th scope="col">Tipo usuario</th>
                                 <th scope="col">Cambiar tipo de usuario</th>
+                                <th scope="col">Ver detalles</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,6 +144,20 @@
                                 <td>{{ estudiante['correo'] }}</td>
                                 <td>{{ estudiante['tipousuario'] }}</td>
                                 <td><button type="button" class="action-button btn btn-primary" onclick="confirmCambiarTipo('{{ estudiante['_id'] }}', '{{ estudiante['tipousuario'] }}')">Cambiar tipo</button></td>
+                                
+                                {% if estudiante['tipousuario'] == 'estudiante' %}
+                                <td>
+                                    <a href="/estudiante?id={{ estudiante['_id'] }}&adminview=True">
+                                      <button type="button" class="action-button btn btn-primary">Ver detalles</button>
+                                    </a>
+                                </td>
+                                {% elif estudiante['tipousuario'] == 'administrador' %}
+                                <td>
+                                    <a href="/administrador?id={{ estudiante['_id'] }}">
+                                      <button type="button" class="action-button btn btn-primary">Ver detalles</button>
+                                    </a>
+                                </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                             {% endif %}

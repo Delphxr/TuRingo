@@ -4,7 +4,7 @@ from pymongo import MongoClient
 app = create_app()
 app.secret_key = "secret key"
 
-mongo_uri = "mongodb://10.0.0.17:27017/?directConnection=true&appName=mongosh+1.8.0"
+mongo_uri = "mongodb://localhost:27017/?directConnection=true&appName=mongosh+1.8.0"
 client = MongoClient(mongo_uri)
 
 db = client.turingo
