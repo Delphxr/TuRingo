@@ -77,6 +77,8 @@ async function compileCode() {
       console.log(code)
     } else {
       updateCompilationTime()
+      localInstrucciones = code;
+      console.log("compilation_complete")
     }
 
   } catch {
@@ -92,7 +94,7 @@ async function executeCode() {
     return;
   }
   try{
-    animateCode(code)
+    animateCode(localInstrucciones)
   } catch {
     console.log("No se puede correr el codigo, verifique que este compilado correctamente")
   }
@@ -107,8 +109,6 @@ async function animateCode(instrucciones) {
   EXECUTING = true;
 
   // Obtenemos la cinta inicial y la convertimos en un array para poder modificarla
-
-  localInstrucciones = instrucciones;
   SetCinta(instrucciones)
 
   // Obtenemos el índice inicial
