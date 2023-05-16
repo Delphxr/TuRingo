@@ -45,6 +45,58 @@ function SetCinta(newCinta) {
 }
 
 
+async function entregarTarea() {
+  console.log("start")
+  if (EXECUTING) {
+    return;
+  }
+
+  let entrada = document.getElementById("entradaCinta").value
+  let vacio = document.getElementById("vacioCinta").value
+
+
+  console.log("entrada y vacio")
+
+  if (vacio === "") {
+    vacio = "_"
+  }
+
+  let circle = startLoading()
+
+
+  console.log("llamando api")
+  try {
+    const response = await fetch('http://140.84.172.6:5000/entregar-tarea', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
+    })
+    const code = await response.json();
+    console.log("respuesta", code)
+
+
+    circle.remove()
+
+
+    if (code.hasOwnProperty('error')) {
+      console.log("error en el codigo")
+      console.log(code)
+    } else {
+      updateCompilationTime()
+      console.log("EntregaCompleta")
+    }
+
+  } catch {
+    console.log("hubo un error al conectarse con el API")
+    circle.remove()
+  }
+}
+
+
+
+
 async function compileCode() {
   console.log("start")
   if (EXECUTING) {
