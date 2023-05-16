@@ -748,10 +748,23 @@ def turing_compiler():
 
 #hay que ver la forma de recibir parametros tambien el id de tarea para manejar parametros de prueba
 #y tambien el id de usuario
-@views.route('/entregar-tarea', methods=['POST'])
+@views.route('/entregar-tarea', methods=['GET','POST'])
 def entregar_tarea():
     print("llamada recibida!")
     request_data = request.get_json()
+
+    usuario_exists = 'usuario' in session
+    id_usuario = None
+
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        id_usuario = session_json['_id']['$oid'] # El id del usuario que envia la tarea
+
+    id_tarea = request.args.get('id_tarea') # El id de la tarea que se desea entregar
+
+    print(id_tarea)
+    print(id_usuario)
 
     entrada = request_data["entrada"]
     codigo = json.dumps(request_data["codigo"])
