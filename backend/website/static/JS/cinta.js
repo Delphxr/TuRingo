@@ -1,7 +1,7 @@
 const tape = document.querySelector(".tape");
 const tapeContainer = document.querySelector(".tape-container");
 
-const compBtn = document.getElementById("compilation-button")
+const compBtn = document.getElementById("compile-button")
 const playBtn = document.getElementById("play-button")
 const stopBtn = document.getElementById("stop-button")
 const backBtn = document.getElementById("back-button")
@@ -46,6 +46,7 @@ function SetCinta(newCinta) {
 
 
 async function compileCode() {
+  console.log("start")
   if (EXECUTING) {
     return;
   }
@@ -53,12 +54,17 @@ async function compileCode() {
   let entrada = document.getElementById("entradaCinta").value
   let vacio = document.getElementById("vacioCinta").value
 
+
+  console.log("entrada y vacio")
+
   if (vacio === "") {
     vacio = "_"
   }
 
   let circle = startLoading()
 
+
+  console.log("llamando api")
   try {
     const response = await fetch('http://140.84.172.6:5000/turing-compiler', {
       method: 'POST',
@@ -68,12 +74,14 @@ async function compileCode() {
       body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
     })
     const code = await response.json();
+    console.log("respuesta", code)
 
 
     circle.remove()
 
 
     if (code.hasOwnProperty('error')) {
+      console.log("error en el codigo")
       console.log(code)
     } else {
       updateCompilationTime()
