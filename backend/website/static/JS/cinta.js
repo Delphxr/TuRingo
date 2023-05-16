@@ -164,11 +164,6 @@ async function animateCode(instrucciones) {
   audio.pause()
 
   EXECUTING = false
-  try {
-    setExecutingNode(null, true)
-  } catch {
-    console.log("El nodo que desea seleccionar no existe")
-  }
 
 }
 
