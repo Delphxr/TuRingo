@@ -25,6 +25,16 @@ function startLoading() {
 }
 
 
+function updateCompilationTime() {
+    var compilationTime = document.getElementById("compilation-time")
+
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date + ' ' + time;
+
+    compilationTime.innerText = dateTime
+}
 
 
 function tabManager(tab) {
@@ -33,7 +43,7 @@ function tabManager(tab) {
     tabs.forEach(tab => {
         tab.classList.remove("active");
         tab.classList.remove("show");
-        
+
     });
 
     const tab3 = document.getElementById(tab);

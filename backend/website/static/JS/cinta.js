@@ -1,5 +1,7 @@
 const tape = document.querySelector(".tape");
 const tapeContainer = document.querySelector(".tape-container");
+
+const compBtn = document.getElementById("compilation-button")
 const playBtn = document.getElementById("play-button")
 const stopBtn = document.getElementById("stop-button")
 const backBtn = document.getElementById("back-button")
@@ -43,8 +45,7 @@ function SetCinta(newCinta) {
 }
 
 
-//ejecutamos codigo, llamamos el API y lo mandamos luego a dibujar
-async function executeCode() {
+async function compileCode() {
   if (EXECUTING) {
     return;
   }
@@ -75,11 +76,25 @@ async function executeCode() {
     if (code.hasOwnProperty('error')) {
       console.log(code)
     } else {
-      animateCode(code)
+      updateCompilationTime()
     }
+
   } catch {
     console.log("hubo un error al conectarse con el API")
     circle.remove()
+  }
+}
+
+
+//ejecutamos codigo, llamamos el API y lo mandamos luego a dibujar
+async function executeCode() {
+  if (EXECUTING) {
+    return;
+  }
+  try{
+    animateCode(code)
+  } catch {
+    console.log("No se puede correr el codigo, verifique que este compilado correctamente")
   }
 
 }
@@ -248,6 +263,7 @@ function updateActiveValue(value) {
 
 
 // Eventos de botón
+compBtn.addEventListener("click", compileCode);
 playBtn.addEventListener("click", executeCode);
 nextBtn.addEventListener("click", nextInstruction);
 stopBtn.addEventListener("click", stopExecution);
