@@ -30,6 +30,7 @@ def insertar_usuario(nombre,apellidos,password,correo,carne,tipo_usuario):
     # Encrypt the password
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
+    tipo_usuario = "Estudiante"
 
     usuario = {
         'nombre': nombre,
@@ -130,7 +131,6 @@ def signup():
         tareas = get_tareas()
         usuario = None
         _id = None
-        tipo_usuario = None
 
         print(request.form)
         if nombre == None or nombre == "" or nombre == " ":
