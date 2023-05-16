@@ -142,7 +142,9 @@
     
                 <!-- Columna de la tabla -->
                 <div class="col-12 col-md-8">
+
                     <div class="table-responsive rounded">
+                        {% if tareas_usuario %}
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -158,26 +160,31 @@
                             </thead>
                             <tbody>
                                 {% if tareas_usuario %}
-                                {% for tarea in tareas_usuario: %}
-                                <tr>
-                                    <td>{{ tarea['informacion'][0].nombre }}</td>
-                                    <td>{{ tarea['nota'] }}</td>
-                                    <td>{{ tarea['fechaentrega'] }}</td>
-                                    {% if student_view %}
-                                    <td><a href="/editor?id_tarea={{ tarea['idtarea'] }}">
-                                        <button type="button" class="action-button btn btn-primary">Rehacer</button>
-                                        </a>
-                                    </td>
-                                    {% else %}
 
-                                    {% endif %}
-                                </tr>
-                                {% endfor %}
+                                    {% for tarea in tareas_usuario: %}
+                                        <tr>
+                                        <td>{{ tarea['informacion'][0].nombre }}</td>
+                                        <td>{{ tarea['nota'] }}</td>
+                                        <td>{{ tarea['fechaentrega'] }}</td>
+                                        {% if student_view %}
+                                            <td><a href="/editor?id_tarea={{ tarea['idtarea'] }}">
+                                                <button type="button" class="action-button btn btn-primary">Rehacer</button>
+                                            </a>
+                                        </td>
+                                        {% else %}
+
+                                        {% endif %}
+                                         </tr>
+                                    {% endfor %}
+                                
                                 {% endif %}
                                
                            </tbody>
-                     </table>
-                 </div>
+                        </table>
+                        {% else %}
+                            <h4 style="color:#FFFFFF"><center>Este usuario no ha entregado ninguna tarea todavía.</center></h4>
+                        {% endif %}
+                    </div>
             </div>
        </div>
     </div>

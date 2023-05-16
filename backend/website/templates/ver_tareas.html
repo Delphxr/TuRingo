@@ -151,8 +151,16 @@
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripcion</th>
                                 <th scope="col">Fecha Creación</th>
+
+                                {% if tipo_usuario == 'Administrador' %}
                                 <th scope="col">Ejemplos entrada y salida</th>
+                                {% endif %}
+
+                                {% if tipo_usuario == 'Estudiante' %}
                                 <th scope="col">Realizar tarea</th>
+                                {% else %}
+                                <th scope="col">Ver tarea</th>
+                                {% endif %}
                             </tr>
                         </thead>
                         <tbody>
@@ -165,8 +173,16 @@
                                 <td>{{ tarea['nombre'] }}</td>
                                 <td>{{ tarea['descripcion'] }}</td>
                                 <td>{{ tarea['fechacreacion'] }}</td>
+
+                                {% if tipo_usuario == 'Administrador' %}
                                 <td>{{ tarea['datos_entrada_salida']['entradasalida'] }}</td>
+                                {% endif %}
+                                
+                                {% if tipo_usuario == 'Estudiante' %}
                                 <td><button type="button" class="action-button btn btn-primary" onclick='javascript: window.open("/editor?id_tarea="+ "{{ tarea['_id'] }}", "_self");'>Realizar</button></td>
+                                {% else %}
+                                <td><button type="button" class="action-button btn btn-primary" onclick='javascript: window.open("/editor?id_tarea="+ "{{ tarea['_id'] }}", "_self");'>Ver</button></td>
+                                {% endif %}
                             </tr>
 
                             {% else %}

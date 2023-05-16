@@ -168,6 +168,7 @@
             <!-- Columna de la tabla -->
             <div class="col-12 col-md-8">
                 <div class="table-responsive rounded">
+                    {% if tareas_administrador %}
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -181,33 +182,38 @@
                         </thead>
                         <tbody>
                             {% if tareas_administrador %}
-                            {% for tarea in tareas_administrador: %}
 
-                            {% if tarea['visible'] %}
+                                {% for tarea in tareas_administrador: %}
+
+                                {% if tarea['visible'] %}
                             
-                            <tr>
-                                <td>{{ tarea['nombre'] }}</td>
-                                <td>{{ tarea['descripcion'] }}</td>
-                                <td>{{ tarea['fechacreacion'] }}</td>
-                                <td>{{ tarea['datos_entrada_salida'][0]['entradasalida'] }}</td>
-                                <td>
-                                    <button type="button" id="editarButton" class="action-button btn btn-primary"
-                                        data-bs-toggle="modal" data-bs-target="#updateModal"
-                                        onclick="updateFormAction('{{ tarea['_id'] }}')">
-                                        Editar
-                                    </button>
-                                </td>
-                                <td><button type="button" class="action-button btn btn-primary" onclick="confirmBorrarTarea('{{ tarea['_id'] }}')">Borrar</button></td>
-                            </tr>
+                                    <tr>
+                                        <td>{{ tarea['nombre'] }}</td>
+                                        <td>{{ tarea['descripcion'] }}</td>
+                                        <td>{{ tarea['fechacreacion'] }}</td>
+                                        <td>{{ tarea['datos_entrada_salida'][0]['entradasalida'] }}</td>
+                                        <td>
+                                            <button type="button" id="editarButton" class="action-button btn btn-primary"
+                                            data-bs-toggle="modal" data-bs-target="#updateModal"
+                                            onclick="updateFormAction('{{ tarea['_id'] }}')">
+                                            Editar
+                                            </button>
+                                        </td>
+                                        <td><button type="button" class="action-button btn btn-primary" onclick="confirmBorrarTarea('{{ tarea['_id'] }}')">Borrar</button></td>
+                                    </tr>
 
-                            {% else %}
+                                {% else %}
 
-                            {% endif %}
+                                {% endif %}
 
-                            {% endfor %}
+                                {% endfor %}
+                            
                             {% endif %}
                         </tbody>
                     </table>
+                    {% else %}
+                            <h4 style="color:#FFFFFF"><center>Este administrador no ha creado ninguna tarea todavía.</center></h4>
+                    {% endif %}
                 </div>
             </div>
         </div>
