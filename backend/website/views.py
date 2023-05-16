@@ -24,6 +24,8 @@ def borrar_usuario(usuario_id):
     else:
         return jsonify({'message': 'Usuario no fue encontrado'})
 
+
+
 def insertar_usuario(nombre,apellidos,password,correo,carne,tipo_usuario):
     from app import usuarios
 
@@ -722,6 +724,44 @@ def cambiar_permisos():
 
     lista_estudiantes = get_usuarios()
     return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+
+def set_tarea_no_visible(id_tarea):
+    from app import tareas
+
+    tareas.update_one(
+            {'_id': ObjectId(id_tarea)},
+            {'$set': {'visible': False}}
+        )
+    flash("Tarea borrada con éxito.", category='success')
+
+
+@views.route('/borrar_tarea', methods=['GET','POST'])
+def borrar_tarea():
+    from app import usuarios
+
+    usuario_exists = 'usuario' in session
+    _id = None
+    tipo_usuario = None
+
+    if usuario_exists:
+        session_json = json.loads(session['usuario'])
+        sesion = session_json
+        _id = session_json['_id']['$oid']
+        tipo_usuario = session_json['tipo_usuario']
+    id_creador = request.args.get('id')
+
+    id_tarea = request.args.get('idtarea')
+    print(id_tarea)
+
+    set_tarea_no_visible(id_tarea)
+
+    id_creador = request.args.get('id')
+
+    administrador = get_usuario(id_creador)
+
+    tareas_administrador = get_tareas_creador(id_creador)
+
+    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
 @views.route('/turing-compiler', methods=['POST'])
 def turing_compiler():
