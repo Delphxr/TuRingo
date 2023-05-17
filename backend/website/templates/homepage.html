@@ -288,7 +288,7 @@
                             {% if tarea['visible'] %}
                             
                                 {% set ns.count = ns.count + 1 %}
-                                <a href="/editor?id_tarea={{ tarea['_id'] }}" class="list-group-item list-group-item-action">Tarea {{ ns.count }}: {{ tarea['nombre'] }}</a>
+                                <a href="/editor?id_tarea={{ tarea['_id'] }}" class="list-group-item list-group-item-action"><b>Tarea {{ ns.count }}:</b> {{ tarea['nombre'] }}</a>
 
                             {% else %}
 

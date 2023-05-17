@@ -298,7 +298,7 @@
                     <h5 class="modal-title" id="updateModalLabel">Editar Ejercicio</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="POST" action="/editar_tarea?id_creador={{ administrador['_id'] }}">
+                <form method="POST" action="/editar_tarea?id={{ administrador['_id'] }}">
                     <div class="modal-body">
                         <!-- Input fields -->
                         <div class="row g-3 align-items-center m-2 mt-0">
@@ -363,7 +363,7 @@
     <script>
         function updateFormAction(tareaId) {
             const form = document.querySelector('#updateModal form');
-            form.action = `/editar_tarea?id_creador={{ administrador['_id'] }}&id_tarea=${tareaId}`;
+            form.action = `/editar_tarea?id={{ administrador['_id'] }}&id_tarea=${tareaId}`;
         }
     </script>
 
@@ -373,7 +373,7 @@
             if (confirmed) {
                 var urlParams = new URLSearchParams(window.location.search);
                 var idUsuario = urlParams.get("id");
-                var url = "/borrar_tarea?id=" + idUsuario + "&idtarea=" + idTarea;
+                var url = "/borrar_tarea?id=" + idUsuario + "&id_tarea=" + idTarea;
                 window.location.href = url;
             } else {
             

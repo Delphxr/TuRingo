@@ -661,8 +661,9 @@ def editar_tarea():
         tipo_usuario = session_json['tipo_usuario']
     id_creador = request.args.get('id')
 
-    id_creador = request.args.get('id_creador')
+    id_creador = request.args.get('id')
     id_tarea = request.args.get('id_tarea')
+    _id = id_creador
 
     if request.method == 'POST':
         nombre = request.form.get('nombre')
@@ -793,7 +794,7 @@ def borrar_tarea():
         tipo_usuario = session_json['tipo_usuario']
     id_creador = request.args.get('id')
 
-    id_tarea = request.args.get('idtarea')
+    id_tarea = request.args.get('id_tarea')
     print(id_tarea)
 
     set_tarea_no_visible(id_tarea)
