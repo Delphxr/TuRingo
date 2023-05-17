@@ -40,6 +40,7 @@ class TuringMachine:
         # Inicializa la cinta y el índice inicial
         current_step = 0
         cinta = self.get_margin_input(entrada)
+        index = self.margin_index
         cinta_inicial = cinta
 
         # Crea una lista vacía para guardar las instrucciones de cada estado
@@ -105,6 +106,7 @@ class TuringMachine:
 
         # Inicializa la cinta y el índice inicial
         cinta = self.get_margin_input(entrada)
+        index = self.margin_index
         cinta_inicial = cinta
 
         # Crea una lista vacía para guardar las instrucciones de cada estado
