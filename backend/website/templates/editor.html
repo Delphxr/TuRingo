@@ -155,18 +155,18 @@
                 {% endif %}
 
                 {% if datos_entrada_salida %}
+
                     <div class="p-3">
-                        <h4>Ejemplos de entrada y salida</h4>
+
+                        <h4>Ejemplo de entrada y salida</h4>
                         <br>
-                        {% for x in datos_entrada_salida['entradasalida']: %}
 
-                            <b>Entrada:</b> {{ x['entrada'] }} 
-                            <br>
-                            <b>Salida:</b> {{ x['salida'] }}
-                            <br>
-                            <br>
+                        <b>Entrada:</b> {{ datos_entrada_salida['entradasalida'][0]['entrada'] }} 
+                        <br>
+                        <b>Salida:</b> {{ datos_entrada_salida['entradasalida'][0]['salida'] }}
+                        <br>
+                        <br>
 
-                        {% endfor %}
                     </div>
 
                 {% else %}
