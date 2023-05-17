@@ -25,8 +25,7 @@ def borrar_usuario(usuario_id):
         return jsonify({'message': 'Usuario no fue encontrado'})
 
 
-
-def insertar_usuario(nombre,apellidos,password,correo,carne,tipo_usuario):
+def insertar_usuario(nombre, apellidos, password, correo, carne, tipo_usuario):
     from app import usuarios
 
     # Encrypt the password
@@ -48,9 +47,10 @@ def insertar_usuario(nombre,apellidos,password,correo,carne,tipo_usuario):
 
 def check_existing_user(correo):
     from app import usuarios
-    
+
     existing_user = usuarios.find_one({'correo': correo})
     return existing_user
+
 
 def get_user_password(correo):
     from app import usuarios
@@ -60,6 +60,7 @@ def get_user_password(correo):
         return user.get('password')
     else:
         return None
+
 
 @views.route('/login', methods=['POST'])
 def login():
@@ -78,7 +79,8 @@ def login():
 
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
                 usuario = check_existing_user(email)
-                usuario = json_util.dumps(usuario)  # Convert usuario to JSON string
+                # Convert usuario to JSON string
+                usuario = json_util.dumps(usuario)
                 print(usuario)
                 session['usuario'] = usuario
                 print(session)
@@ -91,18 +93,21 @@ def login():
                 tipo_usuario = session_json['tipo_usuario']
 
                 flash('Se ha iniciado sesión correctamente!', category='success')
-                return render_template("homepage.html",usuario=usuario,usuario_exists=usuario_exists,tareas=tareas,_id=_id,tipo_usuario=tipo_usuario)
+                return render_template("homepage.html", usuario=usuario, usuario_exists=usuario_exists, tareas=tareas, _id=_id, tipo_usuario=tipo_usuario)
             else:
-                flash('Password incorrecta, por favor intente de nuevo.', category='error')
-                return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,id=_id,tipo_usuario=tipo_usuario)
+                flash('Password incorrecta, por favor intente de nuevo.',
+                      category='error')
+                return render_template("homepage.html", tareas=tareas, usuario_exists=usuario_exists, id=_id, tipo_usuario=tipo_usuario)
 
         else:
-            flash('El correo no está registrado, por favor intente de nuevo.', category='error')
-            return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+            flash(
+                'El correo no está registrado, por favor intente de nuevo.', category='error')
+            return render_template("homepage.html", tareas=tareas, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
-    return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("homepage.html", tareas=tareas, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
-@views.route('logout', methods=['GET','POST'])
+
+@views.route('logout', methods=['GET', 'POST'])
 def logout():
     session.pop('usuario', None)
     tareas = get_tareas()
@@ -111,7 +116,7 @@ def logout():
     tipo_usuario = None
     print(usuario_exists)
 
-    return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("homepage.html", tareas=tareas, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/signup', methods=['GET', 'POST'])
@@ -136,33 +141,34 @@ def signup():
 
         print(request.form)
         if nombre == None or nombre == "" or nombre == " ":
-            flash("El nombre no puede estar vacío.",category='error')
+            flash("El nombre no puede estar vacío.", category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
-            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
+            flash(
+                "Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
         elif password == None or password == "" or password == " ":
             flash("El password no puede estar vacío.", category='error')
         elif apellidos == None or apellidos == "" or apellidos == " ":
-            flash("Los apellidos no pueden estar vacíos.",category='error')
+            flash("Los apellidos no pueden estar vacíos.", category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', apellidos):
             flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en los apellidos.", category='error')
         elif carne == None or carne == "" or carne == " ":
-            flash("El carne no puede estar vacío.",category='error')
+            flash("El carne no puede estar vacío.", category='error')
         elif not carne.isnumeric():
-            flash("Solo puede usar números en el carne.",category='error')
+            flash("Solo puede usar números en el carne.", category='error')
         else:
             if check_existing_user(correo):
                 flash("El usuario ya está registrado en la base de datos.",
                       category='error')
-                return render_template("homepage.html",usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+                return render_template("homepage.html", usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
             else:
                 insertar_usuario(nombre, apellidos, password,
                                  correo, carne, tipo_usuario)
                 flash('Se ha creado una cuenta correctamente!', category='success')
-                
-                return render_template("homepage.html",usuario = usuario, tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
 
-    return render_template("homepage.html",usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+                return render_template("homepage.html", usuario=usuario, tareas=tareas, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
+
+    return render_template("homepage.html", usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 def get_usuarios():
@@ -335,7 +341,7 @@ def insertar_tarea(nombre, descripcion, fechacreacion, idcreador, entradasalida,
         'descripcion': descripcion,
         'fechacreacion': fechacreacion,
         'idcreador': idcreador,
-        'visible' : True
+        'visible': True
     }
 
     result = tareas.insert_one(tarea)
@@ -406,7 +412,7 @@ def home():
         _id = session_json['_id']['$oid']
         tipo_usuario = session_json['tipo_usuario']
 
-    return render_template("homepage.html",tareas=tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("homepage.html", tareas=tareas, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/editor', methods=['GET', 'POST'])
@@ -428,7 +434,7 @@ def editor():
         _id = session_json['_id']['$oid']
         tipo_usuario = session_json['tipo_usuario']
 
-    return render_template("editor.html", tarea=tarea, datos_entrada_salida=datos_entrada_salida,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("editor.html", tarea=tarea, datos_entrada_salida=datos_entrada_salida, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/gameditor', methods=['GET', 'POST'])
@@ -443,7 +449,7 @@ def gameditor():
         _id = session_json['_id']['$oid']
         tipo_usuario = session_json['tipo_usuario']
 
-    return render_template("gameditor.html",usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("gameditor.html", usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/estudiante', methods=['GET', 'POST'])
@@ -483,10 +489,10 @@ def estudiantes():
             info_tarea for info_tarea in tareas_info if info_tarea['_id'] == ObjectId(tarea['idtarea'])]
         tarea['informacion'] = tarea_informacion
         result.append(tarea)
-        
+
     tareas_usuario = result
 
-    return render_template("estudiante.html",estudiante=estudiante,tareas_usuario=tareas_usuario,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("estudiante.html", estudiante=estudiante, tareas_usuario=tareas_usuario, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/busqueda_tarea', methods=['GET', 'POST'])
@@ -506,7 +512,7 @@ def busqueda_tarea():
         _id = session_json['_id']['$oid']
         tipo_usuario = session_json['tipo_usuario']
 
-    return render_template("ver_tareas.html", lista_tareas=lista_tareas, busqueda=busqueda,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("ver_tareas.html", lista_tareas=lista_tareas, busqueda=busqueda, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/busqueda_usuario', methods=['GET', 'POST'])
@@ -526,12 +532,12 @@ def busqueda_usuario():
         sesion = session_json
         _id = session_json['_id']['$oid']
         tipo_usuario = session_json['tipo_usuario']
-    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes, busqueda=busqueda,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes, busqueda=busqueda, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/administrador', methods=['GET', 'POST'])
 def administrador():
-    #from app import usuarios
+    # from app import usuarios
 
     id_creador = request.args.get('id')
 
@@ -548,7 +554,7 @@ def administrador():
         _id = session_json['_id']['$oid']
         tipo_usuario = session_json['tipo_usuario']
 
-    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/crear_tarea', methods=['GET', 'POST'])
@@ -573,15 +579,17 @@ def crear_tarea():
         salidas = request.form.getlist('salida')
 
         if nombre == None or nombre == "" or nombre == " ":
-            flash("El nombre no puede estar vacío.",category='error')
+            flash("El nombre no puede estar vacío.", category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
-            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
+            flash(
+                "Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
         elif descripcion == None or descripcion == "" or descripcion == " ":
             flash("La descripcion no puede estar vacía.", category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', descripcion):
             flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en la descripcion.", category='error')
-        elif(id_creador == None or id_creador == "" or id_creador == " "):
-            flash("El ID del creador de la tarea no puede estar vacío.",category='error')
+        elif (id_creador == None or id_creador == "" or id_creador == " "):
+            flash("El ID del creador de la tarea no puede estar vacío.",
+                  category='error')
         else:
             entradasalida = []
 
@@ -596,16 +604,16 @@ def crear_tarea():
                 flash('Se ha creado una tarea correctamente!', category='success')
                 administrador = get_usuario(id_creador)
                 tareas_administrador = get_tareas_creador(id_creador)
-                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
             except Exception as e:
                 flash("Error: No se dio un administrador valido.", category='error')
-                return render_template("administrador.html", administrador=None, tareas_administrador=None,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+                return render_template("administrador.html", administrador=None, tareas_administrador=None, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
     administrador = get_usuario(id_creador)
 
     tareas_administrador = get_tareas_creador(id_creador)
 
-    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/editar_tarea', methods=['GET', 'POST'])
@@ -635,13 +643,15 @@ def editar_tarea():
         if nombre is None or nombre.strip() == "":
             flash("El nombre no puede estar vacío.", category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
-            flash("Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
+            flash(
+                "Solo puede usar caracteres de A-Z, números y tildes en el nombre.", category='error')
         elif descripcion is None or descripcion.strip() == "":
             flash("La descripción no puede estar vacía.", category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?(){}[\]<>«»"\'«»]+$', descripcion):
             flash("Solo puede usar caracteres de A-Z, números, tildes y signos de puntuación en la descripción.", category='error')
-        elif(id_creador == None or id_creador == "" or id_creador == " "):
-            flash("El ID del creador de la tarea no puede estar vacío.",category='error')
+        elif (id_creador == None or id_creador == "" or id_creador == " "):
+            flash("El ID del creador de la tarea no puede estar vacío.",
+                  category='error')
         else:
             entradasalida = []
 
@@ -656,17 +666,17 @@ def editar_tarea():
                 flash('Se ha editado la tarea correctamente!', category='success')
                 administrador = get_usuario(id_creador)
                 tareas_administrador = get_tareas_creador(id_creador)
-                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+                return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
             except Exception as e:
                 print(e)
                 flash("Error: No se dio un administrador valido.", category='error')
-                return render_template("administrador.html", administrador=None, tareas_administrador=None,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+                return render_template("administrador.html", administrador=None, tareas_administrador=None, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
     administrador = get_usuario(id_creador)
 
     tareas_administrador = get_tareas_creador(id_creador)
 
-    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/ver_tareas', methods=['GET', 'POST'])
@@ -683,7 +693,7 @@ def ver_tareas():
         tipo_usuario = session_json['tipo_usuario']
     id_creador = request.args.get('id')
 
-    return render_template("ver_tareas.html", lista_tareas=lista_tareas,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("ver_tareas.html", lista_tareas=lista_tareas, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/ver_estudiantes', methods=['GET', 'POST'])
@@ -700,7 +710,7 @@ def ver_estudiantes():
         tipo_usuario = session_json['tipo_usuario']
     id_creador = request.args.get('id')
 
-    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
 
 @views.route('/cambiar_permisos', methods=['GET', 'POST'])
@@ -723,19 +733,20 @@ def cambiar_permisos():
     id_creador = request.args.get('id')
 
     lista_estudiantes = get_usuarios()
-    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("ver_estudiantes.html", lista_estudiantes=lista_estudiantes, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
+
 
 def set_tarea_no_visible(id_tarea):
     from app import tareas
 
     tareas.update_one(
-            {'_id': ObjectId(id_tarea)},
-            {'$set': {'visible': False}}
-        )
+        {'_id': ObjectId(id_tarea)},
+        {'$set': {'visible': False}}
+    )
     flash("Tarea borrada con éxito.", category='success')
 
 
-@views.route('/borrar_tarea', methods=['GET','POST'])
+@views.route('/borrar_tarea', methods=['GET', 'POST'])
 def borrar_tarea():
     from app import usuarios
 
@@ -761,7 +772,8 @@ def borrar_tarea():
 
     tareas_administrador = get_tareas_creador(id_creador)
 
-    return render_template("administrador.html",administrador=administrador,tareas_administrador=tareas_administrador,usuario_exists=usuario_exists,_id=_id,tipo_usuario=tipo_usuario)
+    return render_template("administrador.html", administrador=administrador, tareas_administrador=tareas_administrador, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
+
 
 @views.route('/turing-compiler', methods=['POST'])
 def turing_compiler():
@@ -785,10 +797,9 @@ def turing_compiler():
     return resultado
 
 
-
-#hay que ver la forma de recibir parametros tambien el id de tarea para manejar parametros de prueba
-#y tambien el id de usuario
-@views.route('/entregar-tarea', methods=['GET','POST'])
+# hay que ver la forma de recibir parametros tambien el id de tarea para manejar parametros de prueba
+# y tambien el id de usuario
+@views.route('/entregar-tarea', methods=['GET', 'POST'])
 def entregar_tarea():
     print("llamada recibida!")
     request_data = request.get_json()
@@ -799,9 +810,11 @@ def entregar_tarea():
     if usuario_exists:
         session_json = json.loads(session['usuario'])
         sesion = session_json
-        id_usuario = session_json['_id']['$oid'] # El id del usuario que envia la tarea
+        # El id del usuario que envia la tarea
+        id_usuario = session_json['_id']['$oid']
 
-    id_tarea = request.args.get('id_tarea') # El id de la tarea que se desea entregar
+    # El id de la tarea que se desea entregar
+    id_tarea = request.args.get('id_tarea')
 
     print(id_tarea)
     print(id_usuario)
