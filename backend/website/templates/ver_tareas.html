@@ -151,6 +151,7 @@
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripcion</th>
                                 <th scope="col">Fecha Creación</th>
+                                <th scope="col">Parámetro vacío</th>
 
                                 {% if tipo_usuario == 'Administrador' %}
                                 <th scope="col">Ejemplos entrada y salida</th>
@@ -173,6 +174,7 @@
                                 <td>{{ tarea['nombre'] }}</td>
                                 <td>{{ tarea['descripcion'] }}</td>
                                 <td>{{ tarea['fechacreacion'] }}</td>
+                                <td>{{ tarea['parametro_vacio'] }}</td>
 
                                 {% if tipo_usuario == 'Administrador' %}
                                 <td>{{ tarea['datos_entrada_salida']['entradasalida'] }}</td>

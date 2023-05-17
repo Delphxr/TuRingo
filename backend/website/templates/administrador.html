@@ -175,6 +175,7 @@
                                 <th scope="col">Nombre Tarea</th>
                                 <th scope="col">Descripcion Tarea</th>
                                 <th scope="col">Fecha Creación</th>
+                                <th scope="col">Parámetro vacío</th>
                                 <th scope="col">Datos entrada y salida</th>
                                 <th scope="col">Editar</th>
                                 <th scope="col">Borrar tarea</th>
@@ -191,6 +192,7 @@
                                         <td>{{ tarea['nombre'] }}</td>
                                         <td>{{ tarea['descripcion'] }}</td>
                                         <td>{{ tarea['fechacreacion'] }}</td>
+                                        <td>{{ tarea['parametro_vacio'] }}</td>
                                         <td>{{ tarea['datos_entrada_salida'][0]['entradasalida'] }}</td>
                                         <td>
                                             <button type="button" id="editarButton" class="action-button btn btn-primary"
@@ -238,12 +240,22 @@
                                 <input class="form-control" type="text" name="nombre"></input>
                             </div>
                         </div>
+
                         <div class="row g-3 align-items-center m-2 mt-0">
                             <div class="col-auto">
                                 <label>Descripcion:</label>
                             </div>
                             <div class="col">
                                 <textarea class="form-control" name="descripcion" aria-label="With textarea"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center m-2 mt-0">
+                            <div class="col-auto">
+                                <label>Parámetro de vacío:</label>
+                            </div>
+                            <div class="col">
+                                <textarea class="form-control" name="vacio" aria-label="With textarea"></textarea>
                             </div>
                         </div>
 
@@ -297,12 +309,22 @@
                                 <input class="form-control" type="text" name="nombre"></input>
                             </div>
                         </div>
+
                         <div class="row g-3 align-items-center m-2 mt-0">
                             <div class="col-auto">
                                 <label>Descripcion:</label>
                             </div>
                             <div class="col">
                                 <textarea class="form-control" name="descripcion" aria-label="With textarea"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 align-items-center m-2 mt-0">
+                            <div class="col-auto">
+                                <label>Parámetro de vacío:</label>
+                            </div>
+                            <div class="col">
+                                <textarea class="form-control" name="vacio" aria-label="With textarea"></textarea>
                             </div>
                         </div>
 

@@ -79,18 +79,21 @@ def login():
 
             if bcrypt.checkpw(password.encode('utf-8'), hashed_password):
                 usuario = check_existing_user(email)
-                # Convert usuario to JSON string
+                # --------------------Guardar el usuario actual en la sesion----------------------------------
                 usuario = json_util.dumps(usuario)
+                # --------------------------------------------------------------------------------------------
                 print(usuario)
                 session['usuario'] = usuario
                 print(session)
                 usuario_exists = 'usuario' in session
                 print(usuario_exists)
-
+                
+                # --------------------Cargar el usuario actual de la sesion de flask----------------------------
                 session_json = json.loads(session['usuario'])
                 sesion = session_json
                 _id = session_json['_id']['$oid']
                 tipo_usuario = session_json['tipo_usuario']
+                # ----------------------------------------------------------------------------------------------
 
                 flash('Se ha iniciado sesión correctamente!', category='success')
                 return render_template("homepage.html", usuario=usuario, usuario_exists=usuario_exists, tareas=tareas, _id=_id, tipo_usuario=tipo_usuario)
@@ -109,7 +112,9 @@ def login():
 
 @views.route('logout', methods=['GET', 'POST'])
 def logout():
+    # --------------------------Retirar el usuario actual de la sesión de flask para cerrar sesión---------------------
     session.pop('usuario', None)
+    # -----------------------------------------------------------------------------------------------------------------
     tareas = get_tareas()
     usuario_exists = 'usuario' in session
     _id = None
@@ -332,13 +337,14 @@ def cambiar_permiso_usuario(usuario_id, tipo_usuario):
     return
 
 
-def insertar_tarea(nombre, descripcion, fechacreacion, idcreador, entradasalida, ejemplo):
+def insertar_tarea(nombre, descripcion, vacio, fechacreacion, idcreador, entradasalida, ejemplo):
     from app import tareas
     from app import datos_entrada_salida
 
     tarea = {
         'nombre': nombre,
         'descripcion': descripcion,
+        'parametro_vacio': vacio,
         'fechacreacion': fechacreacion,
         'idcreador': idcreador,
         'visible': True
@@ -357,7 +363,7 @@ def insertar_tarea(nombre, descripcion, fechacreacion, idcreador, entradasalida,
     return f'Datos entrada salida agregados con el id {result2.inserted_id}'
 
 
-def actualizar_tarea(idtarea, nombre, descripcion, fechacreacion, entradasalida):
+def actualizar_tarea(idtarea, nombre, descripcion, vacio, fechacreacion, entradasalida):
     from app import tareas
     from app import datos_entrada_salida
 
@@ -366,6 +372,7 @@ def actualizar_tarea(idtarea, nombre, descripcion, fechacreacion, entradasalida)
         {'$set': {
             'nombre': nombre,
             'descripcion': descripcion,
+            'parametro_vacio': vacio,
             'fechacreacion': fechacreacion
         }}
     )
@@ -419,22 +426,45 @@ def home():
 def editor():
     id_tarea = request.args.get('id_tarea')
     tarea = get_tarea(id_tarea)
-    print(tarea)
 
     datos_entrada_salida = get_datos_entrada_salida(id_tarea)
-    print(datos_entrada_salida)
 
     usuario_exists = 'usuario' in session
-    _id = None
+    id_usuario = None
     tipo_usuario = None
 
     if usuario_exists:
         session_json = json.loads(session['usuario'])
         sesion = session_json
-        _id = session_json['_id']['$oid']
+        id_usuario = session_json['_id']['$oid']
         tipo_usuario = session_json['tipo_usuario']
+    
+    # --------------------Guardar la tarea actual en la sesion----------------------------------
+    tarea_json = json_util.dumps(tarea) # Se convierte a json la tarea para guardar en la sesion
+    session['current_tarea'] = tarea_json # Se guarda la tarea actual en la sesion de flask
+    # ------------------------------------------------------------------------------------------
 
-    return render_template("editor.html", tarea=tarea, datos_entrada_salida=datos_entrada_salida, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
+    # --------------------Cargar la tarea actual de la sesion para obtener sus parametros--------------------------
+    tarea_json = json.loads(session['current_tarea']) # Se carga la tarea actual de la sesión de flask
+    id_tarea = tarea_json['_id']['$oid'] # Se obtiene el id de la tarea actual de la sesion
+    parametro_vacio = tarea_json['parametro_vacio'] # Se obtiene el parametro vacio de la tarea actual de la sesion
+    # -------------------------------------------------------------------------------------------------------------
+
+    # --------------------Guardar los datos de E/S de la tarea actual en la sesion-----------------------------------------------------------
+    datos_es_json = json_util.dumps(datos_entrada_salida) # Se convierte a json los datos de e/s de la tarea actual para guardar en la sesion
+    session['current_entrada_salida'] = datos_es_json # Se guarda los datos de entrada y salida actual en la sesion de flask
+    # ---------------------------------------------------------------------------------------------------------------------------------------
+
+    # --------------------Cargar los datos de E/S de la tarea actual de la sesion para obtener sus parametros-------------------------
+    datos_es_json = json.loads(session['current_entrada_salida']) # Se carga los datos de e/s de la tarea actual de la sesion de flask
+    # --------------------------------------------------------------------------------------------------------------------------------
+
+    print(id_tarea) # El id de la tarea
+    print(parametro_vacio) # El parametro vacio de la tarea
+    print(datos_es_json) # Los datos de entrada y salida de la tarea
+    print(id_usuario) # El id del usuario
+
+    return render_template("editor.html", tarea=tarea, datos_entrada_salida=datos_entrada_salida,usuario_exists=usuario_exists,id_usuario=id_usuario,tipo_usuario=tipo_usuario,id_tarea=id_tarea,parametro_vacio=parametro_vacio,datos_es_json=datos_es_json)
 
 
 @views.route('/gameditor', methods=['GET', 'POST'])
@@ -574,6 +604,7 @@ def crear_tarea():
     if request.method == 'POST':
         nombre = request.form.get('nombre')
         descripcion = request.form.get('descripcion')
+        vacio = request.form.get('vacio')
         fechacreacion = datetime.now().strftime("%d-%m-%Y")
         entradas = request.form.getlist('entrada')
         salidas = request.form.getlist('salida')
@@ -599,7 +630,7 @@ def crear_tarea():
             result = {'entradasalida': entradasalida}
 
             try:
-                insertar_tarea(nombre, descripcion, fechacreacion,
+                insertar_tarea(nombre, descripcion, vacio, fechacreacion,
                                id_creador, entradasalida, True)
                 flash('Se ha creado una tarea correctamente!', category='success')
                 administrador = get_usuario(id_creador)
@@ -636,6 +667,7 @@ def editar_tarea():
     if request.method == 'POST':
         nombre = request.form.get('nombre')
         descripcion = request.form.get('descripcion')
+        vacio = request.form.get('vacio')
         fechacreacion = datetime.now().strftime("%d-%m-%Y")
         entradas = request.form.getlist('entrada')
         salidas = request.form.getlist('salida')
@@ -662,7 +694,7 @@ def editar_tarea():
 
             try:
                 actualizar_tarea(id_tarea, nombre, descripcion,
-                                 fechacreacion, entradasalida)
+                                 vacio, fechacreacion, entradasalida)
                 flash('Se ha editado la tarea correctamente!', category='success')
                 administrador = get_usuario(id_creador)
                 tareas_administrador = get_tareas_creador(id_creador)
