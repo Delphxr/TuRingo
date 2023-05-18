@@ -71,7 +71,7 @@ async function entregarTarea() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
+      body: JSON.stringify(JSON.parse(pseudoCodigo.obtenerCodigoJson(entrada, vacio)))
     })
     const code = await response.json();
     console.log("respuesta", code)
