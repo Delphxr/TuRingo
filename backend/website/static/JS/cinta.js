@@ -80,7 +80,7 @@ async function entregarTarea() {
     
 
 
-    makeLog("Compilacion correcta!", code)
+    
     circle.remove()
 
   } catch (error) {
