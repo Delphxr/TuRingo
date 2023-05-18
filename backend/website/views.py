@@ -863,7 +863,6 @@ def entregar_tarea():
 
 
 
-    entrada = request_data["entrada"]
     codigo = json.dumps(request_data["codigo"])
     vacio = request_data["vacio"]
 
@@ -872,6 +871,6 @@ def entregar_tarea():
     maquina.set_code(codigo)
 
     
-    resultado = datos_es_json + "|" + parametro_vacio
+    resultado = datos_es_json
 
     return resultado
