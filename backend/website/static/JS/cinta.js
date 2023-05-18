@@ -75,8 +75,10 @@ async function entregarTarea() {
     },
     body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
   }).then(resp => resp.json())
-    .then(data => { console.log(data) 
-      makeLog("Entrega correcta!", "Nota:" + data["calificacion"])})
+    .then(data => {
+      console.log(data)
+      makeLog("Entrega correcta!", "Nota:" + data["calificacion"])
+    })
     .catch(err => {
       console.log(err);
       circle.remove()
