@@ -859,7 +859,8 @@ def entregar_tarea():
     # --------------------------------------------------------------------------------------------------------------------------------
 
 
-    print('HOLA SOY UN PRINT', flush=True)
+    ejemplos = datos_es_json["entradasalida"]
+    parametro_vacio
 
 
 
@@ -871,6 +872,6 @@ def entregar_tarea():
     maquina.set_code(codigo)
 
     
-    resultado = datos_es_json
+    
 
-    return resultado
+    return parametro_vacio
