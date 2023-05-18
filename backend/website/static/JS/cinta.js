@@ -68,7 +68,7 @@ async function entregarTarea() {
 
   console.log("llamando api: \n" + pseudoCodigo.obtenerCodigoJson(entrada, vacio))
 
-  await fetch('http://127.0.0.1:5000/entregar-tarea', {
+  await fetch('http://140.84.172.6:5000/entregar-tarea', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -88,6 +88,8 @@ async function entregarTarea() {
   circle.remove()
 
   alert("Tarea entregada.");
+
+  
 
 }
 
@@ -115,7 +117,7 @@ async function compileCode() {
 
   console.log("llamando api")
   try {
-    const response = await fetch('http://127.0.0.1:5000/turing-compiler', {
+    const response = await fetch('http://140.84.172.6:5000/turing-compiler', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
