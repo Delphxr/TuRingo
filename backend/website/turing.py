@@ -186,9 +186,9 @@ class TuringMachine:
             lista.append({
                 "input": caso["entrada"],
                 "respuesta" : entrada_margin,
-                "estudiante": resultado_case
+                "estudiante": resultado_estudiante
             })
-        #return lista
+        return lista
         return (nota*100)/nota_div
 
 
