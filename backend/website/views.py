@@ -846,11 +846,22 @@ def entregar_tarea():
         # El id del usuario que envia la tarea
         id_usuario = session_json['_id']['$oid']
 
-    # El id de la tarea que se desea entregar
-    id_tarea = request.args.get('id_tarea')
 
-    print(id_tarea)
-    print(id_usuario)
+    # --------------------Cargar la tarea actual de la sesion para obtener sus parametros--------------------------
+    tarea_json = json.loads(session['current_tarea']) # Se carga la tarea actual de la sesión de flask
+    id_tarea = tarea_json['_id']['$oid'] # Se obtiene el id de la tarea actual de la sesion
+    parametro_vacio = tarea_json['parametro_vacio'] # Se obtiene el parametro vacio de la tarea actual de la sesion
+    # -------------------------------------------------------------------------------------------------------------
+
+
+    # --------------------Cargar los datos de E/S de la tarea actual de la sesion para obtener sus parametros-------------------------
+    datos_es_json = json.loads(session['current_entrada_salida']) # Se carga los datos de e/s de la tarea actual de la sesion de flask
+    # --------------------------------------------------------------------------------------------------------------------------------
+
+
+    print('HOLA SOY UN PRINT', flush=True)
+
+
 
     entrada = request_data["entrada"]
     codigo = json.dumps(request_data["codigo"])
