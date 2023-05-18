@@ -102,9 +102,9 @@
                 <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
 
                     {% if tipo_usuario == 'Administrador' %}
-                    <li><a class="dropdown-item" href="/administrador?id={{_id}}">Administrador</a></li>
+                    <li><a class="dropdown-item" href="/administrador?id={{id_usuario}}">Administrador</a></li>
                     {% else %}
-                    <li><a class="dropdown-item" href="/estudiante?id={{_id}}">Perfil</a></li>
+                    <li><a class="dropdown-item" href="/estudiante?id={{id_usuario}}">Perfil</a></li>
                     {% endif %}
 
                     <li><a class="dropdown-item" href="{{url_for('views.ver_tareas')}}">Ver tareas</a></li>
