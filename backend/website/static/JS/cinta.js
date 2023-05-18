@@ -66,7 +66,7 @@ async function entregarTarea() {
   let circle = startLoading()
 
 
-  console.log("llamando api")
+  console.log("llamando api: \n" + pseudoCodigo.obtenerCodigoJson(entrada, vacio))
 
   await fetch('http://140.84.172.6:5000/entregar-tarea', {
     method: 'POST',
