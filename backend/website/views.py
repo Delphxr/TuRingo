@@ -871,10 +871,7 @@ def entregar_tarea():
     maquina.set_blank(vacio)
     maquina.set_code(codigo)
 
-    if entrada == "":
-        resultado = maquina.run(None)
-    else:
-        resultado = maquina.run(entrada)
+    
+    resultado = datos_es_json + "|" + parametro_vacio
 
-
-    return "hola mundo!!"
+    return resultado
