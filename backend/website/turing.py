@@ -189,7 +189,7 @@ class TuringMachine:
                 "estudiante": resultado_estudiante
             })
         #return lista
-        return (nota*100)/nota_div
+        return (nota*100)#/nota_div
 
 
 #esto es un ejempl
