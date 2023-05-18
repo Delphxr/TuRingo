@@ -169,7 +169,10 @@ class TuringMachine:
         nota_div = len(casos)
         nota = 0
 
+        lista = []
+
         for caso in casos:
+            
             input_case = caso["entrada"]
             resultado_case = self.run_cinta(input_case)
 
@@ -177,6 +180,13 @@ class TuringMachine:
 
             if resultado_case == entrada_margin:
                 nota += 1
+            
+            lista.append({
+                "input": caso["entrada"],
+                "respuesta" : entrada_margin,
+                "estudiante": resultado_case
+            })
+            return lista
         return (nota*100)/nota_div
 
 
