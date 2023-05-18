@@ -67,27 +67,26 @@ async function entregarTarea() {
 
 
   console.log("llamando api")
-  try {
-    const response = await fetch('http://140.84.172.6:5000/entregar-tarea', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
-    }).then(resp => resp.json())
+
+  await fetch('http://140.84.172.6:5000/entregar-tarea', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
+  }).then(resp => resp.json())
     .then(data => { console.log(data) })
-    .catch(err => { console.log(err) });
-    
+    .catch(err => {
+      console.log(err);
+      circle.remove()
+    });
 
 
-    
-    circle.remove()
 
-  } catch (error) {
-    // Manejar otros errores, como problemas de red
-    console.error('Error en la solicitud POST:', error);
-    circle.remove()
-  }
+
+  circle.remove()
+
+
 }
 
 
