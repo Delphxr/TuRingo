@@ -196,8 +196,6 @@ class TuringMachine:
                 "estudiante": resultado_estudiante
             })
         nota = (nota*100)/nota_div
-        a = {"lista": lista,
-             "nota": nota}
         return nota
 
 
