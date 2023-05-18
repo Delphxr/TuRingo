@@ -178,7 +178,14 @@ class TuringMachine:
             resultado_case = self.run_cinta(input_case)
             resultado_estudiante = resultado_case["cintaFinal"]
 
-            entrada_margin = self.get_margin_input(caso["salida"])
+
+            vacio_original = self.vacio * len(caso["entrada"])
+            entrada_margin = self.get_margin_input(vacio_original)
+
+            temp_index = self.margin_index
+            for n in caso["salida"]:
+                entrada_margin[temp_index] = n
+                temp_index += 1
             
 
             if resultado_estudiante == entrada_margin:
