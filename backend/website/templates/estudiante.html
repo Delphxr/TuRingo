@@ -163,9 +163,9 @@
 
                                     {% for tarea in tareas_usuario: %}
                                         <tr>
-                                        <td>{{ tarea['informacion'][0].nombre }}</td>
-                                        <td>{{ tarea['nota'] }}</td>
-                                        <td>{{ tarea['fechaentrega'] }}</td>
+                                        <td>{{ tarea.nombre }}</td>
+                                        <td>{{ tarea.nota }}</td>
+                                        <td>{{ tarea.fechaentrega }}</td>
                                         {% if student_view %}
                                             <td><a href="/editor?id_tarea={{ tarea['idtarea'] }}">
                                                 <button type="button" class="action-button btn btn-primary">Rehacer</button>

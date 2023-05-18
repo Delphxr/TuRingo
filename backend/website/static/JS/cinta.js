@@ -89,6 +89,9 @@ async function entregarTarea() {
 
   circle.remove()
 
+  alert("Tarea entregada.");
+
+  
 
 }
 

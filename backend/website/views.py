@@ -387,7 +387,7 @@ def actualizar_tarea(idtarea, nombre, descripcion, vacio, fechacreacion, entrada
     return
 
 
-def entregar_tarea(idusuario, idtarea, fechaentrega, nota, codigodiagrama, entradasalida):
+def subir_tarea(idusuario, idtarea, fechaentrega, nota, codigodiagrama, entradasalida):
     from app import tareas_usuario
     from app import datos_entrada_salida
 
@@ -470,16 +470,16 @@ def editor():
 @views.route('/gameditor', methods=['GET', 'POST'])
 def gameditor():
     usuario_exists = 'usuario' in session
-    _id = None
+    id_usuario = None
     tipo_usuario = None
 
     if usuario_exists:
         session_json = json.loads(session['usuario'])
         sesion = session_json
-        _id = session_json['_id']['$oid']
+        id_usuario = session_json['_id']['$oid']
         tipo_usuario = session_json['tipo_usuario']
 
-    return render_template("gameditor.html", usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
+    return render_template("gameditor.html", usuario_exists=usuario_exists, id_usuario=id_usuario, tipo_usuario=tipo_usuario)
 
 
 @views.route('/estudiante', methods=['GET', 'POST'])
@@ -514,13 +514,18 @@ def estudiantes():
     tareas_info = tareas.find({'_id': {'$in': tareas_id}})
 
     result = []
-    for tarea in tareas_usuario:
-        tarea_informacion = [
-            info_tarea for info_tarea in tareas_info if info_tarea['_id'] == ObjectId(tarea['idtarea'])]
-        tarea['informacion'] = tarea_informacion
-        result.append(tarea)
+
+    for tarea_usuario in tareas_usuario:
+        tarea_id = ObjectId(tarea_usuario['idtarea'])
+        tarea_info = tareas.find_one({'_id': tarea_id})
+        if tarea_info:
+            tarea_usuario['nombre'] = tarea_info['nombre']
+        else:
+            tarea_usuario['nombre'] = None
+        result.append(tarea_usuario)
 
     tareas_usuario = result
+    print(tareas_usuario)
 
     return render_template("estudiante.html", estudiante=estudiante, tareas_usuario=tareas_usuario, usuario_exists=usuario_exists, _id=_id, tipo_usuario=tipo_usuario)
 
@@ -862,8 +867,6 @@ def entregar_tarea():
     ejemplos = datos_es_json["entradasalida"]
     vacio_test = parametro_vacio
 
-
-
     codigo = json.dumps(request_data["codigo"])
 
     maquina = turing.TuringMachine()
@@ -873,5 +876,15 @@ def entregar_tarea():
     calificacion = maquina.get_nota(ejemplos)
 
     resultado = {"calificacion": calificacion}
+
+    import datetime
+    today = datetime.datetime.today()
+
+    print(id_usuario)
+    print(id_tarea)
+    print(calificacion)
+    print(codigo)
+    print(ejemplos)
+    subir_tarea(id_usuario, id_tarea,today,calificacion,codigo,ejemplos )
 
     return resultado
