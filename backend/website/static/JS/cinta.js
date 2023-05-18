@@ -74,7 +74,7 @@ async function entregarTarea() {
       body: JSON.stringify(JSON.parse(pseudoCodigo.obtenerCodigoJson(entrada, vacio)))
     })
     const code = await response.json();
-    console.log("respuesta", code)
+    console.log("respuesta de entrega", code)
 
 
     makeLog("Compilacion correcta!", code)
