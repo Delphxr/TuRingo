@@ -872,6 +872,6 @@ def entregar_tarea():
 
     calificacion = maquina.get_nota(ejemplos)
 
-    resultado = {"calificacion": "hola"}
+    resultado = {"calificacion": calificacion}
 
     return resultado
