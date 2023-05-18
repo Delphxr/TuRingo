@@ -2,7 +2,7 @@ import json
 
 debug = True
 
-max_steps = 150 #numero total de pasos que la maquina puede hacer, así evitamos maquinas que tengan un loop infinito
+max_steps = 150  # numero total de pasos que la maquina puede hacer, así evitamos maquinas que tengan un loop infinito
 
 
 class TuringMachine:
@@ -18,7 +18,7 @@ class TuringMachine:
 
         # buscamos el estado inicial
         for i in self.input_json:
-            #print(self.input_json[i]["inicial"])
+            # print(self.input_json[i]["inicial"])
             if (self.input_json[i]["inicial"] == "True"):
                 self.current_state = i
                 return
@@ -31,7 +31,6 @@ class TuringMachine:
         if (entrada == None):
             entrada = margenes
         return margenes + entrada + margenes
-    
 
     def run(self, entrada):
 
@@ -48,7 +47,7 @@ class TuringMachine:
 
         # Ciclo principal que se ejecuta mientras el estado actual tenga instrucciones
         end = True
-        sin_salida = True #si entramos en un nodo, y no hay ninguna transicion viable, llegamos a un callejon sin salida
+        sin_salida = True  # si entramos en un nodo, y no hay ninguna transicion viable, llegamos a un callejon sin salida
         while end:
             sin_salida = True
             # Obtiene las instrucciones para el estado actual del JSON de entrada
@@ -56,8 +55,8 @@ class TuringMachine:
 
             # iteramos las intrucciones
             for instruction in state['instrucciones']:
-                
-                #si lo que queremos leer no es igual al elemento actual de la cinta, no podemos hacer nada
+
+                # si lo que queremos leer no es igual al elemento actual de la cinta, no podemos hacer nada
                 if (instruction["leer"] != cinta[index]):
                     continue
 
@@ -65,8 +64,9 @@ class TuringMachine:
 
                 sin_salida = False
 
-                cinta = cinta[:index] + instruction['escribir'] + cinta[index+1:]
-                
+                cinta = cinta[:index] + \
+                    instruction['escribir'] + cinta[index+1:]
+
                 if instruction['direccion'] == "R":
                     index += 1
                 elif instruction['direccion'] == "L":
@@ -79,15 +79,15 @@ class TuringMachine:
                     "nodo": instruction['estado_siguiente']
                 })
 
-                if (index < 0 or len(cinta) <= index): # nos salimos al llegar al final de la cinta
+                if (index < 0 or len(cinta) <= index):  # nos salimos al llegar al final de la cinta
                     end = False
-                    break  
+                    break
 
                 # Actualiza el estado actual de la máquina con el estado siguiente de la instrucción
                 self.current_state = instruction['estado_siguiente']
                 break
 
-            #print(sin_salida)
+            # print(sin_salida)
             if (sin_salida or current_step > max_steps):
                 end = False
 
@@ -115,7 +115,7 @@ class TuringMachine:
 
         # Ciclo principal que se ejecuta mientras el estado actual tenga instrucciones
         end = True
-        sin_salida = True #si entramos en un nodo, y no hay ninguna transicion viable, llegamos a un callejon sin salida
+        sin_salida = True  # si entramos en un nodo, y no hay ninguna transicion viable, llegamos a un callejon sin salida
         while end:
             sin_salida = True
             # Obtiene las instrucciones para el estado actual del JSON de entrada
@@ -123,8 +123,8 @@ class TuringMachine:
 
             # iteramos las intrucciones
             for instruction in state['instrucciones']:
-                
-                #si lo que queremos leer no es igual al elemento actual de la cinta, no podemos hacer nada
+
+                # si lo que queremos leer no es igual al elemento actual de la cinta, no podemos hacer nada
                 if (instruction["leer"] != cinta[index]):
                     continue
 
@@ -132,8 +132,9 @@ class TuringMachine:
 
                 sin_salida = False
 
-                cinta = cinta[:index] + instruction['escribir'] + cinta[index+1:]
-                
+                cinta = cinta[:index] + \
+                    instruction['escribir'] + cinta[index+1:]
+
                 if instruction['direccion'] == "R":
                     index += 1
                 elif instruction['direccion'] == "L":
@@ -146,15 +147,15 @@ class TuringMachine:
                     "nodo": instruction['estado_siguiente']
                 })
 
-                if (index < 0 or len(cinta) <= index): # nos salimos al llegar al final de la cinta
+                if (index < 0 or len(cinta) <= index):  # nos salimos al llegar al final de la cinta
                     end = False
-                    break  
+                    break
 
                 # Actualiza el estado actual de la máquina con el estado siguiente de la instrucción
                 self.current_state = instruction['estado_siguiente']
                 break
 
-            #print(sin_salida)
+            # print(sin_salida)
             if (sin_salida or current_step > max_steps):
                 end = False
 
@@ -173,11 +174,10 @@ class TuringMachine:
         lista = []
 
         for caso in casos:
-            
+
             input_case = caso["entrada"]
             resultado_case = self.run_cinta(input_case)
             resultado_estudiante = resultado_case["cintaFinal"]
-
 
             vacio_original = self.vacio * len(caso["entrada"])
             entrada_margin = self.get_margin_input(vacio_original)
@@ -186,21 +186,22 @@ class TuringMachine:
             for n in caso["salida"]:
                 entrada_margin[temp_index] = n
                 temp_index += 1
-            
 
             if resultado_estudiante == entrada_margin:
                 nota += 1
-            
+
             lista.append({
                 "input": caso["entrada"],
-                "respuesta" : entrada_margin,
+                "respuesta": entrada_margin,
                 "estudiante": resultado_estudiante
             })
-        return lista
-        return (nota*100)/nota_div
+        nota = (nota*100)/nota_div
+        a = {"lista": lista,
+             "nota": nota}
+        return a
 
 
-#esto es un ejempl
+# esto es un ejempl
 malo = '{"q0":{"inicial":"True","apodo":"","instrucciones":[{"leer":"a","escribir":"_","direccion":"R","estado_siguiente":"q2"},{"leer":"b","escribir":"_","direccion":"R","estado_siguiente":"q1"}]},"q1":{"inicial":"False","apodo":"","instrucciones":[{"leer":"a","escribir":"a","direccion":"R","estado_siguiente":"q1"},{"leer":"b","escribir":"b","direccion":"R","estado_siguiente":"q1"}]},"q2":{"inicial":"False","apodo":"","instrucciones":[{"leer":"a","escribir":"a","direccion":"R","estado_siguiente":"q2"},{"leer":"b","escribir":"b","direccion":"R","estado_siguiente":"q2"}]}}'
 bueno = '{"q0":{"inicial":"True","apodo":"","instrucciones":[{"leer":"b","escribir":"_","direccion":"R","estado_siguiente":"q1"},{"leer":"a","escribir":"_","direccion":"R","estado_siguiente":"q2"}]},"q1":{"inicial":"False","apodo":"","instrucciones":[{"leer":"a","escribir":"a","direccion":"R","estado_siguiente":"q1"},{"leer":"b","escribir":"b","direccion":"R","estado_siguiente":"q1"}]},"q2":{"inicial":"False","apodo":"","instrucciones":[{"leer":"a","escribir":"a","direccion":"R","estado_siguiente":"q2"},{"leer":"b","escribir":"b","direccion":"R","estado_siguiente":"q2"}]}}'
 
