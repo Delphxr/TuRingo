@@ -81,9 +81,9 @@ async function entregarTarea() {
 
     makeLog("Compilacion correcta!", code)
 
-  } catch {
-    console.log("hubo un error al conectarse con el API")
-    circle.remove()
+  } catch (error) {
+    // Manejar otros errores, como problemas de red
+    console.error('Error en la solicitud POST:', error);
   }
 }
 
