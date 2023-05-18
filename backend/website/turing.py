@@ -189,8 +189,8 @@ class TuringMachine:
                 "respuesta" : entrada_margin,
                 "estudiante": resultado_estudiante
             })
-        #return lista
-        return (nota*100)#/nota_div
+        return lista
+        return (nota*100)/nota_div
 
 
 #esto es un ejempl
