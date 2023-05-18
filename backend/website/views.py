@@ -832,7 +832,7 @@ def turing_compiler():
 
 # hay que ver la forma de recibir parametros tambien el id de tarea para manejar parametros de prueba
 # y tambien el id de usuario
-@views.route('/entregar-tarea', methods=['GET', 'POST'])
+@views.route('/entregar-tarea', methods=['POST'])
 def entregar_tarea():
     print("llamada recibida!")
     request_data = request.get_json()
