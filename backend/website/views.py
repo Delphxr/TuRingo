@@ -871,6 +871,6 @@ def entregar_tarea():
     maquina.set_code(codigo)
 
     
-    resultado = str(json.dumps(datos_es_json))
+    resultado = datos_es_json
 
-    return resultado + "Hola PEPE"
+    return resultado
