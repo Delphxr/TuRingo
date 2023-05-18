@@ -75,15 +75,17 @@ async function entregarTarea() {
       },
       body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
     })
-    const code = await response.json();
+    const code = response;
     console.log("respuesta de entrega", code)
 
 
     makeLog("Compilacion correcta!", code)
+    circle.remove()
 
   } catch (error) {
     // Manejar otros errores, como problemas de red
     console.error('Error en la solicitud POST:', error);
+    circle.remove()
   }
 }
 
