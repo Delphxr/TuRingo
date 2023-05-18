@@ -860,18 +860,18 @@ def entregar_tarea():
 
 
     ejemplos = datos_es_json["entradasalida"]
-    parametro_vacio
+    vacio_test = parametro_vacio
 
 
 
     codigo = json.dumps(request_data["codigo"])
-    vacio = request_data["vacio"]
 
     maquina = turing.TuringMachine()
-    maquina.set_blank(vacio)
+    maquina.set_blank(vacio_test)
     maquina.set_code(codigo)
 
-    
-    
+    calificacion = maquina.get_nota(ejemplos)
 
-    return parametro_vacio
+    resultado = {"calificacion": calificacion}
+
+    return resultado
