@@ -74,9 +74,10 @@ async function entregarTarea() {
         'Content-Type': 'application/json'
       },
       body: pseudoCodigo.obtenerCodigoJson(entrada, vacio)
-    })
-    const code = response;
-    console.log("respuesta de entrega", code)
+    }).then(resp => resp.json())
+    .then(data => { console.log(data) })
+    .catch(err => { console.log(err) });
+    
 
 
     makeLog("Compilacion correcta!", code)
