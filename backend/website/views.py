@@ -515,12 +515,14 @@ def estudiantes():
 
     result = []
 
-    for tarea_info in tareas_info:
-        for tarea_usuario in tareas_usuario:
-            if tarea_info['_id'] == ObjectId(tarea_usuario['idtarea']):
-                tarea_usuario['nombre'] = tarea_info['nombre']
-                result.append(tarea_usuario)
-                break
+    for tarea_usuario in tareas_usuario:
+        tarea_id = ObjectId(tarea_usuario['idtarea'])
+        tarea_info = tareas.find_one({'_id': tarea_id})
+        if tarea_info:
+            tarea_usuario['nombre'] = tarea_info['nombre']
+        else:
+            tarea_usuario['nombre'] = None
+        result.append(tarea_usuario)
 
     tareas_usuario = result
     print(tareas_usuario)
