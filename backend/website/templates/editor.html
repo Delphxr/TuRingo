@@ -148,10 +148,10 @@
                     {{ tarea['descripcion'] }}
                 </div>
 
-                    <div class="p-3">
-                        <h4>Parámetro vacío</h4>
-                        {{ tarea['parametro_vacio'] }}
-                    </div>
+                <div class="p-3">
+                    <h4>Parámetro vacío</h4>
+                    {{ tarea['parametro_vacio'] }}
+                </div>
 
                 {% else %}
 
@@ -232,7 +232,8 @@
                         <label for="vacioCinta" style="color: var(--text-color)">Vacio</label>
                     </form>
 
-                    <span class="mx-2" style="color: var(--text-color)"> <small>Ultima Compilación:</small>
+                    <span class="mx-2" style="color: var(--text-color)"> <small id="compilation-header">Ultima
+                            Compilación:</small>
                         <div id="compilation-time">...</div>
                     </span>
 

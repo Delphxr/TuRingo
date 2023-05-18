@@ -77,16 +77,7 @@ async function entregarTarea() {
     console.log("respuesta", code)
 
 
-    circle.remove()
-
-
-    if (code.hasOwnProperty('error')) {
-      console.log("error en el codigo")
-      console.log(code)
-    } else {
-      updateCompilationTime()
-      console.log("EntregaCompleta")
-    }
+    makeLog("Compilacion correcta!", code)
 
   } catch {
     console.log("hubo un error al conectarse con el API")

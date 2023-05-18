@@ -27,13 +27,25 @@ function startLoading() {
 
 function updateCompilationTime() {
     var compilationTime = document.getElementById("compilation-time")
+    var compilationText = document.getElementById("compilation-header")
 
     var today = new Date();
     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date + ' ' + time;
 
+    compilationText.innerText = "Ultima Compilación:"
     compilationTime.innerText = dateTime
+    
+}
+
+function makeLog(header, text) {
+    var compilationTime = document.getElementById("compilation-time")
+    var compilationText = document.getElementById("compilation-header")
+
+    compilationText.innerText = header
+    compilationTime.innerText = text
+
 }
 
 

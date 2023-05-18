@@ -76,8 +76,21 @@
 
             {% if not usuario_exists %}
 
-                <div class="nav-link " href="#" role="button" data-bs-toggle="modal" data-bs-target="#loginModal"
-                    aria-expanded="false">
+            <div class="nav-link " href="#" role="button" data-bs-toggle="modal" data-bs-target="#loginModal"
+                aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    class="bi bi-person-circle" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                    <path fill-rule="evenodd"
+                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                </svg>
+            </div>
+
+            {% else %}
+
+            <li class="nav-item dropdown d-flex">
+                <div class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
+                    data-bs-target="#navbar-settings" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                         class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
@@ -85,36 +98,23 @@
                             d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
                     </svg>
                 </div>
+                <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
 
-                {% else %}
+                    {% if tipo_usuario == 'Administrador' %}
+                    <li><a class="dropdown-item" href="/administrador?id={{_id}}">Administrador</a></li>
+                    {% else %}
+                    <li><a class="dropdown-item" href="/estudiante?id={{_id}}">Perfil</a></li>
+                    {% endif %}
 
-                <li class="nav-item dropdown d-flex">
-                    <div class="nav-link " href="#" role="button" data-bs-toggle="dropdown"
-                        data-bs-target="#navbar-settings" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            class="bi bi-person-circle" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                            <path fill-rule="evenodd"
-                                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                        </svg>
-                    </div>
-                    <ul class="dropdown-menu dropdown-menu-end animation slideDownIn" id="navbar-settings">
+                    <li><a class="dropdown-item" href="{{url_for('views.ver_tareas')}}">Ver tareas</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
+                </ul>
+            </li>
 
-                        {% if tipo_usuario == 'Administrador' %}
-                        <li><a class="dropdown-item" href="/administrador?id={{_id}}">Administrador</a></li>
-                        {% else %}
-                        <li><a class="dropdown-item" href="/estudiante?id={{_id}}">Perfil</a></li>
-                        {% endif %}
-
-                        <li><a class="dropdown-item" href="{{url_for('views.ver_tareas')}}">Ver tareas</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="/logout">Cerrar Sesión</a></li>
-                    </ul>
-                </li>
-
-                {% endif %}
+            {% endif %}
         </ul>
 
     </div>
@@ -126,10 +126,13 @@
         <div class="col-7" style="margin: auto; height: 100%; weight: 80%">
             <div>
                 <div class="modal-footer" style="justify-content: flex-start; margin-bottom: 1%;">
-                    <button id="compile-button" type="button" class="btn action-button" style="margin-right: 30px;" title="Compilar maquina">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-capslock-fill" viewBox="0 0 16 16">
-                            <path d="M7.27 1.047a1 1 0 0 1 1.46 0l6.345 6.77c.6.638.146 1.683-.73 1.683H11.5v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1H1.654C.78 9.5.326 8.455.924 7.816L7.27 1.047zM4.5 13.5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1z"/>
-                          </svg>
+                    <button id="compile-button" type="button" class="btn action-button" style="margin-right: 30px;"
+                        title="Compilar maquina">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            class="bi bi-capslock-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M7.27 1.047a1 1 0 0 1 1.46 0l6.345 6.77c.6.638.146 1.683-.73 1.683H11.5v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1H1.654C.78 9.5.326 8.455.924 7.816L7.27 1.047zM4.5 13.5a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-1z" />
+                        </svg>
                     </button>
 
                     <button id="play-button" type="button" class="btn action-button" title="Correr maquina">
@@ -168,7 +171,10 @@
                         <label for="vacioCinta" style="color: var(--text-color)">Vacio</label>
                     </form>
 
-                    <span class="mx-2" style="color: var(--text-color)"> <small>Ultima Compilación:</small> <div id="compilation-time">...</div></span>
+                    <span class="mx-2" style="color: var(--text-color)"> <small id="compilation-header">Ultima
+                            Compilación:</small>
+                        <div id="compilation-time">...</div>
+                    </span>
 
                 </div>
             </div>
@@ -222,13 +228,13 @@
 
 
         </div>
-    
+
     </div>
-        
-    
-    
-    
-    
+
+
+
+
+
     </div>
 
     <div id="menu-nodo" class="menu-radial">
@@ -303,10 +309,10 @@
                             <label>Movimiento de Cinta</label>
                         </div>
                         <div class="col">
-                            
 
-                            <input type="radio" class="btn-check" name="directionT" id="izquierda"
-                                autocomplete="off" value="L">
+
+                            <input type="radio" class="btn-check" name="directionT" id="izquierda" autocomplete="off"
+                                value="L">
                             <label class="btn direction-button" for="izquierda">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                     class="bi bi-caret-left-fill" viewBox="0 0 16 16">
@@ -315,8 +321,8 @@
                                 </svg>
                             </label>
 
-                            <input type="radio" class="btn-check" name="directionT" id="derecha"
-                                autocomplete="off" value="R" checked>
+                            <input type="radio" class="btn-check" name="directionT" id="derecha" autocomplete="off"
+                                value="R" checked>
                             <label class="btn direction-button" for="derecha">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                     class="bi bi-caret-right-fill" viewBox="0 0 16 16">
@@ -402,7 +408,7 @@
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                
+
                 <div class="modal-body">
                     <div role="tabpanel">
 
@@ -435,16 +441,17 @@
 
                                     <div class="form-group">
                                         <label for="nombre">Nombre</label>
-                                        <input type="text" class="form-control" id="nombre" name="nombre" required >
+                                        <input type="text" class="form-control" id="nombre" name="nombre" required>
 
                                     </div>
 
                                     <div class="form-group">
                                         <label for="apellido1">Apellidos</label>
-                                        <input type="text" class="form-control" id="apellidos" name="apellidos" required>
+                                        <input type="text" class="form-control" id="apellidos" name="apellidos"
+                                            required>
                                     </div>
 
-                                   
+
 
                                     <div class="form-group">
                                         <label for="carnet"> Numero de Carné</label>
@@ -460,7 +467,8 @@
                                     <div class="form-group">
                                         <label for="exampleInputPassword1">Contraseña</label>
                                         <input type="password" class="form-control" id="password" pattern=".{8,}"
-                                            title="La contraseña debe tener al menos 8 caracteres" name="password" required>
+                                            title="La contraseña debe tener al menos 8 caracteres" name="password"
+                                            required>
                                     </div>
 
                                     <!--<div class="form-group">
