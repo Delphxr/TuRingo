@@ -7,6 +7,8 @@ const stopBtn = document.getElementById("stop-button")
 const backBtn = document.getElementById("back-button")
 const nextBtn = document.getElementById("next-button")
 
+const sendBtn = document.getElementById("upload-button")
+
 
 let activeIndex = 0; // Índice del elemento activo
 let startindex = 0; //indice para reiniciar
@@ -144,7 +146,7 @@ async function executeCode() {
   if (EXECUTING) {
     return;
   }
-  try{
+  try {
     animateCode(localInstrucciones)
   } catch {
     console.log("No se puede correr el codigo, verifique que este compilado correctamente")
@@ -222,7 +224,7 @@ async function nextInstruction() {
   }
 
 
-  
+
 
   let insActual = localInstrucciones.instrucciones[current_instruction]
 
@@ -313,6 +315,7 @@ compBtn.addEventListener("click", compileCode);
 playBtn.addEventListener("click", executeCode);
 nextBtn.addEventListener("click", nextInstruction);
 stopBtn.addEventListener("click", stopExecution);
+sendBtn.addEventListener("click", entregarTarea);
 
 // Actualizar la posición de la cinta en la carga inicial de la página
 updateTapePosition();
