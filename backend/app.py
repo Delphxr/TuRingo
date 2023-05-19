@@ -1,10 +1,14 @@
 from website import create_app
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = create_app()
-app.secret_key = "secret key"
+app.secret_key = os.getenv('SECRET_KEY')
 
-mongo_uri = "mongodb://10.0.0.17:27017/?directConnection=true&appName=mongosh+1.8.0"
+mongo_uri = os.getenv('MONGO_URI')
 client = MongoClient(mongo_uri)
 
 db = client.turingo
