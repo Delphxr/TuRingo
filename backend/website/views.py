@@ -15,6 +15,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 views = Blueprint('views', __name__)
 
+# Filtro para convertir id de tipo ObjectID de mongo a string
+@views.app_template_filter('to_string')
+def to_string(value):
+    if isinstance(value, ObjectId):
+        return str(value)
+    return value
+
 @views.route('/login', methods=['POST'])
 def login():
     usuario_exists = 'usuario' in session
