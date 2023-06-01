@@ -134,6 +134,7 @@ def signup():
         apellidos = request.form['apellidos']
 
         password = request.form['password']
+        password2 = request.form['password2']
 
         correo = request.form['email']
         carne = request.form['carne']
@@ -145,7 +146,9 @@ def signup():
         _id = None
 
         print(request.form)
-        if nombre == None or nombre == "" or nombre == " ":
+        if (password != password2):
+            flash("Las passwords deben ser iguales.",category='error')
+        elif nombre == None or nombre == "" or nombre == " ":
             flash("El nombre no puede estar vacío.", category='error')
         elif not re.match(r'^[0-9a-zA-Z\sáéíóúÁÉÍÓÚñÑüÜ]+$', nombre):
             flash(
