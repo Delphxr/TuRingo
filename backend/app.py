@@ -6,9 +6,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = create_app()
-app.secret_key = os.getenv('SECRET_KEY')
+app.secret_key = 'arroz con pollo'
 
-mongo_uri = os.getenv('MONGO_URI')
+mongo_uri = 'mongodb://10.0.0.89:27018/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.9.1' 
 client = MongoClient(mongo_uri)
 
 db = client.turingo
