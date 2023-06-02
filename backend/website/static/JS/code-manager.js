@@ -73,6 +73,45 @@ class PseudoCodigo {
     return JSON.stringify(codigoConInfo, null, 2);
   }
 
+  guardarCodigoActual(){
+    let entrada = document.getElementById("entradaCinta").value
+    let vacio = document.getElementById("vacioCinta").value
+
+    if (vacio === "") {
+      vacio = "_"
+    }
+    
+    var pseudoCodigoSaved = JSON.stringify(this.codigo);;
+    var apodosSaved = JSON.stringify(this.apodos)
+    var inicialSaved = this.inicial
+    var idSaved = this.id
+
+    localStorage.setItem('pseudoCodigoSaved', pseudoCodigoSaved);
+    localStorage.setItem('apodosSaved', apodosSaved);
+    localStorage.setItem('inicialSaved', inicialSaved);
+    localStorage.setItem('idSaved', idSaved);
+    console.log("Maquina guardada")
+  }
+
+  cargarCodigoActual(){
+    var pseudoCodigoString = localStorage.getItem('pseudoCodigoSaved');
+    var apodosString = localStorage.getItem('apodosSaved');
+
+    var inicialSaved = localStorage.getItem('inicialSaved');
+    var idSaved = localStorage.getItem('idSaved');
+    var idIntSaved = parseInt(idSaved);
+
+    var pseudoCodigoSaved = JSON.parse(localStorage.getItem("pseudoCodigoSaved"));
+    var apodosSaved = JSON.parse(apodosString);
+
+    this.codigo = pseudoCodigoSaved;
+    this.apodos = apodosSaved;
+    this.inicial = inicialSaved;
+    this.id = idIntSaved;
+
+    console.log("Codigo cargado")
+  }
+
   eliminarNodo(Id) {
     for (let i in this.codigo) {
       const instrucciones = this.codigo[i];

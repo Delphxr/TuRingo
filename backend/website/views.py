@@ -623,9 +623,6 @@ def save_webpage():
 
     file_path = session.get('saved_page_path')
 
-    if file_path:
-        os.remove(file_path)
-
     with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as temp_file:
         temp_file.write(captured_webpage.encode('utf-8'))
         temp_file.flush()
