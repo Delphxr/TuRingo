@@ -76,6 +76,7 @@ def login():
 def logout():
     # --------------------------Retirar el usuario actual de la sesión de flask para cerrar sesión---------------------
     session.pop('usuario', None)
+    session.clear()
     # -----------------------------------------------------------------------------------------------------------------
     tareas = db_functions.get_tareas()
     usuario_exists = 'usuario' in session
@@ -639,12 +640,6 @@ def save_webpage():
 def load_webpage():
     webpage_content = None
     file_path = session.get('saved_page_path')
-
-    if file_path:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            webpage_content = file.read()
-    else:
-        return
     
     id_tarea = request.args.get('id_tarea')
     tarea = db_functions.get_tarea(id_tarea)
@@ -686,4 +681,9 @@ def load_webpage():
     print(datos_es_json) # Los datos de entrada y salida de la tarea
     print(id_usuario) # El id del usuario
 
-    return render_template('load_editor.html', webpage_content=webpage_content, tarea=tarea, datos_entrada_salida=datos_entrada_salida,usuario_exists=usuario_exists,id_usuario=id_usuario,tipo_usuario=tipo_usuario,id_tarea=id_tarea,parametro_vacio=parametro_vacio,datos_es_json=datos_es_json)
+    if file_path:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            webpage_content = file.read()
+        return render_template('load_editor.html', webpage_content=webpage_content, tarea=tarea, datos_entrada_salida=datos_entrada_salida,usuario_exists=usuario_exists,id_usuario=id_usuario,tipo_usuario=tipo_usuario,id_tarea=id_tarea,parametro_vacio=parametro_vacio,datos_es_json=datos_es_json)
+    else:
+        return render_template('editor.html', tarea=tarea, datos_entrada_salida=datos_entrada_salida,usuario_exists=usuario_exists,id_usuario=id_usuario,tipo_usuario=tipo_usuario,id_tarea=id_tarea,parametro_vacio=parametro_vacio,datos_es_json=datos_es_json)
