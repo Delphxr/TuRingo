@@ -8,8 +8,6 @@ const backBtn = document.getElementById("back-button")
 const nextBtn = document.getElementById("next-button")
 
 const sendBtn = document.getElementById("upload-button")
-const saveBtn = document.getElementById("save-button")
-const loadBtn = document.getElementById("load-button")
 
 let activeIndex = 0; // Índice del elemento activo
 let startindex = 0; //indice para reiniciar
@@ -320,7 +318,6 @@ function updateActiveValue(value) {
 
 // Eventos de botón
 compBtn.addEventListener("click", compileCode);
-saveBtn.addEventListener("click", saveCode);
 playBtn.addEventListener("click", executeCode);
 nextBtn.addEventListener("click", nextInstruction);
 stopBtn.addEventListener("click", stopExecution);
