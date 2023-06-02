@@ -8,7 +8,8 @@ const backBtn = document.getElementById("back-button")
 const nextBtn = document.getElementById("next-button")
 
 const sendBtn = document.getElementById("upload-button")
-
+const saveBtn = document.getElementById("save-button")
+const loadBtn = document.getElementById("load-button")
 
 let activeIndex = 0; // Índice del elemento activo
 let startindex = 0; //indice para reiniciar
@@ -140,6 +141,8 @@ async function compileCode() {
       updateCompilationTime()
       localInstrucciones = code;
       console.log("compilation_complete")
+      pseudoCodigo.guardarCodigoActual();
+      console.log("Pseudocodigo guardado en localStorage")
     }
 
   } catch {
@@ -148,6 +151,28 @@ async function compileCode() {
   }
 }
 
+async function saveCode() {
+  console.log("start")
+  if (EXECUTING) {
+    return;
+  }
+
+  let entrada = document.getElementById("entradaCinta").value
+  let vacio = document.getElementById("vacioCinta").value
+
+
+  console.log("entrada y vacio")
+
+  if (vacio === "") {
+    vacio = "_"
+  }
+
+  pseudoCodigo.guardarCodigoActual();
+}
+
+async function loadCode() {
+  pseudoCodigo.cargarCodigoActual();
+}
 
 //ejecutamos codigo, llamamos el API y lo mandamos luego a dibujar
 async function executeCode() {
@@ -320,6 +345,7 @@ function updateActiveValue(value) {
 
 // Eventos de botón
 compBtn.addEventListener("click", compileCode);
+saveBtn.addEventListener("click", saveCode);
 playBtn.addEventListener("click", executeCode);
 nextBtn.addEventListener("click", nextInstruction);
 stopBtn.addEventListener("click", stopExecution);
