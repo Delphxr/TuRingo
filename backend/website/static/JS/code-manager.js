@@ -86,6 +86,8 @@ class PseudoCodigo {
     var inicialSaved = this.inicial
     var idSaved = this.id
 
+    saveEditorVariables();
+
     localStorage.setItem('pseudoCodigoSaved', pseudoCodigoSaved);
     localStorage.setItem('apodosSaved', apodosSaved);
     localStorage.setItem('inicialSaved', inicialSaved);
@@ -103,6 +105,8 @@ class PseudoCodigo {
 
     var pseudoCodigoSaved = JSON.parse(localStorage.getItem("pseudoCodigoSaved"));
     var apodosSaved = JSON.parse(apodosString);
+
+    loadEditorVariables();
 
     this.codigo = pseudoCodigoSaved;
     this.apodos = apodosSaved;

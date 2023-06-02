@@ -49,6 +49,19 @@ menu_nodo.addEventListener("click", () => {
   outClick.style.display = "none";
 });
 
+function saveEditorVariables(){
+  localStorage.setItem('mousePosition', MOUSE_POSITION);
+  localStorage.setItem('nodes', NODES);
+  localStorage.setItem('lines', LINES);
+  localStorage.setItem('currentClickedNode', CURRENT_CLICKED_NODE);
+  localStorage.setItem('currentStartNode', CURRENT_START_NODE.outerHTML);
+  localStorage.setItem('currentExecutingNode', CURRENT_EXECUTING_NODE);
+}
+
+function loadEditorVariables(){
+  var currentStartNode = localStorage.getItem('currentStartNode');
+  CURRENT_START_NODE = currentStartNode;
+}
 
 //actualizamos una linea segun el mouse
 function updateLine(event) {
