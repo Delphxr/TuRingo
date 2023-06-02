@@ -141,37 +141,12 @@ async function compileCode() {
       updateCompilationTime()
       localInstrucciones = code;
       console.log("compilation_complete")
-      pseudoCodigo.guardarCodigoActual();
-      console.log("Pseudocodigo guardado en localStorage")
     }
 
   } catch {
     console.log("hubo un error al conectarse con el API")
     circle.remove()
   }
-}
-
-async function saveCode() {
-  console.log("start")
-  if (EXECUTING) {
-    return;
-  }
-
-  let entrada = document.getElementById("entradaCinta").value
-  let vacio = document.getElementById("vacioCinta").value
-
-
-  console.log("entrada y vacio")
-
-  if (vacio === "") {
-    vacio = "_"
-  }
-
-  pseudoCodigo.guardarCodigoActual();
-}
-
-async function loadCode() {
-  pseudoCodigo.cargarCodigoActual();
 }
 
 //ejecutamos codigo, llamamos el API y lo mandamos luego a dibujar
