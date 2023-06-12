@@ -9,7 +9,6 @@ const nextBtn = document.getElementById("next-button")
 
 const sendBtn = document.getElementById("upload-button")
 
-
 let activeIndex = 0; // Índice del elemento activo
 let startindex = 0; //indice para reiniciar
 let startTape = "" //cinta para reiniciar
@@ -68,7 +67,7 @@ async function entregarTarea() {
 
   console.log("llamando api: \n" + pseudoCodigo.obtenerCodigoJson(entrada, vacio))
 
-  await fetch('http://140.84.172.6:5000/entregar-tarea', {
+  await fetch('http://140.84.183.217:7000/entregar-tarea', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -119,7 +118,7 @@ async function compileCode() {
 
   console.log("llamando api")
   try {
-    const response = await fetch('http://140.84.172.6:5000/turing-compiler', {
+    const response = await fetch('http://140.84.183.217:7000/turing-compiler', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -147,7 +146,6 @@ async function compileCode() {
     circle.remove()
   }
 }
-
 
 //ejecutamos codigo, llamamos el API y lo mandamos luego a dibujar
 async function executeCode() {

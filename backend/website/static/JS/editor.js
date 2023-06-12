@@ -49,7 +49,6 @@ menu_nodo.addEventListener("click", () => {
   outClick.style.display = "none";
 });
 
-
 //actualizamos una linea segun el mouse
 function updateLine(event) {
   let position = getPosition(event);

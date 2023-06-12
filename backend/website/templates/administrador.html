@@ -150,10 +150,13 @@
                             <li class="list-group-item"><i class="bi bi-telephone"></i> Tipo usuario: {{
                                 administrador['tipo_usuario'] }}</li>
                             <br>
+
+                            {% if administrador['_id']|to_string == _id|to_string %}
                             <button type="button" class="action-button btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">
                                 Nuevo Ejercicio
                             </button>
+                            {% endif %}
 
                             <button type="button" class="action-button btn btn-primary"
                                 onclick="window.location.href='/ver_estudiantes'">
@@ -164,7 +167,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <!-- Columna de la tabla -->
             <div class="col-12 col-md-8">
                 <div class="table-responsive rounded">
@@ -177,8 +180,10 @@
                                 <th scope="col">Fecha Creación</th>
                                 <th scope="col">Parámetro vacío</th>
                                 <th scope="col">Datos entrada y salida</th>
+                                {% if administrador['_id']|to_string == _id|to_string %}
                                 <th scope="col">Editar</th>
                                 <th scope="col">Borrar tarea</th>
+                                {% endif %}
                             </tr>
                         </thead>
                         <tbody>
@@ -194,6 +199,7 @@
                                         <td>{{ tarea['fechacreacion'] }}</td>
                                         <td>{{ tarea['parametro_vacio'] }}</td>
                                         <td>{{ tarea['datos_entrada_salida'][0]['entradasalida'] }}</td>
+                                        {% if administrador['_id']|to_string == _id|to_string %}
                                         <td>
                                             <button type="button" id="editarButton" class="action-button btn btn-primary"
                                             data-bs-toggle="modal" data-bs-target="#updateModal"
@@ -202,6 +208,7 @@
                                             </button>
                                         </td>
                                         <td><button type="button" class="action-button btn btn-primary" onclick="confirmBorrarTarea('{{ tarea['_id'] }}')">Borrar</button></td>
+                                        {% endif %}
                                     </tr>
 
                                 {% else %}
