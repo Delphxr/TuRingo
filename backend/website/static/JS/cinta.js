@@ -67,7 +67,7 @@ async function entregarTarea() {
 
   console.log("llamando api: \n" + pseudoCodigo.obtenerCodigoJson(entrada, vacio))
 
-  await fetch('http://140.84.172.6:5000//entregar-tarea', {
+  await fetch('http://140.84.172.6:5000/entregar-tarea', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
