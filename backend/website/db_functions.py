@@ -223,6 +223,9 @@ def insertar_tarea(nombre, descripcion, vacio, fechacreacion, idcreador, entrada
     from app import tareas
     from app import datos_entrada_salida
 
+    if vacio == '' or vacio == ' ':
+        vacio = "_"
+
     tarea = {
         'nombre': nombre,
         'descripcion': descripcion,
